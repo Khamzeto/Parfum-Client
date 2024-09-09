@@ -1,0 +1,194 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 20px;
+  margin: 0 auto;
+  max-width: 1440px;
+  margin-top: 0px;
+  overflow-x: hidden !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  overflow: hidden; /* Скрываем прокрутку для контейнера */
+}
+
+.road {
+  display: flex;
+  gap: 4px;
+  font-size: 13px;
+  margin-top: 30px;
+}
+
+.roadMain {
+  color: var(--color-text-gray);
+}
+
+.title {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  text-align: left;
+  font-weight: 500;
+  margin-top: 20px;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.description {
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--color-text-gray);
+  margin-bottom: 10px;
+}
+
+.filterPanel {
+  width: 100%;
+  max-width: 1058px;
+  background-color: var(--color-background);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.searchContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.filtersContainer {
+  width: 100%;
+
+  height: 50px;
+}
+
+.letters {
+  display: flex;
+  flex-wrap: nowrap; /* Не переносить элементы */
+  overflow-x: scroll; /* Горизонтальная прокрутка только внутри этого элемента */
+  overflow-y: hidden; /* Скрыть вертикальную прокрутку */
+  margin-bottom: 20px;
+  margin-top: 20px;
+  gap: 8px;
+  font-weight: 400;
+  -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+  max-width: 100%; /* Установить максимальную ширину */
+  height: 60px; /* Установить фиксированную высоту для ограничения области прокрутки */
+  position: relative;
+  white-space: nowrap;
+  padding-right: 20px; /* Предотвратить перенос текста на новую строку */
+}
+
+.letters::-webkit-scrollbar {
+  display: none;
+}
+
+.letters::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-gray); /* Цвет ползунка скроллбара */
+  border-radius: 4px; /* Радиус углов ползунка скроллбара */
+}
+
+.letters button {
+  border: 1.2px solid var(--mantine-color-gray-3);
+  margin: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  background-color: var(--mantine-color-default-hover) !important;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0; /* Не сжимать кнопки */
+}
+
+.letters button.active {
+  background-color: var(--mantine-primary-color-5) !important;
+  border: 1px solid var(--color-border-gray);
+  color: #fff;
+}
+.inputSearchContainer {
+  width: 100%;
+}
+
+/* Медиа-запрос для экранов шириной более 840px */
+@media screen and (min-width: 840px) {
+  .letters {
+    flex-wrap: wrap; /* Перенос элементов на новую строку */
+    overflow-x: hidden; /* Отключаем горизонтальную прокрутку */
+    height: auto; /* Установить фиксированную высоту для ограничения области прокрутки */
+  }
+}
+
+.brandList {
+  width: 100%;
+  border: 1px solid var(--mantine-color-gray-3);
+  display: flex; /* Используем flex для расположения в одной строке */
+  border-radius: 14px;
+  align-items: flex-start; /* Выравнивание по верхнему краю */
+  gap: 80px; /* Пробел между заголовком и списком брендов */
+  margin-top: 20px;
+  padding: 24px 50px; /* Паддинг для внутреннего отступа */
+}
+
+.brandList h2 {
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--color-text);
+  margin: 0; /* Убираем внешний отступ */
+}
+
+.brands {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Используем grid для брендов */
+  gap: 10px; /* Расстояние между брендами */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Позволяет списку брендов занимать оставшееся пространство */
+}
+
+.brandItem {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.brands li span {
+  display: inline-block; /* Элемент span занимает только необходимую ширину */
+  max-width: 100%; /* Предотвращает переполнение текста */
+  cursor: pointer;
+}
+
+.brands li:hover span {
+  color: #000; /* Изменение цвета текста при наведении */
+}
+
+@media screen and (min-width: 540px) and (max-width: 800px) {
+  .brands {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(150px, 1fr)
+    ); /* Адаптация под более узкие экраны */
+  }
+  .inputSearchContainer {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 0px) and (max-width: 540px) {
+  .brands {
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(100px, 1fr)
+    ); /* Адаптация под самые маленькие экраны */
+  }
+  .inputSearchContainer {
+    display: none;
+  }
+}

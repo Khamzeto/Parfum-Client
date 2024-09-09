@@ -1,0 +1,122 @@
+.mantine-ScrollArea-viewport > div {
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 4px;
+  gap: 12px !important;
+}
+/* Base style for the input field */
+.mantine-Spotlight-search {
+  background-color: transparent !important; /* No background color */
+  box-shadow: none !important; /* No shadow */
+  border: none !important; /* Remove all borders */
+  border-bottom: 1px solid var(--mantine-color-gray-3) !important; /* Add a gray bottom border */
+  color: inherit !important; /* Maintain text color */
+  outline: none !important; /* Remove default focus outline */
+  border-radius: 0px !important ;
+}
+
+/* Remove hover and focus effects */
+.mantine-Spotlight-search:hover,
+.mantine-Spotlight-search:focus {
+  background-color: transparent !important; /* No background change on hover or focus */
+  box-shadow: none !important; /* No shadow on hover or focus */
+  border: none !important; /* Keep all borders removed except the bottom */
+  border-bottom: 1px solid var(--mantine-color-gray-3) !important; /* Ensure bottom border stays gray */
+  outline: none !important; /* Remove focus outline */
+}
+.popular-perfumes-desktop {
+  display: none;
+}
+
+/* Show the Popular Perfumes section on mobile at the bottom */
+.popular-perfumes-mobile {
+  display: flex;
+}
+
+/* On larger screens, reverse the visibility */
+@media (min-width: 768px) {
+  .popular-perfumes-desktop {
+    display: flex;
+  }
+  .popular-perfumes-mobile {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  .perfume-actions {
+    order: 2;
+    margin-bottom: 20px;
+  }
+
+  .popular-perfumes-mobile {
+    display: flex;
+  }
+
+  .popular-perfumes-desktop {
+    display: none;
+  }
+
+  /* Move notes section to be displayed on top on mobile */
+  .notes-mobile {
+    order: -1;
+  }
+}
+
+@media (min-width: 768px) {
+  .popular-perfumes-mobile {
+    display: none;
+  }
+
+  .popular-perfumes-desktop {
+    display: flex;
+  }
+}
+@media (max-width: 768px) {
+  .perfume-actions {
+    order: 2;
+    margin-bottom: 20px;
+  }
+
+  .popular-perfumes-mobile {
+    display: flex;
+  }
+
+  .popular-perfumes-desktop {
+    display: none;
+  }
+
+  /* Move perfume-info section to the top on mobile */
+  .perfume-info {
+    display: block !important;
+  }
+
+  /* Additional styling for perfume-info to fit mobile design */
+  .perfume-info {
+    margin-bottom: 30px;
+    display: block;
+  }
+  .perfume-info-desk {
+    display: none;
+  }
+  .accords {
+    margin-top: -10px !important;
+  }
+  .desktopFilter {
+    display: none !important;
+  }
+}
+.perfume-info {
+  display: none;
+}
+@media (min-width: 768px) {
+  .popular-perfumes-mobile {
+    display: none;
+  }
+
+  .popular-perfumes-desktop {
+    display: flex;
+  }
+  .filter-mobile {
+    display: none !important;
+  }
+}
