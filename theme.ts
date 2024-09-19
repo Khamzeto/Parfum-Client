@@ -11,6 +11,7 @@ export const theme = createTheme({
     lg: '1200px',   // Large devices (desktops)
     xl: '1440px', 
     customBreakpoint: '770px',  // Extra large devices (large desktops)
+    
   },
   
 });

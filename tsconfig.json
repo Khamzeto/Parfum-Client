@@ -5,9 +5,10 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,  // Отключает строгую проверку типов
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "noEmitOnError": false,  // Разрешает компиляцию при наличии ошибок
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",

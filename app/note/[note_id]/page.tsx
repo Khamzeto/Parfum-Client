@@ -1,13 +1,14 @@
 'use client';
-// @ts-ignore: Temporary ignore TypeScript error
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Text, Container, Title, SimpleGrid, Image, Badge, Pagination, Group, Skeleton, Select, useMantineTheme, useMantineColorScheme, Button, Divider, Anchor, Breadcrumbs } from '@mantine/core';
-import { IconMars, IconVenus, IconGenderBigender, IconStar, IconCalendar, IconZoomReset, IconGridDots, IconList } from '@tabler/icons-react';
+import { Text, Container, Title, SimpleGrid, Image, Badge, Pagination, Group, Skeleton, Select, useMantineTheme, useMantineColorScheme, Button, Divider, Anchor,Breadcrumbs } from '@mantine/core';
+import { IconMars, IconVenus, IconGenderBigender, IconStar, IconCalendar, IconSearch, IconZoomReset, IconGridDots, IconList } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import { Header } from '@/components/Header/Header';
 import Link from 'next/link';
 import SearchInput from '../../../components/ui/InputSearch/InputSearch';
+import { NavigationButtons } from '@/components/ui/NavigationButtons/NavigationButtons';
 
 interface Perfume {
   _id: string;
@@ -24,14 +25,14 @@ interface Perfume {
   accords: string[];
 }
 
-const PerfumesByBrand = () => {
+const PerfumesByNote = () => {
   const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === 'dark';
-  const [isListView, setIsListView] = useState(false);
   const params = useParams();
-  const brandSlug = Array.isArray(params.brandName) ? params.brandName[0] : params.brandName;
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark'; 
+  const [isListView, setIsListView] = useState(false); // State for list/grid view
 
+  const noteId = params.note_id;
 
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,35 +40,44 @@ const PerfumesByBrand = () => {
   const [activePage, setActivePage] = useState<number>(1);
   const itemsPerPage = 20;
   const [totalItems, setTotalItems] = useState<number>(0);
-  const [brandName, setBrandName] = useState<string>(''); // Название бренда
-  const [total, setTotal] = useState<number>(0); // Общее количество духов
+  const [noteName, setNoteName] = useState<string>(''); 
+  const [total,setTotal] = useState<number>(0); // State for note name
 
-  const [sortBy, setSortBy] = useState<string>('A-Z');
-  const [genderFilter, setGenderFilter] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<string>('A-Z'); // Default sorting
+  const [genderFilter, setGenderFilter] = useState<string | null>(null); // Gender filter
 
   useEffect(() => {
-    if (brandSlug) {
-      fetchPerfumesByBrand(brandSlug, activePage, sortBy, genderFilter);
+    if (noteId) {
+      fetchPerfumesByNote(noteId, activePage, sortBy, genderFilter);
     }
-  }, [brandSlug, activePage, sortBy, genderFilter]);
+  }, [noteId, activePage, sortBy, genderFilter]);
 
-  const fetchPerfumesByBrand = async (slug: string, page: number, sortBy: string, gender: string | null) => {
+  const fetchPerfumesByNote = async (noteId: string, page: number, sortBy: string, gender: string | null) => {
     setLoading(true);
     try {
-      const response = await $api.get(`/brands/perfumes`, {
-        params: { slug: slug, page: page, limit: itemsPerPage, sortBy: sortBy, gender: gender },
+      const response = await $api.get(`/notes/perfumes`, {
+        params: { 
+          noteId: noteId, 
+          page: page, 
+          limit: itemsPerPage,
+          sortBy: sortBy,
+          gender: gender // Pass gender filter to the backend
+        }
       });
 
       setPerfumes(response.data.perfumes);
       setTotalItems(response.data.total);
-      setBrandName(response.data.brandName);
-      setTotal(response.data.total); // Устанавливаем общее количество духов
+      setNoteName(response.data.noteName); 
+      setTotal(response.data.total)// Set the note name
+   
     } catch (err: any) {
       setError(err.response?.data?.message || 'Не удалось получить парфюмы');
     } finally {
       setLoading(false);
     }
   };
+
+
 
   const getGenderIcon = (gender: string) => {
     switch (gender.toLowerCase()) {
@@ -87,10 +97,11 @@ const PerfumesByBrand = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Function to clear all filters
   const clearFilters = () => {
-    setSortBy('A-Z');
-    setGenderFilter(null);
-    setActivePage(1);
+    setSortBy('A-Z'); // Reset sorting to default
+    setGenderFilter(null); // Reset gender filter
+    setActivePage(1); // Reset to first page
   };
 
   if (error) return <Text color="red">{error}</Text>;
@@ -98,52 +109,73 @@ const PerfumesByBrand = () => {
   return (
     <>
       <Header />
-      <SearchInput />
-      <div style={{ maxWidth: '1440px', margin: '30px auto 0 auto', paddingLeft: '20px', paddingRight: '20px' }}>
-        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '0px' }}>
-          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>Главная</Anchor>
-          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>Бренды</Anchor>
-          <span style={{ color: '#6c757d' }}>{brandName}</span>
+      <SearchInput/>
+      <div  style={{  maxWidth: '1440px', margin: '30px auto 0 auto',paddingLeft: '20px',paddingRight: '20px' }}>
+        
+      <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '20px' }}>
+          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
+            Главная
+          </Anchor>
+          <Anchor href="/notes" style={{ textDecoration: 'none', color: '#007bff' }}>
+            Ноты
+          </Anchor>
+    
+          <span style={{ color: '#6c757d' }}>{noteName}</span>
         </Breadcrumbs>
+     
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px', maxWidth: '1380px', margin: '50px auto' }}>
+   
+        {/* Left Side - Perfumes List */}
+        <div style={{ flex: 1,maxWidth: '1000px' }}>
+          <Title order={2} align="left">{noteName}</Title>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px', maxWidth: '1380px', margin: '50px auto' }}>
-          <div style={{ flex: 1, maxWidth: '1000px' }}><Title order={2} style={{ textAlign: 'left' }}>{brandName}</Title>
+          {/* Filter Section */}
+          <Group mb="40" mt="30" position="center">
+            {/* Sorting Filter */}
+            <Select
+              label="Сортировка"
+              placeholder="Выберите сортировку"
+              value={sortBy}
+              onChange={(value: string) => setSortBy(value)}
+              data={[
+                { value: 'A-Z', label: 'От A до Z' },
+                { value: 'Z-A', label: 'От Z до A' },
+                { value: 'popular', label: 'Популярные' },
+                { value: 'unpopular', label: 'Непопулярные' }
+              ]}
+            />
 
+            {/* Gender Filter */}
+            <Select
+              label="Пол"
+              placeholder="Выберите гендер"
+              value={genderFilter}
+              onChange={(value: string | null) => setGenderFilter(value)}
+              data={[
+                { value: 'male', label: 'Мужской' },
+                { value: 'female', label: 'Женский' },
+                { value: 'unisex', label: 'Унисекс' }
+              ]}
+            />
+          </Group>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', maxWidth: '100%' }}>
+            <Button 
+              leftSection={<IconZoomReset size={18} />}
+              variant="light" 
+              color="gray"
+              onClick={clearFilters} // Clear filters on button click
+            >
+              Очистить
+            </Button>
+            <Button
+              onClick={() => setIsListView(!isListView)}
+              leftSection={isListView ? <IconGridDots size={18} /> : <IconList size={18} />}
+            >
+              {isListView ? 'Сетка' : 'Список'}
+            </Button>
+          </div>
 
-            <Group mb="40" mt="30" position="center">
-              <Select
-                label="Сортировка"
-                placeholder="Выберите сортировку"
-                value={sortBy}
-                onChange={(value: string) => setSortBy(value)}
-                data={[
-                  { value: 'A-Z', label: 'От A до Z' },
-                  { value: 'Z-A', label: 'От Z до A' },
-                  { value: 'popular', label: 'Популярные' },
-                  { value: 'unpopular', label: 'Непопулярные' }
-                ]}
-              />
-
-              <Select
-                label="Пол"
-                placeholder="Выберите гендер"
-                value={genderFilter}
-                onChange={(value: string | null) => setGenderFilter(value)}
-                data={[
-                  { value: 'male', label: 'Мужской' },
-                  { value: 'female', label: 'Женский' },
-                  { value: 'unisex', label: 'Унисекс' }
-                ]}
-              />
-            </Group>
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px', maxWidth: '100%' }}>
-              <Button leftSection={<IconZoomReset size={18} />} variant="light" color="gray" onClick={clearFilters}>Очистить</Button>
-              <Button onClick={() => setIsListView(!isListView)} leftSection={isListView ? <IconGridDots size={18} /> : <IconList size={18} />}>
-                {isListView ? 'Сетка' : 'Список'}
-              </Button>
-            </div>
-
-            <div style={{ marginTop: '60px',maxWidth: '1200px' }}>
+          <div style={{ marginTop: '60px',maxWidth: '1200px' }}>
             {/* Conditional rendering for list or grid view */}
             {isListView ? (
               <SimpleGrid
@@ -283,22 +315,34 @@ const PerfumesByBrand = () => {
             )}
           </div>
 
-            <Group mt="lg" mb="12" style={{ display: 'flex', justifyContent: 'center' }}>
-              <Pagination page={activePage} radius="9px" onChange={handlePageChange} total={Math.ceil(totalItems / itemsPerPage)} />
-            </Group>
-          </div>
-          <Divider orientation="vertical" className='right-notes' />
-
-          {/* Описание бренда на правой стороне */}
-          <div className='right-notes' style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}>
-            <Image src="https://pimages.parfumo.de/240/28793_vmydj8q4ca_240.webp" alt={brandName} style={{ borderRadius: '50%' }} />
-            <Title mb="14" order={4}>{brandName}</Title>
-            <Text mb="14">В коллекции {brandName} есть {total} парфюмов.</Text>
-          </div>
+          <Group mt="lg" mb="12" style={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              page={activePage}
+              radius='9px'
+              onChange={handlePageChange}
+              total={Math.ceil(totalItems / itemsPerPage)}
+            />
+          </Group>
         </div>
+        <Divider className='right-notes' orientation='vertical'/>
+
+        {/* Right Side - Image and Description */}
+        <div className='right-notes' style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}>
+  <Image
+    src="https://img.parfumo.de/notes/20/20_1aa4227aff178efcd2fba2e583338c548c631814_320.jpg"  // Замените на нужный путь к изображению
+    alt="Африканский амбра"
+    style={{ marginBottom: '20px', width: '140px', margin: '0 auto 40px auto', borderRadius: '100%' }}
+  />
+  <Title mb='14' order={4}>{noteName}</Title>
+  <Text mb='14'>Parfumatrix знает {total} парфюм, содержащий ноту африканской амбры.</Text>
+  <Text mb='14'>Часто используется в сердце аромата.</Text>
+</div>
+
+
+      </div>
       </div>
     </>
   );
 };
 
-export default PerfumesByBrand;
+export default PerfumesByNote;

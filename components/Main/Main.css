@@ -1,0 +1,170 @@
+.main-container {
+  display: flex;
+  padding: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.main-content {
+  flex: 3;
+  margin-right: 20px;
+  width: 100%; /* Ensure it takes full width for smaller screens */
+}
+
+.perfumes-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.posts-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 10px; /* Added gap for spacing */
+  /* Ensures even spacing between cards */
+}
+
+.reviews-section {
+  margin-top: 60px;
+  margin-bottom: 60px;
+
+  max-width: 1440px;
+}
+
+.latest-perfumes-section {
+  margin-top: 40px;
+}
+
+.sidebar {
+  flex: 1;
+  border-left: 1px solid #eaeaea;
+  padding-left: 20px;
+  width: 100%; /* Full width on smaller screens */
+  margin-top: 20px; /* Add margin on top for small screens */
+}
+
+.recently-added {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.sidebar-buttons {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.posts-container .mantine-Card-root,
+.perfumes-container .mantine-Card-root,
+.news-carousel .mantine-Card-root {
+  height: 380px; /* Fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.carousel-container {
+  border-radius: 18px;
+}
+
+/* Prevent text overflow and ensure ellipsis for longer text */
+.mantine-Card-root .mantine-Text-root {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive media queries for different screen sizes */
+@media (max-width: 1024px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .sidebar {
+    margin-top: 20px;
+    width: 100%;
+    border-left: none;
+  }
+
+  .posts-container .mantine-Card-root {
+    width: 48%; /* 2 columns for medium-sized screens */
+    margin-bottom: 20px;
+  }
+
+  .perfumes-container .mantine-Card-root {
+    width: 48%; /* 2 columns for medium-sized screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .posts-container .mantine-Card-root {
+    width: 100%; /* Full width for smaller screens */
+  }
+
+  .perfumes-container .mantine-Card-root {
+    width: 100%; /* Full width for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .posts-container .mantine-Card-root {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .perfumes-container .mantine-Card-root {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+.controls {
+  transition: opacity 150ms ease;
+  opacity: 0;
+}
+
+.root {
+  &:hover {
+    .controls {
+      opacity: 1;
+    }
+  }
+}
+@keyframes infiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%); /* Move by half of the container width */
+  }
+}
+
+.logo-container {
+  display: flex;
+  gap: 40px; /* Adjust the space between logos */
+  width: 200%; /* Double the width to fit both the original and duplicated logos */
+  animation: infiniteScroll 20s linear infinite; /* Continuous animation */
+}
+
+.logo-wrapper {
+  display: flex;
+  overflow: hidden; /* Hide the logos that are out of view */
+  width: 100%; /* Ensures it takes the full available width */
+}

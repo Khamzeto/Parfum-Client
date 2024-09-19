@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "proxy": "https://your-ngrok-url.ngrok.io",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
@@ -20,16 +21,19 @@
   },
   "dependencies": {
     "@mantine/carousel": "^7.12.2",
-    "@mantine/core": "7.12.2",
+    "@mantine/core": "^7.12.2",
     "@mantine/form": "^7.12.2",
-    "@mantine/hooks": "7.12.2",
+    "@mantine/hooks": "^7.12.2",
+    "@mantine/next": "^6.0.22",
     "@mantine/spotlight": "^7.12.2",
     "@next/bundle-analyzer": "^14.2.4",
     "@tabler/icons-react": "^3.6.0",
     "axios": "^1.7.6",
+    "embla-carousel-react": "^7.1.0",
     "next": "14.2.4",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "swiper": "^11.1.14"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",
@@ -46,6 +50,7 @@
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.8",
     "@types/react": "18.3.3",
+    "@types/swiper": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "babel-loader": "^9.1.3",

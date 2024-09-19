@@ -2,32 +2,11 @@ import { useState } from 'react';
 import { Spotlight, spotlight } from '@mantine/spotlight';
 import { ActionIcon, Badge, Center, Group, Text, px, rem } from '@mantine/core'; // Import rem from Mantine
 import { IconSearch } from '@tabler/icons-react';
+import '@mantine/spotlight/styles.css';
 
 const data = [
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/futurama-bender.png',
-    title: 'Bender Bending Rodríguez',
-    description: 'Fascinated with cooking, though has no sense of taste',
-    new: true,
-  },
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/futurama-mom.png',
-    title: 'Carol Miller',
-    description: 'One of the richest people on Earth',
-    new: false,
-  },
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/homer-simpson.png',
-    title: 'Homer Simpson',
-    description: 'Overweight, lazy, and often ignorant',
-    new: false,
-  },
-  {
-    image: 'https://img.icons8.com/clouds/256/000000/spongebob-squarepants.png',
-    title: 'Spongebob Squarepants',
-    description: 'Not just a sponge',
-    new: false,
-  },
+
+
 ];
 
 export function SpotlightDemo() {
