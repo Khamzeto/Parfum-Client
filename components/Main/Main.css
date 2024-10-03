@@ -1,13 +1,16 @@
 .main-container {
   display: flex;
-  padding: 20px;
+  padding-left: 20px;
+
   max-width: 1440px;
   margin: 0 auto;
+  justify-content: center;
   flex-wrap: wrap; /* Allow wrapping for smaller screens */
 }
 
 .main-content {
   flex: 3;
+
   margin-right: 20px;
   width: 100%; /* Ensure it takes full width for smaller screens */
 }
@@ -20,17 +23,23 @@
 
 .posts-container {
   display: flex;
-  width: 100%;
-  flex-wrap: wrap;
+  width: 20%;
+
+  flex-direction: column;
   gap: 10px; /* Added gap for spacing */
   /* Ensures even spacing between cards */
 }
-
+.reviews-container {
+  display: flex;
+  width: 20%;
+  flex-direction: column;
+  gap: 10px; /* Added gap for spacing */
+  /* Ensures even spacing between cards */
+}
 .reviews-section {
   margin-top: 60px;
   margin-bottom: 60px;
-
-  max-width: 1440px;
+  width: 20%;
 }
 
 .latest-perfumes-section {
@@ -167,4 +176,66 @@
   display: flex;
   overflow: hidden; /* Hide the logos that are out of view */
   width: 100%; /* Ensures it takes the full available width */
+}
+
+.reviews-container-mobile {
+  display: none;
+}
+.posts-container-mobile {
+  display: none;
+}
+.perfume-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.perfume-item {
+  width: 31%;
+}
+
+@media (max-width: 786px) {
+  .perfume-item {
+    width: 48%;
+  }
+}
+@media (max-width: 575px) {
+  .perfume-item {
+    width: 98%;
+  }
+}
+@media (max-width: 1146px) {
+  .reviews-container {
+    display: none;
+  }
+  .posts-container {
+    display: none;
+  }
+  .reviews-container-mobile {
+    margin-top: 50px;
+    flex-direction: column;
+    gap: 10px;
+    display: flex;
+    width: 100%;
+  }
+  .posts-container-mobile {
+    margin-top: 50px;
+    flex-direction: column;
+    gap: 10px;
+    display: flex;
+    width: 100%;
+  }
+
+  .news-container {
+    width: 100% !important;
+  }
+  .aromo-shops {
+    display: flex;
+    flex-direction: column;
+  }
+  .content-container {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+  }
 }
