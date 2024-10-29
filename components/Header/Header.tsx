@@ -225,7 +225,7 @@ export function Header() {
                 color: link.color || 'black',
                 textTransform: 'uppercase',
                 position: 'relative',
-                zIndex: 9999,
+                zIndex: 2,
               }}
             >
               {link.label}
