@@ -1,4 +1,5 @@
 'use client';
+// @ts-ignore: Temporary ignore TypeScript error
 import {
   HoverCard,
   Group,
@@ -17,10 +18,12 @@ import {
   ScrollArea,
   rem,
   useMantineTheme,
-  ActionIcon,
-  TextInput,
+  Avatar,
+  Menu,
+  Input,
+  useMantineColorScheme,
 } from '@mantine/core';
-
+import { useEffect, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconNotification,
@@ -30,11 +33,23 @@ import {
   IconFingerprint,
   IconCoin,
   IconChevronDown,
-  IconSearch,
+  IconChevronRight,
+  IconLogout,
+  IconSettings,
 } from '@tabler/icons-react';
 import classes from './Header.module.css';
-import { SpotlightDemo } from '../ui/spotlight/SpotlightDemo';
+
 import { ActionToggle } from '../ui/ActionToggle/ActionToggle';
+import { UserMenu } from '../ui/UserMenu/UserMenu';
+import SpotlightDemo from '../ui/InputSearch/InputSearch';
+import Link from 'next/link';
+
+interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+  image: string;
+  name: string;
+  email: string;
+  icon?: React.ReactNode;
+}
 
 const mockdata = [
   {
@@ -69,10 +84,72 @@ const mockdata = [
   },
 ];
 
+const UserButton = ({ image, name, email, icon, ...others }: UserButtonProps) => (
+  <UnstyledButton
+    style={{
+      padding: 'var(--mantine-spacing-md)',
+      color: 'var(--mantine-color-text)',
+      borderRadius: 'var(--mantine-radius-sm)',
+    }}
+    {...others}
+  >
+    <Group>
+      <Avatar src={image} radius="xl" />
+
+      <div style={{ flex: 1 }}>
+        <Text size="sm" fw={500}>
+          {name}
+        </Text>
+
+        <Text c="dimmed" size="xs">
+          {email}
+        </Text>
+      </div>
+
+      {icon || <IconChevronRight size="1rem" />}
+    </Group>
+  </UnstyledButton>
+);
+const navigationLinks = [
+  { label: 'Главная', href: '/' },
+  { label: 'Новости', href: '/news' },
+  { label: 'Бренды', href: '/brands' },
+  { label: 'Ароматы', href: '/search' },
+  { label: 'Ноты', href: '/notes' },
+  { label: 'Похожие', href: '/similar' },
+  { label: 'Парфюмеры', href: '/parfumers' },
+  { label: 'Статьи', href: '/articles' },
+];
+
 export function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const [user, setUser] = useState<{ name: string; email: string; image: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // состояние загрузки
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setUser({
+        name: 'Harriette Spoonlicker',
+        email: 'hspoonlicker@outlook.com',
+        image:
+          'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png',
+      });
+    }
+    setIsLoading(false); // завершаем загрузку после проверки
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    window.location.href = '/login';
+  };
+
+  const isDark = colorScheme === 'dark';
+  const logoSrc = isDark ? '/logoWhite.svg' : '/logo.svg';
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -95,95 +172,68 @@ export function Header() {
   return (
     <Box pb={4}>
       <header className={classes.header}>
-        <Group justify="space-between" align='center' h="100%" >
-        <Group h="100%" gap={0} align='center'>
-          <div>Parfumatrix</div>
-          </Group>
-
-          <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="#" className={classes.link}>
-              Home
-            </a>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <a href="#" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Features
-                    </Box>
-                    <IconChevronDown
-                      style={{ width: rem(16), height: rem(16) }}
-                      color={theme.colors.blue[6]}
-                    />
-                  </Center>
-                </a>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
-                <Group justify="space-between" px="md">
-                  <Text fw={500}>Features</Text>
-                  <Anchor href="#" fz="xs">
-                    View all
-                  </Anchor>
-                </Group>
-
-                <Divider my="sm" />
-
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group justify="space-between">
-                    <div>
-                      <Text fw={500} fz="sm">
-                        Get started
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
-                      </Text>
-                    </div>
-                    <Button variant="default">Get started</Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
-          </Group>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ height: '150px', position: 'relative', width: '20%' }}>
+            <img style={{ height: '150px', position: 'absolute' }} src={logoSrc} alt="Logo" />
+          </div>
+          <div style={{ width: '40%' }}>
+            <SpotlightDemo />
+          </div>
 
           <Group visibleFrom="sm">
-          <Box style={{ marginLeft: '8px'}}>
-        <ActionToggle />
-      </Box>
-            <Button radius='8' variant="default">Войти</Button>
-            <Button radius='8'>Зарегистрироваться</Button>
+            <Box style={{ marginLeft: '8px' }}>
+              <ActionToggle />
+            </Box>
+            {!isLoading && // Рендерим только после завершения загрузки
+              (user ? (
+                <UserMenu />
+              ) : (
+                <>
+                  <Button
+                    radius="8"
+                    variant="default"
+                    onClick={() => (window.location.href = '/login')}
+                  >
+                    Войти
+                  </Button>
+                  <Button radius="8" onClick={() => (window.location.href = '/register')}>
+                    Зарегистрироваться
+                  </Button>
+                </>
+              ))}
           </Group>
 
-
-          <Group hiddenFrom="sm" gap="xs" >
-      {/* Ensure each Box is a flex container to align content center vertically */}
-      <Box style={{  display: 'flex', alignItems: 'center' }}>
-        <SpotlightDemo />
-      </Box>
-      
-      <Box style={{ marginLeft: '8px',marginRight: '6px' }}>
-        <ActionToggle />
-      </Box>
-      
-      {/* Burger component with auto margin to push it to the far right */}
-      <Burger
-        opened={drawerOpened}
-        onClick={toggleDrawer}
-        style={{ marginLeft: 'auto'}} // Align Burger in the center vertically
-      />
-    </Group>
-        </Group>
+          <Group hiddenFrom="sm" gap="xs">
+            <Box style={{ marginLeft: '8px', marginRight: '6px' }}>
+              <ActionToggle />
+            </Box>
+            <Burger opened={drawerOpened} onClick={toggleDrawer} style={{ marginLeft: 'auto' }} />
+          </Group>
+        </div>
       </header>
+      <Divider mt="44" />
+      <div style={{ margin: '0 auto', maxWidth: '1380px', padding: '10px' }}>
+        <Group style={{ gap: '15px', display: 'flex', justifyContent: 'space-between' }}>
+          {navigationLinks.map((link, index) => (
+            <Link
+              key={index}
+              href={link.href}
+              style={{
+                textDecoration: 'none',
+                fontWeight: 800,
+                fontSize: '14px',
+                color: link.color || 'black',
+                textTransform: 'uppercase',
+                position: 'relative',
+                zIndex: 9999,
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </Group>
+      </div>
+      <Divider mb="20" />
 
       <Drawer
         opened={drawerOpened}
@@ -222,12 +272,11 @@ export function Header() {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button  variant="default">Log in</Button>
+            <Button variant="default">Log in</Button>
             <Button>Sign up</Button>
           </Group>
         </ScrollArea>
       </Drawer>
-   
     </Box>
   );
 }

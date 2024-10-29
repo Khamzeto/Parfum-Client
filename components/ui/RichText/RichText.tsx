@@ -1,17 +1,22 @@
 import { RichTextEditor, Link } from '@mantine/tiptap';
 import { useEditor } from '@tiptap/react';
+import Image from '@tiptap/extension-image';
 import Highlight from '@tiptap/extension-highlight';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
+import { useRef } from 'react'; // Используем useRef для управления input
+import { Button } from '@mantine/core'; // Используем Button из Mantine
+import { IconUpload } from '@tabler/icons-react'; // Импорт иконки загрузки
 import '@mantine/tiptap/styles.css';
 
-const content =
-  '<h2 style="text-align: center;">Welcome to Mantine rich text editor</h2><p><code>RichTextEditor</code> component focuses on usability and is designed to be as simple as possible to bring a familiar editing experience to regular users. <code>RichTextEditor</code> is based on <a href="https://tiptap.dev/" rel="noopener noreferrer" target="_blank">Tiptap.dev</a> and supports all of its features:</p><ul><li>General text formatting: <strong>bold</strong>, <em>italic</em>, <u>underline</u>, <s>strike-through</s> </li><li>Headings (h1-h6)</li><li>Sub and super scripts (<sup>&lt;sup /&gt;</sup> and <sub>&lt;sub /&gt;</sub> tags)</li><li>Ordered and bullet lists</li><li>Text align&nbsp;</li><li>And all <a href="https://tiptap.dev/extensions" target="_blank" rel="noopener noreferrer">other extensions</a></li></ul>';
+interface RichTextProps {
+  setContent: (content: string) => void;
+}
 
-export default function RichText() {
+export default function RichText({ setContent }: RichTextProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -21,12 +26,36 @@ export default function RichText() {
       SubScript,
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Image, // Подключаем Image
     ],
-    content,
+    content: '',
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null); // Используем реф для input
+
+  // Обработчик загрузки изображений
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = reader.result as string;
+        editor?.commands.setImage({ src: base64Image }); // Добавляем изображение в редактор
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Открываем диалог выбора файла при клике на кнопку
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
-    <RichTextEditor style={{borderRadius: '14px',padding: '8px'}} editor={editor}>
+    <RichTextEditor style={{ borderRadius: '14px', padding: '8px' }} editor={editor}>
       <RichTextEditor.Toolbar sticky stickyOffset={60}>
         <RichTextEditor.ControlsGroup>
           <RichTextEditor.Bold />
@@ -70,9 +99,38 @@ export default function RichText() {
           <RichTextEditor.Undo />
           <RichTextEditor.Redo />
         </RichTextEditor.ControlsGroup>
+
+        {/* Поле для загрузки изображений */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          ref={fileInputRef} // Привязываем реф к input
+          style={{ display: 'none' }}
+        />
+
+        {/* Красивая кнопка для загрузки изображения */}
+        <Button
+          onClick={handleButtonClick}
+          variant="outline"
+          color="#cfcfcf"
+          radius="4"
+          w="30px" // Ширина кнопки
+          h="26px" // Высота кнопки
+          styles={() => ({
+            root: {
+              display: 'flex',
+              justifyContent: 'center', // Центрируем по горизонтали
+              alignItems: 'center', // Центрируем по вертикали
+              padding: '0', // Убираем внутренние отступы
+            },
+          })}
+        >
+          <IconUpload size={14} color="black" /> {/* Иконка будет по центру кнопки */}
+        </Button>
       </RichTextEditor.Toolbar>
 
-      <RichTextEditor.Content pt='0' />
+      <RichTextEditor.Content pt="0" />
     </RichTextEditor>
   );
 }

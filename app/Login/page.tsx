@@ -1,15 +1,12 @@
-import { Header } from "@/components/Header/Header";
-import { AuthenticationForm } from "@/components/ui/Login/AuthenticationForm";
-import { Box } from "@mantine/core";
+import { Header } from '@/components/Header/Header';
+import { LoginForm } from '@/components/ui/Login/AuthenticationForm';
 
 export default function LoginPage() {
   return (
     <>
-     <Header />
-   
-      <AuthenticationForm />
-     
+      <Header />
 
+      <LoginForm />
     </>
   );
 }

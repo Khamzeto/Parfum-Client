@@ -1,0 +1,66 @@
+/* Similiar.module.css */
+
+/* Контейнер для карточек */
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: left;
+}
+
+/* Карточка парфюма */
+.perfumeCard {
+  flex: 1 1 calc(33.333% - 20px);
+  max-width: calc(33.333% - 20px);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Основная информация о парфюме */
+.perfumeDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Группировка изображения и текста */
+.groupContainer {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Круглый контейнер для изображения */
+.roundImageContainer {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Изображение внутри круглого контейнера */
+.roundImage {
+  width: 60%;
+  height: 60%;
+  object-fit: cover;
+}
+
+/* Адаптивный дизайн для экранов с шириной до 768px */
+@media (max-width: 768px) {
+  .perfumeCard {
+    flex: 1 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
+/* Адаптивный дизайн для экранов с шириной до 480px */
+@media (max-width: 480px) {
+  .perfumeCard {
+    flex: 1 1 calc(100% - 20px);
+    max-width: calc(100% - 20px);
+  }
+}

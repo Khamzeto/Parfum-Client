@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link'; // Импортируем Link
-import { Button, Loader, Group, Title,Breadcrumbs,Anchor } from '@mantine/core';
+import { Button, Loader, Group, Title, Breadcrumbs, Anchor } from '@mantine/core';
 import styles from './Notes.module.css';
 
 import { Header } from '../Header/Header';
@@ -20,7 +20,36 @@ export function Notes() {
   const [error, setError] = useState<string | null>(null);
 
   const allLetters = [
-    'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Э', 'Ю', 'Я'
+    'А',
+    'Б',
+    'В',
+    'Г',
+    'Д',
+    'Е',
+    'Ё',
+    'Ж',
+    'З',
+    'И',
+    'Й',
+    'К',
+    'Л',
+    'М',
+    'Н',
+    'О',
+    'П',
+    'Р',
+    'С',
+    'Т',
+    'У',
+    'Ф',
+    'Х',
+    'Ц',
+    'Ч',
+    'Ш',
+    'Щ',
+    'Э',
+    'Ю',
+    'Я',
   ];
 
   const fetchNotesForLetter = async (letter: string) => {
@@ -77,20 +106,24 @@ export function Notes() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header />
-      <SearchInput />
+
       <main className={styles.main}>
         <div className={styles.container}>
-        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '0px',marginBottom: '10px' }}>
-          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
-            Главная
-          </Anchor>
-     
-    
-          <span style={{ color: '#6c757d' }}>Ноты</span>
-        </Breadcrumbs>
-        <NavigationButtons/>
+          <Breadcrumbs
+            separator=">"
+            style={{ fontSize: '14px', color: '#555', marginTop: '0px', marginBottom: '10px' }}
+          >
+            <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
+              Главная
+            </Anchor>
 
-          <Title order={1} className={styles.title}>Ноты</Title>
+            <span style={{ color: '#6c757d' }}>Ноты</span>
+          </Breadcrumbs>
+          <NavigationButtons />
+
+          <Title order={1} className={styles.title}>
+            Ноты
+          </Title>
           <span className={styles.description}>Выберите букву</span>
 
           <Group className={styles.letters} spacing="xs">
@@ -112,9 +145,7 @@ export function Notes() {
 
           <div className={styles.noteList}>
             <h2>{selectedLetter}</h2>
-            <ul className={styles.notes}>
-              {renderNotes()}
-            </ul>
+            <ul className={styles.notes}>{renderNotes()}</ul>
           </div>
         </div>
       </main>

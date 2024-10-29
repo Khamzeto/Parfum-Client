@@ -1,8 +1,8 @@
 .header {
-  height: rem(60px);
-  padding: 20px;
+  height: rem(80px);
+
   max-width: 1400px;
-  margin: 0 auto;
+  margin: -20px auto 0 auto;
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
 }

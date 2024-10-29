@@ -99,3 +99,11 @@
     display: none !important;
   }
 }
+@media (max-width: 680px) {
+  .container-profile {
+    flex-direction: column !important;
+  }
+}
+div::-webkit-scrollbar {
+  display: none; /* Hides scrollbar in Chrome, Safari, and Edge */
+}

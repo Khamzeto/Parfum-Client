@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Spotlight, spotlight } from '@mantine/spotlight';
-import {
-  ActionIcon,
-  Center,
-  Group,
-  Text,
-  Image,
-  Tabs,
-  Flex,
-  Input,
-} from '@mantine/core';
+import { ActionIcon, Center, Group, Text, Image, Tabs, Flex, Input } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import $api from '@/components/api/axiosInstance';
@@ -20,7 +11,8 @@ const SpotlightDemo = () => {
   const [notFound, setNotFound] = useState(false);
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
   const [searchType, setSearchType] = useState('perfumes');
-
+  console.log(results);
+  console.log(searchType);
   useEffect(() => {
     const fetchResults = async () => {
       if (debouncedSearchValue.length > 0) {
@@ -38,10 +30,12 @@ const SpotlightDemo = () => {
 
           const response = await $api.get(url);
 
-          if (searchType === 'perfumes' && response.data.perfumes) {
-            setResults(response.data.perfumes);
+          if (searchType === 'perfumes' && response.data.results) {
+            setResults(response.data.results);
+            console.log(response.data);
             setNotFound(response.data.perfumes.length === 0);
           } else if (searchType === 'brands' && response.data.brands) {
+            console.log(response.data);
             const uniqueBrandsMap = new Map();
             response.data.brands.forEach((perfume) => {
               const brandName = perfume.brand;
@@ -81,35 +75,33 @@ const SpotlightDemo = () => {
 
   const items = results.map((item) => (
     <Spotlight.Action
-      key={item.brand_id || item._id || item.name}
-      style={{minWidth: '100%'}}
-      onClick={() =>
-        (window.location.href = `/${
-          searchType === 'perfumes'
-            ? 'perfumes'
-            : searchType === 'brands'
-            ? 'brand'
-            : 'parfumer'
-        }/${item.perfume_id || item.brand_id || item._id}`)
-      }
+      key={item._id}
+      style={{ minWidth: '100%' }}
+      onClick={() => {
+        // Определяем URL в зависимости от типа поиска
+        let url = '';
+        if (searchType === 'perfumes') {
+          url = `/perfumes/${item.perfume_id}`;
+        } else if (searchType === 'brands') {
+          url = `/search?queryBrand=${encodeURIComponent(item.name)}`;
+        } else if (searchType === 'parfumers') {
+          url = `/parfumer/${item.slug}`;
+        }
+        window.location.href = url; // Переход по сформированному URL
+      }}
     >
-      <Group noWrap style={{minWidth: '100%'}} w="100%" >
-        
-
+      <Group noWrap style={{ minWidth: '100%' }} w="100%">
         {searchType === 'perfumes' && (
-        
-            <Image
-              src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
-              alt={item.name}
-              width={50}
-              height={50}
-              radius="md"
-              withPlaceholder
-            />
-        
+          <Image
+            src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
+            alt={item.name}
+            width={50}
+            height={50}
+            radius="md"
+          />
         )}
-        <div style={{ flex: 1, overflow: 'hidden' }}>
-          <Text truncate>{item.name}</Text>
+        <div style={{ flex: 1, overflow: 'hidden', paddingBottom: '10px' }}>
+          <Text truncate>{item.original_ru || item.name}</Text>
           {searchType === 'perfumes' && (
             <Text color="dimmed" size="xs" truncate>
               {item.brand}
@@ -122,106 +114,126 @@ const SpotlightDemo = () => {
 
   return (
     <>
-    <div 
-        style={{ marginBottom: '16px',maxWidth: '1440px',margin: '20px auto 20px  auto',marginTop: '20px',paddingLeft: '20px',paddingRight: '20px' }} >
-           <Input
-       leftSection={<IconSearch size={18} stroke={1.5} />}
-        className='input-desk'
-        placeholder="Поиск парфюмов или брендов..."
-        radius="8"
-        onClick={spotlight.open}
-        pointer
-        readOnly
-// Можно настроить отступы
-      />
-</div>
+      <div
+        style={{
+          marginBottom: '16px',
+          maxWidth: '1440px',
+          margin: '20px auto 20px  auto',
+          marginTop: '20px',
+          paddingLeft: '40px',
+          width: '100%',
+          paddingRight: '40px',
+        }}
+      >
+        <Input
+          leftSection={<IconSearch size={18} stroke={1.5} />}
+          className="input-desk"
+          placeholder="Поиск парфюмов или брендов..."
+          radius="8"
+          onClick={spotlight.open}
+          pointer
+          readOnly
+        />
+      </div>
       <Spotlight.Root
         radius="md"
         query={searchValue}
         onQueryChange={setSearchValue}
-        overlayOpacity={0.3}
-        overlayBlur={3}
         styles={{
           content: {
             overflow: 'hidden !important', // Скрываем вертикальный скролл
           },
         }}
       >
-<Spotlight.Search
-  placeholder="Поиск парфюмов или брендов..."
-  leftSection={<IconSearch stroke={1.5} />}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') {
-      const encodedValue = encodeURIComponent(searchValue);
-      let url = '';
-      if (searchType === 'perfumes') {
-        url = `/search?query=${encodedValue}`;
-      } else if (searchType === 'brands') {
-        url = `/search?queryBrand=${encodedValue}`;
-      } else if (searchType === 'parfumers') {
-        url = `/parfumers?query=${encodedValue}`;
-      }
-      window.location.href = url;
-    }
-  }}
-  rightSection={
-    <div
-    onClick={() => {
-      const encodedValue = encodeURIComponent(searchValue);
-      let url = '';
-      if (searchType === 'perfumes') {
-        url = `/search?query=${encodedValue}`;
-      } else if (searchType === 'brands') {
-        url = `/search?queryBrand=${encodedValue}`;
-      } else if (searchType === 'parfumers') {
-        url = `/parfumers?query=${encodedValue}`;
-      }
-      window.location.href = url;
-    }}
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '30px',
-        height: '30px',
-        borderRadius: '50%',
-        backgroundColor: '#e0e0e0',
-        cursor: 'pointer',
-        pointerEvents: 'all',
-      }}
-    >
-      <IconArrowRight size={18} stroke={1.5} />
-    </div>
-  }
-/>
+        <Spotlight.Search
+          placeholder="Поиск парфюмов или брендов..."
+          leftSection={<IconSearch stroke={1.5} />}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              const encodedValue = encodeURIComponent(searchValue);
+              let url = '';
+              if (searchType === 'perfumes') {
+                url = `/search?query=${encodedValue}`;
+              } else if (searchType === 'brands') {
+                url = `/search?queryBrand=${encodedValue}`;
+              } else if (searchType === 'parfumers') {
+                url = `/parfumers?query=${encodedValue}`;
+              }
+              window.location.href = url;
+            }
+          }}
+          rightSection={
+            <div
+              onClick={() => {
+                const encodedValue = encodeURIComponent(searchValue);
+                let url = '';
+                if (searchType === 'perfumes') {
+                  url = `/search?query=${encodedValue}`;
+                } else if (searchType === 'brands') {
+                  url = `/search?queryBrand=${encodedValue}`;
+                } else if (searchType === 'parfumers') {
+                  url = `/parfumers?query=${encodedValue}`;
+                }
+                window.location.href = url;
+              }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                backgroundColor: '#e0e0e0',
+                cursor: 'pointer',
+                pointerEvents: 'all',
+              }}
+            >
+              <IconArrowRight size={18} stroke={1.5} />
+            </div>
+          }
+        />
 
+        <Spotlight.ActionsList style={{ overflowY: 'hidden', width: '100%', maxHeight: '500px' }}>
+          <Tabs
+            value={searchType}
+            onChange={(value) => setSearchType(value)}
+            style={{
+              overflowX: 'auto',
+              whiteSpace: 'nowrap',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            <Tabs.List
+              justify="center"
+              mt="2px"
+              mb="8px"
+              style={{ display: 'flex', flexWrap: 'nowrap' }}
+            >
+              <Tabs.Tab value="perfumes">Парфюмы</Tabs.Tab>
+              <Tabs.Tab value="brands">Бренды</Tabs.Tab>
+              <Tabs.Tab value="parfumers">Парфюмеры</Tabs.Tab>
+            </Tabs.List>
+          </Tabs>
 
+          <div
+            style={{
+              overflowY: 'auto',
+              maxHeight: '400px',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              overflowX: 'hidden',
+              padding: '10px',
+            }}
+          >
+            {items.length > 0 ? items : <Spotlight.Empty>Ничего не найдено...</Spotlight.Empty>}
+          </div>
 
-        <Spotlight.ActionsList style={{overflowY: 'hidden',width: '100%', maxHeight: '500px',  }}   >
-        <Tabs
-  value={searchType}
-  onChange={(value) => setSearchType(value)}
-  style={{ overflowX: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Для горизонтального скролла и скрытия палочки
->
-  <Tabs.List justify='center' mt='2px' mb='8px' style={{ display: 'flex', flexWrap: 'nowrap' }}>
-    <Tabs.Tab value="perfumes">Парфюмы</Tabs.Tab>
-    <Tabs.Tab value="brands">Бренды</Tabs.Tab>
-    <Tabs.Tab value="parfumers">Парфюмеры</Tabs.Tab>
-  </Tabs.List>
-</Tabs>
-
-
-
-        <div style={{ overflowY: 'auto', maxHeight: '400px', scrollbarWidth: 'none', msOverflowStyle: 'none',overflowX: 'hidden' }}>
-  {items.length > 0 ? items : <Spotlight.Empty>Ничего не найдено...</Spotlight.Empty>}
-</div>
-
-<style jsx>{`
-  div::-webkit-scrollbar {
-    display: none;
-  }
-`}</style>
-
+          <style jsx>{`
+            div::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
         </Spotlight.ActionsList>
       </Spotlight.Root>
     </>

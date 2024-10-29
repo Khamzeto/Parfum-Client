@@ -22,7 +22,33 @@ export function Welcome() {
   const [error, setError] = useState<string | null>(null);
 
   const allLetters = [
-    '#', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    '#',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
   ];
 
   const fetchBrandsForLetter = async (letter: string) => {
@@ -79,22 +105,24 @@ export function Welcome() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Header />
-      <SearchInput/>
+
       <main className={styles.main}>
         <div className={styles.container}>
-        
-    
-        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '0px',marginBottom: '10px' }}>
-          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
-            Главная
-          </Anchor>
-     
-    
-          <span style={{ color: '#6c757d' }}>Бренды</span>
-        </Breadcrumbs>
-          <NavigationButtons/>
+          <Breadcrumbs
+            separator=">"
+            style={{ fontSize: '14px', color: '#555', marginTop: '0px', marginBottom: '10px' }}
+          >
+            <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
+              Главная
+            </Anchor>
 
-          <Title order={1} className={styles.title}>Бренды</Title>
+            <span style={{ color: '#6c757d' }}>Бренды</span>
+          </Breadcrumbs>
+          <NavigationButtons />
+
+          <Title order={1} className={styles.title}>
+            Бренды
+          </Title>
           <span className={styles.description}>Выберите букву</span>
 
           <Group className={styles.letters} spacing="xs">
@@ -116,9 +144,7 @@ export function Welcome() {
 
           <div className={styles.brandList}>
             <h2>{selectedLetter}</h2>
-            <ul className={styles.brands}>
-              {renderBrands()}
-            </ul>
+            <ul className={styles.brands}>{renderBrands()}</ul>
           </div>
         </div>
       </main>
