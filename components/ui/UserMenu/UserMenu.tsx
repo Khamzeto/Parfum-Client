@@ -70,7 +70,7 @@ export function UserMenu() {
   };
 
   return (
-    <Menu withArrow position="bottom-end" transition="pop" withinPortal>
+    <Menu withArrow zIndex="9999999" position="bottom-end" transition="pop" withinPortal>
       <Menu.Target>
         <UserButton
           image={user?.avatar || 'Unknown User'}
