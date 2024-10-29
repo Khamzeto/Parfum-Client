@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Spotlight } from '@mantine/spotlight';
+import { Spotlight, spotlight } from '@mantine/spotlight';
 import { ActionIcon, Group, Text, Image } from '@mantine/core';
 import { IconSearch, IconPlus } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -16,7 +16,6 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
   const [searchValue, setSearchValue] = useState('');
   const [results, setResults] = useState<Perfume[]>([]);
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
-  const [isOpen, setIsOpen] = useState(false); // локальное состояние для открытия и закрытия
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -43,8 +42,8 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
     <Spotlight.Action
       key={perfume.perfume_id}
       onClick={() => {
-        onAddSimiliar(perfume.perfume_id); // передаем ID парфюма
-        setIsOpen(false); // закрываем локальный Spotlight после выбора
+        onAddSimiliar(perfume.perfume_id); // Send the perfume ID to be added
+        spotlight.close(); // Close the Spotlight modal
       }}
       style={{ minWidth: '100%' }}
     >
@@ -69,7 +68,7 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
   return (
     <>
       <ActionIcon
-        onClick={() => setIsOpen(true)} // открываем Spotlight с локальным состоянием
+        onClick={spotlight.open}
         radius="xl"
         size={32}
         color="blue"
@@ -82,8 +81,6 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
       <Spotlight.Root
         radius="md"
         query={searchValue}
-        opened={isOpen} // используем локальное состояние для управления открытием
-        onClose={() => setIsOpen(false)} // закрываем при необходимости
         onQueryChange={setSearchValue}
         styles={{
           content: {

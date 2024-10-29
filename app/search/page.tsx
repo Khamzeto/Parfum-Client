@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import {
   Text,
   Image,
@@ -122,7 +122,32 @@ const PerfumesPage = () => {
   const [releaseYear, setReleaseYear] = useState<string | null>(null);
 
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
+  const selectedNotesRef = useRef<string[]>([]);
 
+  useEffect(() => {
+    const queryNotesParam = searchParams.get('queryNotes');
+
+    if (queryNotesParam) {
+      const notesFromUrl = queryNotesParam.split(',').map(decodeURIComponent);
+
+      if (notesFromUrl.length > 0) {
+        console.log('Setting Selected Notes:', notesFromUrl);
+        setSelectedNotes(notesFromUrl);
+        selectedNotesRef.current = notesFromUrl; // Сохраняем значение в реф
+      }
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (selectedNotes.length !== selectedNotesRef.current.length) {
+      console.log('Updating selectedNotes from ref.');
+      setSelectedNotes(selectedNotesRef.current); // Принудительно обновляем из рефа, если длины отличаются
+    }
+    console.log('Selected Notes Updated:', selectedNotes);
+  }, [selectedNotes]);
+
+  // Отслеживаем только searchParams
+  console.log(selectedNotes);
   const [releaseYearOptions, setReleaseYearOptions] = useState<{ value: string; label: string }[]>(
     []
   );
@@ -173,9 +198,6 @@ const PerfumesPage = () => {
 
       const storedNameFilter = localStorage.getItem('nameFilter');
       if (storedNameFilter) setNameFilter(storedNameFilter);
-
-      const storedSelectedNotes = localStorage.getItem('selectedNotes');
-      if (storedSelectedNotes) setSelectedNotes(JSON.parse(storedSelectedNotes));
     }
   }, []);
 
@@ -561,12 +583,8 @@ const PerfumesPage = () => {
             placeholder="Введите ноту"
             data={notesOptions}
             value={selectedNotes}
-            onChange={(values) => {
-              console.log('Selected notes:', values);
-              setSelectedNotes(values);
-            }}
+            onChange={(values) => setSelectedNotes(values)}
             onSearchChange={(value) => {
-              console.log('Search input changed:', value);
               setNoteSearchValue(value);
               fetchNotesDebounced(value);
             }}

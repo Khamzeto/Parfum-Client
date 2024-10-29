@@ -8,7 +8,6 @@ const data = [];
 
 export function SpotlightDemo() {
   const [query, setQuery] = useState('');
-  const [opened, setOpened] = useState(false); // Локальное состояние для Spotlight
 
   const items = data
     .filter((item) => item.title.toLowerCase().includes(query.toLowerCase().trim()))
@@ -20,41 +19,47 @@ export function SpotlightDemo() {
               <img src={item.image} alt={item.title} width={50} height={50} />
             </Center>
           )}
+
           <div style={{ flex: 1 }}>
             <Text>{item.title}</Text>
+
             {item.description && (
               <Text opacity={0.6} size="xs">
                 {item.description}
               </Text>
             )}
           </div>
+
           {item.new && <Badge variant="default">new</Badge>}
         </Group>
       </Spotlight.Action>
     ));
 
   return (
-    <div>
+    <div style={{}}>
+      {/* Replace the Button with an ActionIcon for the search icon */}
       <ActionIcon
-        onClick={() => setOpened(true)} // Открываем локальный Spotlight
+        onClick={() => setColorScheme(computedColorScheme === 'light' ? 'dark' : 'light')}
         variant="default"
-        radius="xl"
-        size="lg"
-        aria-label="Toggle search"
+        radius="9px"
+        size="lg" // Changed from 'xl' to 'lg' for a more compact size
+        aria-label="Toggle color scheme"
+        // Reduce padding inside the ActionIcon for a smaller appearance
       >
-        <IconSearch size={18} stroke={1.5} />
+        <IconSearch onClick={spotlight.open} size={18} stroke={1.5} />
       </ActionIcon>
 
-      <Spotlight.Root
-        opened={opened} // Используем локальное состояние
-        onClose={() => setOpened(false)}
-        query={query}
-        onQueryChange={setQuery}
-        radius="12px"
-      >
+      <Spotlight.Root style={{}} radius="12px" query={query} onQueryChange={setQuery}>
         <Spotlight.Search placeholder="Найти парфюм" leftSection={<IconSearch stroke={1.5} />} />
-        <Spotlight.ActionsList style={{ padding: '20px' }}>
-          {items.length > 0 ? items : <Spotlight.Empty>Ничего не найдено...</Spotlight.Empty>}
+        <Spotlight.ActionsList
+          style={{
+            minWidth: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '20px',
+          }}
+        >
+          {items.length > 0 ? items : <Spotlight.Empty>Nothing found...</Spotlight.Empty>}
         </Spotlight.ActionsList>
       </Spotlight.Root>
     </div>

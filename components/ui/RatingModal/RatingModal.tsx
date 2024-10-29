@@ -104,7 +104,7 @@ const RatingModal: React.FC<RatingModalProps> = ({ opened, onClose, perfumeId, o
 
         <Group>
           {renderIconInCircle(IconClock, '#1E90FF')}
-          <Text>Долголетие</Text>
+          <Text>Стойкость</Text>
           <Rating value={longevityRating} onChange={setLongevityRating} />
         </Group>
 

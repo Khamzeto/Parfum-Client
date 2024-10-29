@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Head from 'next/head';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   Container,
   Flex,
@@ -23,6 +23,7 @@ import {
   TagsInput,
   ActionIcon,
 } from '@mantine/core';
+import { slugify } from '@/utils/slugify';
 import axios from 'axios'; // используем axios для запросов
 import { Header } from '@/components/Header/Header';
 import {
@@ -43,11 +44,13 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ru';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import debounce from 'lodash.debounce';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
 const PerfumeDetailsPage = () => {
   const { perfume_id } = useParams();
+  const router = useRouter();
   const perfumeId = Array.isArray(perfume_id) ? perfume_id[0] : perfume_id;
   const [perfume, setPerfume] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,6 +65,7 @@ const PerfumeDetailsPage = () => {
   const [isInCollection, setIsInCollection] = useState(false); // состояние: парфюм в коллекции
   const [similarPerfumes, setSimilarPerfumes] = useState<string[]>(perfume?.similar_perfumes || []);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [editTags, setEditTags] = useState([]);
 
   const handleCaptchaVerification = (token: string | null) => {
     setCaptchaToken(token); // Устанавливаем токен капчи при верификации
@@ -138,7 +142,9 @@ const PerfumeDetailsPage = () => {
       setEditAccords(perfume.accords || []);
       setEditPerfumers(perfume.perfumers || []);
       setEditNotes(perfume.notes || { top_notes: [], heart_notes: [], base_notes: [] });
-
+      if (perfume?.tags?.length > 0) {
+        setEditTags(perfume.tags);
+      }
       // Initialize data arrays for TagsInput components
       setAccordsData(perfume.accords || []);
       setPerfumersData(perfume.perfumers || []);
@@ -205,6 +211,28 @@ const PerfumeDetailsPage = () => {
       setPopularPerfumes(response.data.perfumes || []);
     } catch (err) {
       console.error('Failed to fetch popular perfumes', err);
+    }
+  };
+  const colors = [
+    theme.colors.teal[2],
+    theme.colors.blue[2],
+    theme.colors.green[2],
+    theme.colors.orange[2],
+    theme.colors.red[2],
+    theme.colors.violet[2],
+  ];
+  const handleNoteClick = async (noteName: string) => {
+    try {
+      // Отправляем запрос, чтобы получить _id ноты по её name
+      const response = await $api.get(`/notes/noteId/${encodeURIComponent(noteName)}`);
+      const noteId = response.data.noteId;
+
+      // Переходим на страницу ноты с полученным ID
+      if (noteId) {
+        router.push(`/note/${noteId}`);
+      }
+    } catch (error) {
+      console.error('Failed to fetch note ID:', error);
     }
   };
 
@@ -359,7 +387,7 @@ const PerfumeDetailsPage = () => {
         gender: perfume.gender,
         type: perfume.type,
         meta_description: perfume.meta_description,
-        tags: perfume.tags || [],
+        tags: editTags || perfume.tags,
         similar_perfumes: combinedSimilarPerfumes, // Merged similar perfumes
         main_image: perfume.main_image,
         gallery_images: perfume.gallery_images || [],
@@ -388,6 +416,26 @@ const PerfumeDetailsPage = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
+  const [noteSearchValue, setNoteSearchValue] = useState('');
+  const [noteOptions, setNotesOptions] = useState([]);
+  const [selectedNotes, setSelectedNotes] = useState([]);
+
+  // Функция для поиска нот с сервера
+  const fetchNotes = async (query) => {
+    if (!query.trim()) return setNotesOptions([]); // Очищаем результаты, если запрос пустой
+    try {
+      const response = await axios.get(
+        `http://81.29.136.136:3001/notes/search?query=${encodeURIComponent(query)}`
+      );
+      const notesData = response.data.notes.map((note) => ({ value: note.name, label: note.name }));
+      setNotesOptions(notesData); // Обновляем варианты для TagsInput
+    } catch (err) {
+      console.error('Ошибка при загрузке нот:', err);
+    }
+  };
+
+  // Дебаунс функция для поиска
+  const fetchNotesDebounced = useMemo(() => debounce(fetchNotes, 300), []);
 
   const renderNotes = (notes, title, noteKey, dataArray, setDataArray) => (
     <div>
@@ -397,7 +445,7 @@ const PerfumeDetailsPage = () => {
             {title}
           </Text>
           <TagsInput
-            data={dataArray}
+            data={noteOptions} // Опции нот
             value={editNotes[noteKey]}
             onChange={(value) =>
               setEditNotes((prev) => ({
@@ -406,8 +454,14 @@ const PerfumeDetailsPage = () => {
               }))
             }
             placeholder={`Введите ${title.toLowerCase()}`}
+            onSearchChange={(value) => {
+              setNoteSearchValue(value);
+              fetchNotesDebounced(value); // Вызов функции поиска с дебаунсом
+            }}
+            // Управляемое значение поиска
             mb="20"
             acceptValueOnBlur
+            clearable
           />
         </>
       ) : (
@@ -424,7 +478,9 @@ const PerfumeDetailsPage = () => {
                   alignItems: 'center',
                   gap: '6px',
                   justifyContent: 'center',
+                  cursor: 'pointer',
                 }}
+                onClick={() => handleNoteClick(note)} // Передаем имя ноты
               >
                 <Avatar
                   src="https://img.parfumo.de/notes/6e/6e_ea3972f0972c9d58b2661c05224d457fcd95aebc_320.jpg"
@@ -526,7 +582,13 @@ const PerfumeDetailsPage = () => {
                 />
               ) : (
                 <Text color="dimmed" style={{ whiteSpace: 'pre-wrap' }}>
-                  <Text component="span" weight={500}>
+                  <Text
+                    component="span"
+                    onClick={() =>
+                      router.push(`/brand/${slugify(perfume?.brand || '', { lower: true })}`)
+                    }
+                    style={{ cursor: 'pointer' }}
+                  >
                     {perfume?.brand}
                   </Text>{' '}
                   • {perfume?.release_year} •{' '}
@@ -770,7 +832,13 @@ const PerfumeDetailsPage = () => {
                     {getGenderIcon(perfume?.gender)}
                   </div>
                   <Text color="dimmed" mt="6" style={{ whiteSpace: 'pre-wrap' }}>
-                    <Text component="span" weight={500}>
+                    <Text
+                      component="span"
+                      onClick={() =>
+                        router.push(`/brand/${slugify(perfume?.brand || '', { lower: true })}`)
+                      }
+                      style={{ cursor: 'pointer' }}
+                    >
                       {perfume?.brand}
                     </Text>{' '}
                     • {perfume?.release_year} •{' '}
@@ -815,11 +883,11 @@ const PerfumeDetailsPage = () => {
                       <Box
                         key={index}
                         style={{
-                          backgroundColor: theme.colors.teal[2],
+                          backgroundColor: colors[index % colors.length], // Выбираем цвет из массива по индексу
                           borderRadius: '12px',
                           padding: '4px 12px',
                           fontSize: '14px',
-                          color: theme.colors.teal[7],
+                          color: theme.colors.dark[7], // Текст темного цвета для контраста
                         }}
                       >
                         {accord}
@@ -951,7 +1019,7 @@ const PerfumeDetailsPage = () => {
               />
             ) : (
               <Group spacing="xs" mb="20" wrap="wrap">
-                {perfume?.perfumers?.length > 0 ? (
+                {perfume?.perfumers?.length > 0 && perfume?.perfumers_en?.length > 0 ? (
                   perfume?.perfumers.map((perfumer, index) => (
                     <Box
                       key={index}
@@ -961,9 +1029,13 @@ const PerfumeDetailsPage = () => {
                         padding: '4px 12px',
                         fontSize: '14px',
                         color: 'black',
+                        cursor: 'pointer',
                       }}
+                      onClick={() =>
+                        router.push(`/parfumer/${slugify(perfume.perfumers_en[index])}`)
+                      }
                     >
-                      {perfumer}
+                      {perfumer} {/* Отображаем на русском */}
                     </Box>
                   ))
                 ) : (
@@ -1094,7 +1166,20 @@ const PerfumeDetailsPage = () => {
                   ))}
               </>
             )}
-
+            {isEditing && <Text>Ассоциации</Text>}
+            {isEditing && (
+              <TagsInput
+                data={editTags}
+                value={editTags}
+                onChange={(value) => {
+                  // Проверяем, что каждый тег начинается с символа `#`
+                  const formattedTags = value.map((tag) => (tag.startsWith('#') ? tag : `#${tag}`));
+                  setEditTags(formattedTags);
+                }}
+                placeholder="Введите ассоциации"
+                acceptValueOnBlur
+              />
+            )}
             {/* Reviews Section */}
             <Divider />
             {loading ? (
@@ -1219,13 +1304,17 @@ const PerfumeDetailsPage = () => {
           </Stack>
 
           {isEditing && (
-            <Group style={{ position: 'fixed', right: '30px', top: '180px', gap: '10px' }}>
+            <Group
+              style={{ position: 'fixed', right: '30px', top: '50px', gap: '10px', zIndex: 9999 }}
+            >
               <Button onClick={handleSaveClick} radius="12">
                 Сохранить
               </Button>
               <Button
                 onClick={() => setIsEditing(false)} // Сброс isEditing в false
                 radius="12"
+                bg="white"
+                style={{ zIndex: 999999 }}
                 variant="outline" // Используем outline для кнопки отмены
               >
                 Отменить
