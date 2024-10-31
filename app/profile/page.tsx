@@ -13,10 +13,12 @@ const ProfileCard = () => {
   const [collectionPerfumes, setCollectionPerfumes] = useState([]);
   const [wishlistPerfumes, setWishlistPerfumes] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [proposedRequests, setProposedRequests] = useState([]);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [loadingCollection, setLoadingCollection] = useState(true);
   const [loadingWishlist, setLoadingWishlist] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [loadingProposed, setLoadingProposed] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(false);
   const [avatar, setAvatar] = useState('');
   const [description, setDescription] = useState('');
@@ -85,26 +87,41 @@ const ProfileCard = () => {
     }
   };
 
+  const fetchProposedRequests = async () => {
+    if (!id) return;
+    setLoadingProposed(true);
+    try {
+      const response = await $api.get(`/requests/user/${id}`);
+      setProposedRequests(response.data.requests || []);
+    } catch (error) {
+      console.error('Ошибка при получении предложенных:', error);
+    } finally {
+      setLoadingProposed(false);
+    }
+  };
+
   useEffect(() => {
     if (id) {
       if (selectedTab === 'Коллекция') {
         fetchCollection();
       } else if (selectedTab === 'Я хочу') {
         fetchWishlist();
-      } else if (selectedTab === 'Посты') {
+      } else if (selectedTab === 'Статьи') {
         fetchPosts();
       } else if (selectedTab === 'Галерея') {
         fetchGalleryImages();
+      } else if (selectedTab === 'Измененные') {
+        fetchProposedRequests();
       }
     }
-  }, [id]);
+  }, [id, selectedTab]);
 
   useEffect(() => {
     if (selectedTab === 'Коллекция') {
       fetchCollection();
     } else if (selectedTab === 'Я хочу') {
       fetchWishlist();
-    } else if (selectedTab === 'Посты') {
+    } else if (selectedTab === 'Статьи') {
       fetchPosts();
     } else if (selectedTab === 'Галерея') {
       fetchGalleryImages();
@@ -174,7 +191,7 @@ const ProfileCard = () => {
             paddingRight: '30px',
           }}
         >
-          {['Коллекция', 'Я хочу', 'Посты', 'Галерея'].map((tab) => (
+          {['Коллекция', 'Я хочу', 'Статьи', 'Галерея', 'Измененные'].map((tab) => (
             <Button
               key={tab}
               onClick={() => setSelectedTab(tab)}
@@ -282,11 +299,19 @@ const ProfileCard = () => {
             </div>
           )}
 
-          {selectedTab === 'Посты' && (
+          {selectedTab === 'Статьи' && (
             <div>
-              <Title order={3} style={{ marginBottom: '16px' }}>
-                Мои посты
-              </Title>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Title order={3} style={{ marginBottom: '16px' }}>
+                  Мои Статьи
+                </Title>
+                <Button
+                  onClick={() => router.push(`/create-article`)}
+                  style={{ borderRadius: '12px' }}
+                >
+                  Создать статью
+                </Button>
+              </div>
               {loadingPosts ? (
                 <Text>Загрузка постов...</Text>
               ) : posts.length > 0 ? (
@@ -345,25 +370,79 @@ const ProfileCard = () => {
                 >
                   {galleryImages.map((image, index) => (
                     <div key={index}>
-                      <Link href={`/perfumes/${image.perfumeId.perfume_id}`} passHref>
-                        <img
-                          src={image.images}
-                          alt={`Gallery image ${index + 1}`}
-                          style={{
-                            width: '70%',
-                            borderRadius: '12px',
-                            cursor: 'pointer',
-                          }}
-                        />
-                      </Link>
-                      <Text size="sm" mt="xs">
+                      <img
+                        src={image.images}
+                        alt={`Gallery image ${index + 1}`}
+                        style={{
+                          width: '70%',
+                          borderRadius: '12px',
+                        }}
+                      />
+
+                      <Title
+                        onClick={() => router.push(`/perfumes/${image?.perfumeId.perfume_id}`)}
+                        style={{ cursor: 'pointer' }}
+                        size="sm"
+                        mt="xs"
+                      >
                         {image?.perfumeId.name}
-                      </Text>
+                      </Title>
                     </div>
                   ))}
                 </div>
               ) : (
                 <Text>Галерея пуста.</Text>
+              )}
+            </div>
+          )}
+          {selectedTab === 'Измененные' && (
+            <div>
+              <Title order={3} style={{ marginBottom: '16px' }}>
+                Измененные парфюмы
+              </Title>
+              {loadingProposed ? (
+                <Text>Загрузка предложенных...</Text>
+              ) : proposedRequests.length > 0 ? (
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+                    gap: '30px',
+                    marginTop: '20px',
+                  }}
+                >
+                  {proposedRequests.map((request) => (
+                    <div
+                      key={request.perfumeId}
+                      onClick={() => router.push(`/perfumes/${request.perfumeId}`)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        src={
+                          request.main_image ||
+                          'https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg'
+                        }
+                        alt={request.perfumeName}
+                        style={{
+                          width: '60%',
+                          borderRadius: '12px',
+                          marginBottom: '8px',
+                        }}
+                      />
+                      <Text size="md" weight={600}>
+                        {request.perfumeName}
+                      </Text>
+                      <Text size="sm" color="dimmed">
+                        {request.perfumeBrand}
+                      </Text>
+                      <Text size="xs" color="gray">
+                        Дата добавления: {new Date(request.createdAt).toLocaleDateString()}
+                      </Text>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <Text>Нет предложенных парфюмов.</Text>
               )}
             </div>
           )}

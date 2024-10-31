@@ -38,6 +38,7 @@
 .groups {
   display: flex;
   flex-wrap: wrap;
+  gap: 20px;
 
   @media (max-width: $mantine-breakpoint-sm) {
     display: none;
@@ -54,15 +55,16 @@
   font-size: var(--mantine-font-size-sm);
   padding-top: rem(3px);
   padding-bottom: rem(3px);
-
-  &:hover {
-    text-decoration: underline;
-  }
+  max-width: 80px;
+  cursor: pointer;
+  position: relative;
+  z-index: 9999999;
 }
 
 .title {
   font-size: var(--mantine-font-size-lg);
   font-weight: 700;
+
   font-family:
     Greycliff CF,
     var(--mantine-font-family);

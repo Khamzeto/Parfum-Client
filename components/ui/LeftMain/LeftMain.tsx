@@ -76,6 +76,7 @@ export function LeftMain({ stores, perfume }) {
           h="280px"
           padding="15.8px "
           radius="18"
+          bg={theme.colors.gray[0]}
           style={{ marginBottom: '20px' }}
         >
           <Group

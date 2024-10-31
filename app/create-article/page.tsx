@@ -1,4 +1,5 @@
 'use client';
+
 import { Header } from '@/components/Header/Header';
 import RichText from '@/components/ui/RichText/RichText';
 import { useState, useRef } from 'react';
@@ -14,31 +15,32 @@ import {
   Image,
   rem,
   Group,
+  Modal,
 } from '@mantine/core';
 import { IconX, IconCheck, IconUpload } from '@tabler/icons-react';
-import $api from '@/components/api/axiosInstance'; // Ваш axios instance
-import HCaptcha from '@hcaptcha/react-hcaptcha'; // Импорт HCaptcha
+import $api from '@/components/api/axiosInstance';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function Home() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [coverImage, setCoverImage] = useState<string | null>(null); // Для хранения обложки
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // Для токена капчи
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [notification, setNotification] = useState<{
     message: string;
     color: string;
     icon: React.ReactNode;
   } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HCaptcha>(null); // Реф капчи
+  const captchaRef = useRef<HCaptcha>(null);
 
   const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
   const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
-  // Функция обработки загрузки изображения
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -46,7 +48,7 @@ export default function Home() {
       reader.onloadend = () => {
         setCoverImage(reader.result as string);
       };
-      reader.readAsDataURL(file); // Преобразуем изображение в base64
+      reader.readAsDataURL(file);
     }
   };
 
@@ -69,13 +71,12 @@ export default function Home() {
       if (storedUser) {
         const user = JSON.parse(storedUser);
 
-        // Отправляем POST запрос с userId и обложкой
         const response = await $api.post('/article/requests', {
           title,
           description,
           content,
-          coverImage, // Добавляем обложку
-          captchaToken, // Передаем токен капчи
+          coverImage,
+          captchaToken,
           userId: user.id,
         });
 
@@ -84,8 +85,11 @@ export default function Home() {
           color: 'teal',
           icon: checkIcon,
         });
-        setCaptchaToken(null); // Сброс капчи после успешной отправки
-        captchaRef.current?.resetCaptcha(); // Сброс капчи
+        setCaptchaToken(null);
+        captchaRef.current?.resetCaptcha();
+
+        // Открываем модальное окно после успешной отправки
+        setIsModalOpen(true);
       } else {
         setNotification({ message: 'Пользователь не найден.', color: 'red', icon: xIcon });
       }
@@ -99,12 +103,12 @@ export default function Home() {
 
   const handleButtonClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click(); // Открываем диалог выбора файла
+      fileInputRef.current.click();
     }
   };
 
   const handleCaptchaVerification = (token: string | null) => {
-    setCaptchaToken(token); // Устанавливаем токен капчи при верификации
+    setCaptchaToken(token);
   };
 
   return (
@@ -131,7 +135,6 @@ export default function Home() {
               Создать Новую Статью
             </Text>
 
-            {/* Title Input */}
             <TextInput
               label="Заголовок"
               placeholder="Введите заголовок"
@@ -141,7 +144,6 @@ export default function Home() {
               mb="md"
             />
 
-            {/* Description Textarea */}
             <Textarea
               label="Описание"
               placeholder="Введите описание статьи"
@@ -174,46 +176,60 @@ export default function Home() {
               style={{ display: 'none' }}
             />
 
-            {/* Предварительный просмотр обложки */}
             {coverImage && (
               <Group position="center">
                 <Image
                   src={coverImage}
                   alt="Обложка статьи"
                   radius="md"
-                  height={200} // Примерная высота
-                  width={320} // Примерная ширина (шире чем высота)
+                  height={200}
+                  width={320}
                   fit="cover"
                   mb="md"
                 />
               </Group>
             )}
           </Box>
-          {/* HCaptcha */}
-          {/* Rich Text Editor */}
+
           <Text style={{ fontSize: '14px', fontWeight: 500 }} mb="xs">
             Статья
           </Text>
-          <RichText setContent={setContent} /> {/* Передаем функцию установки контента */}
+          <RichText setContent={setContent} />
           <Group mb="lg" mt="20">
             <HCaptcha
-              sitekey="c4923d66-7fe4-436e-bf08-068675b075d4" // Замените на ваш сайт-ключ
+              sitekey="c4923d66-7fe4-436e-bf08-068675b075d4"
               onVerify={handleCaptchaVerification}
               ref={captchaRef}
             />
           </Group>
-          {/* Submit Button */}
           <Button
             fullWidth
             mt="md"
             radius="md"
             onClick={handleSubmit}
             loading={loading}
-            disabled={loading || !captchaToken} // Отключаем кнопку, если капча не пройдена
+            disabled={loading || !captchaToken}
           >
             Отправить статью
           </Button>
         </Card>
+
+        {/* Modal window for success message */}
+        <Modal
+          opened={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Статья успешно отправлена!"
+          centered
+          radius="md"
+          padding="lg"
+        >
+          <Text align="center" color="teal" size="md" mb="lg">
+            Ваша статья была успешно отправлена и будет рассмотрена в ближайшее время.
+          </Text>
+          <Button onClick={() => setIsModalOpen(false)} fullWidth radius="md">
+            Понятно
+          </Button>
+        </Modal>
       </Container>
     </>
   );

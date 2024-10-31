@@ -5,30 +5,31 @@ import classes from './Footer.module.css';
 
 const data = [
   {
-    title: 'About',
+    title: 'О нас',
     links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
+      { label: 'О проекте', link: '#' },
+      { label: 'Контакты', link: '#' },
+      { label: 'Политика конфиденциальности', link: '#' },
+      { label: 'Условия использования', link: '#' },
+      { label: 'FAQ', link: '#' },
     ],
   },
   {
-    title: 'Project',
+    title: 'Все о парфюмерии',
     links: [
-      { label: 'Contribute', link: '#' },
-      { label: 'Media assets', link: '#' },
-      { label: 'Changelog', link: '#' },
-      { label: 'Releases', link: '#' },
+      { label: 'Новости', link: 'news' },
+      { label: 'Ароматы', link: 'search' },
+      { label: 'Бренды', link: 'brands' },
+      { label: 'Ноты', link: 'notes' },
+      { label: 'Парфюмеры', link: 'parfumers' },
+      { label: 'Похожее', link: 'similar' },
     ],
   },
   {
-    title: 'Community',
+    title: 'Комьюнити',
     links: [
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
-      { label: 'Email newsletter', link: '#' },
-      { label: 'GitHub discussions', link: '#' },
+      { label: 'Статьи', link: 'articles' },
+      { label: 'Новости', link: 'news' },
     ],
   },
 ];
@@ -39,9 +40,9 @@ export function FooterLinks() {
       <Text<'a'>
         key={index}
         className={classes.link}
+        style={{ cursor: 'pointer' }}
         component="a"
         href={link.link}
-        onClick={(event) => event.preventDefault()}
       >
         {link.label}
       </Text>
@@ -59,9 +60,9 @@ export function FooterLinks() {
     <footer className={classes.footer}>
       <Container className={classes.inner}>
         <div className={classes.logo}>
-          <h2>Parfumatrix</h2>
+          <h2>Parfumetrika</h2>
           <Text size="xs" c="dimmed" className={classes.description}>
-            Build fully functional accessible web applications faster than ever
+            Ваш гид в мире парфюмерии
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>

@@ -156,7 +156,7 @@ const PerfumeDetailsPage = () => {
   useEffect(() => {
     if (perfume) {
       const viewedPerfumesKey = 'viewedPerfumes'; // ключ для хранения в localStorage
-      const newPerfume = { id: perfume._id, brand: perfume.brand, name: perfume.name };
+      const newPerfume = { id: perfume.perfume_id, brand: perfume.brand, name: perfume.name };
 
       // Получаем уже просмотренные духи из localStorage или пустой массив
       const existingPerfumes = JSON.parse(localStorage.getItem(viewedPerfumesKey) || '[]');
@@ -365,7 +365,8 @@ const PerfumeDetailsPage = () => {
           ...similarPerfumes, // new perfumes added via the InputSimiliar
         ])
       );
-
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      const userId = storedUser.id;
       // Filter out any perfumes that need to be removed
       const updatedPerfume = {
         ...perfume, // Keep original fields from the perfume object
@@ -394,6 +395,7 @@ const PerfumeDetailsPage = () => {
       };
 
       const requestPayload = {
+        userId,
         perfumeId: perfume._id, // ID of the perfume being edited
         changes: updatedPerfume, // Send the complete changes
       };

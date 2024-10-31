@@ -330,7 +330,7 @@ export default function Main() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [recentlyViewedPerfumes, setRecentlyViewedPerfumes] = useState([]);
-
+  console.log(recentlyViewedPerfumes);
   // Функция для загрузки просмотренных духов из localStorage
   useEffect(() => {
     const storedPerfumes = JSON.parse(localStorage.getItem('viewedPerfumes') || '[]');
@@ -666,41 +666,33 @@ export default function Main() {
                     >
                       <Card padding="lg" radius="18">
                         {/* Image Section */}
-
                         <div
                           style={{
-                            width: '100%', // Устанавливаем ширину контейнера
-                            height: '100px', // Устанавливаем высоту контейнера
-                            overflow: 'hidden', // Обрезаем изображение по размеру контейнера
-                            borderRadius: '14px', // Радиус для округления
+                            width: '100%',
+                            height: '100px',
+                            overflow: 'hidden',
+                            borderRadius: '14px',
                           }}
                         >
                           <Image
-                            src={perfume.coverImage || '/images/placeholder.jpg'} // Добавляем placeholder, если изображение отсутствует
+                            src={perfume.coverImage || '/images/placeholder.jpg'}
                             alt={perfume.title}
                             style={{
                               width: '100%',
                               height: '100%',
-                              objectFit: 'cover', // Устанавливаем cover, чтобы изображение заполняло контейнер
+                              objectFit: 'cover',
                             }}
                           />
                         </div>
 
                         {/* Perfume Info */}
                         <Group position="apart" mt="md" mb="xs">
-                          <div>
+                          <div style={{ height: '100px', overflow: 'hidden' }}>
                             <Text mt="4" style={{ color: theme.colors.gray[6], fontSize: '12px' }}>
                               Новинки
                             </Text>
                             <Text mt="6" style={{ fontWeight: '900' }}>
-                              {perfume.title} {/* Используем поле title */}
-                            </Text>
-                            <Text
-                              size="xs"
-                              mt="8"
-                              style={{ color: theme.colors.gray[6], fontSize: '13px' }}
-                            >
-                              {perfume.description} {/* Используем поле description */}
+                              {perfume.title}
                             </Text>
                           </div>
                           {perfume.isExclusive && (
@@ -716,8 +708,7 @@ export default function Main() {
                             <ActionIcon size="lg" radius="xl" variant="light">
                               <IconMessageCircle size={16} color={theme.colors.gray[6]} />
                             </ActionIcon>
-                            <Text size="xs">{perfume.comments?.length || 0}</Text>{' '}
-                            {/* Используем поле comments */}
+                            <Text size="xs">{perfume.comments?.length || 0}</Text>
                           </Group>
                         </Group>
                       </Card>
@@ -758,52 +749,45 @@ export default function Main() {
               {recentlyViewedPerfumes.map((perfume) => (
                 <Carousel.Slide key={perfume.id}>
                   <Link href={`/perfumes/${perfume.id}`} style={{ textDecoration: 'none' }}>
-                    <div
+                    <Card
+                      padding="sm"
+                      radius="md"
+                      shadow="0"
                       style={{
-                        width: '100%',
                         display: 'flex',
-                        justifyContent: 'left',
-                        gap: '20px',
-                        minWidth: '20px',
                         alignItems: 'center',
-                        cursor: 'pointer',
+                        justifyContent: 'start',
+
+                        minWidth: '140px',
                       }}
                     >
-                      <div
-                        style={{
-                          height: 50,
-                          minWidth: '32%',
-                          backgroundColor: '#fff',
-                          display: 'flex',
-                          justifyContent: 'center',
-                          borderRadius: '12px',
-                          maxWidth: '68px',
-                        }}
-                      >
-                        <Image
-                          src={
-                            perfume.image ||
-                            'https://pimages.parfumo.de/720/1_img-3571-prada-amber_pour_homme_eau_de_toilette_720.webp'
-                          }
-                          alt={perfume.name}
-                          fit="contain"
-                          width="30px"
-                        />
-                      </div>
-                      <div>
-                        <Text
-                          size="xs"
-                          style={{
-                            color: theme.colors.gray[6],
-                          }}
-                        >
+                      <Image
+                        src={
+                          perfume.image ||
+                          'https://pimages.parfumo.de/720/1_img-3571-prada-amber_pour_homme_eau_de_toilette_720.webp'
+                        }
+                        alt={perfume.name}
+                        width={50}
+                        style={{ maxWidth: '60px' }}
+                        height={50}
+                        fit="contain"
+                        radius="md"
+                      />
+                      <div style={{ flex: 1 }}>
+                        <Text mt="6" size="sm" style={{ textAlign: 'center' }} color="dimmed">
                           {perfume.brand}
                         </Text>
-                        <Text align="left" size="xs">
+                        <Text
+                          mt="4"
+                          size="sm"
+                          style={{ textAlign: 'center' }}
+                          lineClamp={1}
+                          color={theme.colors.blue[7]}
+                        >
                           {perfume.name}
                         </Text>
                       </div>
-                    </div>
+                    </Card>
                   </Link>
                 </Carousel.Slide>
               ))}
