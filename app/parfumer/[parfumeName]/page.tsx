@@ -109,7 +109,7 @@ const PerfumesByParfumer = () => {
   };
 
   const formatImageUrl = (url: string) => {
-    const baseURL = 'http://81.29.136.136:3001/';
+    const baseURL = 'https://hltback.parfumetrika.ru/';
     const defaultImage =
       'https://pimages.parfumo.de/240/119838_img-8861-a__e__ariana__evans-platinum_240.webp';
     return url ? baseURL + url.replace(/\\/g, '/') : defaultImage;

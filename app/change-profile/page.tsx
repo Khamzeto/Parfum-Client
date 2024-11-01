@@ -65,7 +65,7 @@ const UserProfile = () => {
   const handleUpdateProfile = async () => {
     if (!user) return;
     try {
-      await axios.put(`http://81.29.136.136:3001/users/${user.id}`, editingData);
+      await axios.put(`https://hltback.parfumetrika.ru/users/${user.id}`, editingData);
       const updatedUser = { ...user, ...editingData };
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
@@ -98,7 +98,10 @@ const UserProfile = () => {
   const handlePasswordChange = async () => {
     if (!user) return;
     try {
-      await axios.put(`http://81.29.136.136:3001/users/${user.id}/change-password`, passwordData);
+      await axios.put(
+        `https://hltback.parfumetrika.ru/users/${user.id}/change-password`,
+        passwordData
+      );
       notifications.show({
         title: 'Успешно',
         message: 'Пароль успешно изменен',

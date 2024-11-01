@@ -246,7 +246,7 @@ const PerfumeDetailsPage = () => {
   const fetchPerfumeDetails = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://81.29.136.136:3001/perfumes/${id}`);
+      const response = await axios.get(`https://hltback.parfumetrika.ru/perfumes/${id}`);
       setPerfume(response.data);
 
       const storedUser = localStorage.getItem('user');
@@ -273,13 +273,13 @@ const PerfumeDetailsPage = () => {
 
       if (isInWishlist) {
         // Отправляем DELETE запрос с параметром userId и perfumeId
-        await axios.delete(`http://81.29.136.136:3001/users/wishlist/${userId}`, {
+        await axios.delete(`https://hltback.parfumetrika.ru/users/wishlist/${userId}`, {
           data: { perfumeId: perfume_id }, // передаем perfumeId в теле запроса
         });
         setIsInWishlist(false);
       } else {
         // Отправляем POST запрос с параметром userId и perfumeId
-        await axios.post(`http://81.29.136.136:3001/users/wishlist/${userId}`, {
+        await axios.post(`https://hltback.parfumetrika.ru/users/wishlist/${userId}`, {
           perfumeId: perfume_id,
         });
         setIsInWishlist(true);
@@ -297,13 +297,13 @@ const PerfumeDetailsPage = () => {
 
       if (isInCollection) {
         // Отправляем DELETE запрос с параметром userId и perfumeId
-        await axios.delete(`http://81.29.136.136:3001/users/collection/${userId}`, {
+        await axios.delete(`https://hltback.parfumetrika.ru/users/collection/${userId}`, {
           data: { perfumeId: perfume_id }, // передаем perfumeId в теле запроса
         });
         setIsInCollection(false);
       } else {
         // Отправляем POST запрос с параметром userId и perfumeId
-        await axios.post(`http://81.29.136.136:3001/users/collection/${userId}`, {
+        await axios.post(`https://hltback.parfumetrika.ru/users/collection/${userId}`, {
           perfumeId: perfume_id,
         });
         setIsInCollection(true);
@@ -401,7 +401,7 @@ const PerfumeDetailsPage = () => {
       };
 
       // Make the API request
-      await axios.post(`http://81.29.136.136:3001/requests`, requestPayload);
+      await axios.post(`https://hltback.parfumetrika.ru/requests`, requestPayload);
 
       setPerfume(updatedPerfume); // Update local state with saved data
       setIsEditing(false); // Exit edit mode
@@ -427,7 +427,7 @@ const PerfumeDetailsPage = () => {
     if (!query.trim()) return setNotesOptions([]); // Очищаем результаты, если запрос пустой
     try {
       const response = await axios.get(
-        `http://81.29.136.136:3001/notes/search?query=${encodeURIComponent(query)}`
+        `https://hltback.parfumetrika.ru/notes/search?query=${encodeURIComponent(query)}`
       );
       const notesData = response.data.notes.map((note) => ({ value: note.name, label: note.name }));
       setNotesOptions(notesData); // Обновляем варианты для TagsInput

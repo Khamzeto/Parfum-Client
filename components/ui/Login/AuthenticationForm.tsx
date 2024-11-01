@@ -61,13 +61,13 @@ export function LoginForm() {
       <Group grow mb="md" mt="md">
         <GoogleButton
           radius="xl"
-          onClick={() => (window.location.href = 'http://81.29.136.136:3001/auth/google')}
+          onClick={() => (window.location.href = 'https://hltback.parfumetrika.ru/auth/google')}
         >
           Google
         </GoogleButton>
         <VkButton
           radius="xl"
-          onClick={() => (window.location.href = 'http://81.29.136.136:3001/auth/vkontakte')}
+          onClick={() => (window.location.href = 'https://hltback.parfumetrika.ru/auth/vkontakte')}
         >
           ВКонтакте
         </VkButton>

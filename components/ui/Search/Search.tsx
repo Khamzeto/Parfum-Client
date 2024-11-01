@@ -241,7 +241,7 @@ const SearchPage = () => {
     try {
       console.log('Fetching notes for query:', query);
       const response = await axios.get(
-        `http://81.29.136.136:3001/notes/search?query=${encodeURIComponent(query)}`
+        `https://hltback.parfumetrika.ru/notes/search?query=${encodeURIComponent(query)}`
       );
       console.log('Server response:', response.data);
       const notesData = response.data.notes.map((note: any) => ({
@@ -266,7 +266,7 @@ const SearchPage = () => {
     try {
       console.log('Fetching brands for query:', query);
       const response = await axios.get(
-        `http://81.29.136.136:3001/brands/searchBrands?query=${encodeURIComponent(query)}`
+        `https://hltback.parfumetrika.ru/brands/searchBrands?query=${encodeURIComponent(query)}`
       );
       console.log('Server response:', response.data);
 

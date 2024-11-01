@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'http://81.29.136.136:3001';
+export const API_URL = 'https://hltback.parfumetrika.ru';
 
 const $api = axios.create({
   baseURL: API_URL,
