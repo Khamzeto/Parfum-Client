@@ -34,6 +34,7 @@ import $api from '@/components/api/axiosInstance';
 import { Header } from '@/components/Header/Header';
 import Link from 'next/link';
 import SearchInput from '../../../components/ui/InputSearch/InputSearch';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 interface Perfume {
   _id: string;
@@ -66,7 +67,7 @@ const PerfumesByBrand = () => {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [brandName, setBrandName] = useState<string>(''); // Название бренда
   const [total, setTotal] = useState<number>(0); // Общее количество духов
-
+  console.log(brandName);
   const [sortBy, setSortBy] = useState<string>('A-Z');
   const [genderFilter, setGenderFilter] = useState<string | null>(null);
 
@@ -142,9 +143,16 @@ const PerfumesByBrand = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
-
+  const title = `${brandName} – Все Ароматы бренда с отзывами в одном месте – Parfumetrika`;
   return (
     <>
+      <head>
+        <title>{title}</title>
+        <meta
+          name="description"
+          content={`Узнайте больше о парфюмах ${brandName}: подробные обзоры, реальные отзывы и рекомендации по выбору ароматов. Следите за новинками и актуальными новостями бренда.`}
+        />
+      </head>
       <Header />
 
       <div
@@ -477,6 +485,7 @@ const PerfumesByBrand = () => {
           </div>
         </div>
       </div>
+      <FooterLinks />
     </>
   );
 };

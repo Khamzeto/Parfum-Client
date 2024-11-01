@@ -17,6 +17,7 @@ import {
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import './MyArticles.css';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 export default function Home() {
   const [articles, setArticles] = useState([]);
@@ -73,6 +74,10 @@ export default function Home() {
 
   return (
     <>
+      <head>
+        <title>Мои статьи | Parfumetrika</title>
+        <meta name="description" content="Мои статьи,Parfumetrika" />
+      </head>
       <Header />
       <Container maw="1440px" mb="20" fluid style={{ margin: '20px auto 0 auto' }}>
         <Box style={{ flex: 1 }}>
@@ -252,6 +257,7 @@ export default function Home() {
           </Box>
         </Group>
       </Container>
+      <FooterLinks />
     </>
   );
 }

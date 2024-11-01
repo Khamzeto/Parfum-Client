@@ -19,6 +19,7 @@ import $api from '@/components/api/axiosInstance'; // Ваш axios instance
 import HCaptcha from '@hcaptcha/react-hcaptcha'; // Импорт HCaptcha
 import RichText from '@/components/ui/RichText/RichText'; // Редактор текста
 import { Header } from '@/components/Header/Header';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 export default function EditArticle() {
   const [title, setTitle] = useState('');
@@ -132,6 +133,10 @@ export default function EditArticle() {
 
   return (
     <>
+      <head>
+        <title>Изменить статью | Parfumetrika</title>
+        <meta name="description" content="Изменить статью,Parfumetrika" />
+      </head>
       <Header />
       <Container fluid maw="1440px" style={{ margin: '60px auto 0 auto' }} mt="20">
         {/* Notification */}
@@ -237,6 +242,7 @@ export default function EditArticle() {
           </Button>
         </Card>
       </Container>
+      <FooterLinks />
     </>
   );
 }

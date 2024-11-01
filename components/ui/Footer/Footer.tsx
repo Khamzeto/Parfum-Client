@@ -7,11 +7,11 @@ const data = [
   {
     title: 'О нас',
     links: [
-      { label: 'О проекте', link: '#' },
-      { label: 'Контакты', link: '#' },
-      { label: 'Политика конфиденциальности', link: '#' },
-      { label: 'Условия использования', link: '#' },
-      { label: 'FAQ', link: '#' },
+      { label: 'О проекте', link: 'about' },
+      { label: 'Контакты', link: 'contacts' },
+      { label: 'Политика конфиденциальности', link: 'privacy' },
+      { label: 'Условия использования', link: 'terms' },
+      { label: 'FAQ', link: 'faq' },
     ],
   },
   {
@@ -29,7 +29,7 @@ const data = [
     title: 'Комьюнити',
     links: [
       { label: 'Статьи', link: 'articles' },
-      { label: 'Новости', link: 'news' },
+      { label: 'Магазины', link: 'stores' },
     ],
   },
 ];

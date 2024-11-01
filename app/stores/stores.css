@@ -1,0 +1,39 @@
+.custom-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  width: 100%; /* Центрируем весь блок */
+}
+
+.store-card {
+  width: calc(33.33% - 20px);
+  max-width: 320px;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .store-card {
+    flex: 1 1 calc(50% - 20px); /* 2 cards per row on medium screens */
+    max-width: calc(50% - 20px);
+  }
+  .custom-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .store-card {
+    flex: 1 1 100%; /* 1 card per row on small screens */
+    max-width: 100%;
+  }
+  .custom-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+}

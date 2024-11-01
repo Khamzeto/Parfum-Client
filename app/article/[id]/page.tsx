@@ -26,6 +26,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import '@mantine/carousel/styles.css';
 import 'dayjs/locale/ru';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -101,6 +102,7 @@ export default function ArticlePage() {
       // После успешной отправки делаем новый запрос, чтобы обновить комментарии
       const response = await $api.get(`/article/requests/id/${id}`);
       setComments(response.data.comments || []);
+
       setNewComment('');
     } catch (error) {
       console.error('Ошибка отправки комментария:', error);
@@ -174,6 +176,17 @@ export default function ArticlePage() {
 
   return (
     <>
+      <head>
+        <title>{article ? `${article.title} – Parfumetrika` : 'Статья – Parfumetrika'}</title>
+        <meta
+          name="description"
+          content={
+            article
+              ? `Читать статью "${article.title}" на Parfumetrika. Узнайте больше о ${article.description} и присоединяйтесь к обсуждению.`
+              : 'Читать статью на Parfumetrika и присоединиться к обсуждению.'
+          }
+        />
+      </head>
       <Header />
       <Container size="lg" mt="50">
         <Card padding="50" radius="24">
@@ -513,6 +526,7 @@ export default function ArticlePage() {
           </Button>
         </Card>
       </Container>
+      <FooterLinks />
     </>
   );
 }

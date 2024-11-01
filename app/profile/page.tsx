@@ -130,6 +130,10 @@ const ProfileCard = () => {
 
   return (
     <>
+      <head>
+        <title>Профиль</title>
+        <meta name="description" content="Профиль,Parfumetrika" />
+      </head>
       <Header />
       <div
         style={{

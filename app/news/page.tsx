@@ -22,6 +22,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ru';
 import { useMediaQuery } from '@mantine/hooks'; // Используем для адаптивности
 import { pointer } from '@testing-library/user-event/dist/types/pointer';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -70,6 +71,25 @@ export default function Home() {
 
   return (
     <>
+      {' '}
+      <head>
+        <title>Новости о парфюмерии – Свежие тренды и события от редакции - Parfumetrika</title>
+        <meta
+          name="description"
+          content="Узнайте первыми о новинках, трендах и событиях в мире парфюмерии. Следите за актуальными выпусками, коллаборациями и аналитикой индустрии, чтобы оставаться в курсе последних изменений и вдохновляться новыми ароматами."
+        />
+        <meta
+          name="keywords"
+          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+        />
+
+        {/* Open Graph / Facebook */}
+
+        <meta
+          property="og:title"
+          content="Новости о парфюмерии – Свежие тренды и события от редакции - Parfumetrika"
+        />
+      </head>
       <Header />
       <Container fluid maw="1300px" style={{ margin: '0px auto 0 auto' }} mt="20">
         {/* Популярные статьи */}
@@ -195,7 +215,7 @@ export default function Home() {
 
         {/* Последние статьи */}
         <Title size="24" mb="20" mt="60" style={{ fontWeight: '600' }}>
-          Последние статьи
+          Последние новости
         </Title>
         <Carousel
           height={340}
@@ -274,6 +294,7 @@ export default function Home() {
           )}
         </Carousel>
       </Container>
+      <FooterLinks />
     </>
   );
 }

@@ -20,6 +20,7 @@ import {
 import { IconX, IconCheck, IconUpload } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 export default function Home() {
   const [title, setTitle] = useState('');
@@ -113,6 +114,10 @@ export default function Home() {
 
   return (
     <>
+      <head>
+        <title>Создать статью | Parfumetrika</title>
+        <meta name="description" content="Создать статью,Parfumetrika" />
+      </head>
       <Header />
       <Container fluid maw="1440px" style={{ margin: '60px auto 0 auto' }} mt="20">
         {/* Notification */}
@@ -231,6 +236,7 @@ export default function Home() {
           </Button>
         </Modal>
       </Container>
+      <FooterLinks />
     </>
   );
 }

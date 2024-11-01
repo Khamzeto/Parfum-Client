@@ -396,6 +396,17 @@ const PerfumesPage = () => {
 
   return (
     <>
+      <head>
+        <title>Подбор и описание по ваших критериям - Parfumetrika</title>
+        <meta
+          name="description"
+          content="Ищете идеальный аромат? Ознакомьтесь с подробными описаниями парфюмов: ноты, пирамиды аккордов, стойкость и подходящие случаи для каждого аромата. Найдите тот, который лучше всего подчеркнет вашу индивидуальность."
+        />
+        <meta
+          name="keywords"
+          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+        />
+      </head>
       <Header />
 
       <div

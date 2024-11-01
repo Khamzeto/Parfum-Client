@@ -23,6 +23,7 @@ import { useClickOutside } from '@mantine/hooks';
 import $api from '@/components/api/axiosInstance';
 import styles from './Similiar.module.css';
 import { Header } from '@/components/Header/Header';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 interface SimilarPerfume {
   _id: string;
@@ -132,6 +133,17 @@ const PerfumeSearch = () => {
 
   return (
     <>
+      <head>
+        <title>Список всех похожих ароматов с функцией поиска - Parfumetrika</title>
+        <meta
+          name="description"
+          content="Ищете ароматы, похожие на ваши любимые? Ознакомьтесь с подборками похожих композиций и откройте для себя новые ароматы, которые могут стать вашими новыми фаворитами."
+        />
+        <meta
+          name="keywords"
+          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+        />
+      </head>
       <Header />
       <Container size="lg" mt="xl">
         <Title order={2} pos="left" mb="30" style={{ fontWeight: 700 }}>
@@ -302,6 +314,7 @@ const PerfumeSearch = () => {
           </>
         )}
       </Container>
+      <FooterLinks />
     </>
   );
 };

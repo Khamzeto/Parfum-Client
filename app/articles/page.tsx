@@ -1,15 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Header } from '@/components/Header/Header';
-import { Container, Group, Text, Card, Image, Box, Title, Skeleton } from '@mantine/core';
+import { Container, Group, Text, Card, Image, Box, Title, Skeleton, Button } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import '@mantine/carousel/styles.css';
-import { IconClock, IconEye } from '@tabler/icons-react';
+import { IconClock, IconEye, IconPencilPlus } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ru';
-import { useMediaQuery } from '@mantine/hooks'; // Используем useMediaQuery для адаптации
+import { useMediaQuery } from '@mantine/hooks';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -19,7 +20,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [popularArticles, setPopularArticles] = useState([]);
 
-  const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Используем для адаптивности
+  const isSmallScreen = useMediaQuery('(max-width: 768px)');
 
   useEffect(() => {
     const fetchUserArticles = async () => {
@@ -54,8 +55,30 @@ export default function Home() {
     window.location.href = `/article/${articleId}`;
   };
 
+  const handleCreateArticle = () => {
+    window.location.href = '/create-article';
+  };
+
   return (
     <>
+      <head>
+        <title>Статьи от пользователей парфюмерики – Мнение и опыт о мире ароматов</title>
+        <meta
+          name="description"
+          content="Читайте увлекательные статьи, написанные любителями парфюмерии: обзоры, истории, впечатления и советы. Узнайте больше о любимых ароматах и откройте для себя новые."
+        />
+        <meta
+          name="keywords"
+          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+        />
+
+        {/* Open Graph / Facebook */}
+
+        <meta
+          property="og:title"
+          content="Статьи от пользователей парфюмерики – Мнение и опыт о мире ароматов"
+        />
+      </head>
       <Header />
       <Container fluid maw="1300px" style={{ margin: '0px auto 0 auto' }} mt="20">
         {/* Популярные статьи */}
@@ -84,12 +107,7 @@ export default function Home() {
                       }}
                       onClick={() => handleArticle(popArticle._id)}
                     >
-                      <Box
-                        style={{
-                          width: '100%',
-                          padding: '20px',
-                        }}
-                      >
+                      <Box style={{ width: '100%', padding: '20px' }}>
                         <div
                           style={{
                             display: 'flex',
@@ -100,15 +118,10 @@ export default function Home() {
                         >
                           <Text
                             size="lg"
-                            style={{
-                              fontSize: '14px',
-                              fontWeight: 600,
-                              color: '#ffb000',
-                            }}
+                            style={{ fontSize: '14px', fontWeight: 600, color: '#ffb000' }}
                           >
                             Популярное
                           </Text>
-                          {/* Иконка часов и время */}
                           <div
                             style={{
                               display: 'flex',
@@ -118,25 +131,15 @@ export default function Home() {
                             }}
                           >
                             <IconClock size={16} />
-                            <Text
-                              size="sm"
-                              color="dimmed"
-                              style={{
-                                fontSize: '12px',
-                              }}
-                            >
+                            <Text size="sm" color="dimmed" style={{ fontSize: '12px' }}>
                               {dayjs(popArticle.createdAt).fromNow()}
                             </Text>
                           </div>
                         </div>
-
                         <Group>
                           <Text
                             size="lg"
-                            style={{
-                              fontSize: isSmallScreen ? '18px' : '24px', // Адаптация размера текста
-                              fontWeight: 600,
-                            }}
+                            style={{ fontSize: isSmallScreen ? '18px' : '24px', fontWeight: 600 }}
                           >
                             {popArticle.title}
                           </Text>
@@ -145,17 +148,14 @@ export default function Home() {
                           size="sm"
                           color="dimmed"
                           mt="xs"
-                          style={{
-                            color: '#757575',
-                            fontSize: isSmallScreen ? '12px' : '14px', // Адаптация размера текста
-                          }}
+                          style={{ color: '#757575', fontSize: isSmallScreen ? '12px' : '14px' }}
                         >
                           {popArticle.description}
                         </Text>
                       </Box>
                       <div
                         style={{
-                          width: isSmallScreen ? '100%' : '80%', // Адаптация ширины изображения
+                          width: isSmallScreen ? '100%' : '80%',
                           height: '100%',
                           position: 'relative',
                           top: '-30px',
@@ -167,7 +167,7 @@ export default function Home() {
                           alt={popArticle.title}
                           height={500}
                           style={{ position: 'absolute', top: '0px' }}
-                          width={isSmallScreen ? 200 : 200} // Адаптация ширины изображения
+                          width={isSmallScreen ? 200 : 200}
                           fit="cover"
                         />
                       </div>
@@ -178,19 +178,53 @@ export default function Home() {
             </div>
           )
         )}
-
+        <Card
+          radius="14"
+          shadow="sm"
+          mt="40"
+          style={{
+            marginBottom: '40px',
+            background: 'linear-gradient(200deg, #007BFF, #007BFF)', // Бело-синий градиент
+            color: '#ffffff',
+            padding: '30px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: isSmallScreen ? 'column' : 'row',
+            gap: '20px',
+          }}
+        >
+          <div>
+            <Title size={isSmallScreen ? '20px' : '28px'} mb="md">
+              Станьте частью нашего сообщества
+            </Title>
+            <Text size={isSmallScreen ? 'sm' : 'md'}>
+              Делитесь своими знаниями и вдохновляйте других — создайте свою статью прямо сейчас!
+            </Text>
+          </div>
+          <Button
+            size="lg"
+            variant="white"
+            onClick={handleCreateArticle}
+            radius="14"
+            style={{
+              color: '#007BFF', // Синий текст для кнопки
+              backgroundColor: 'white',
+              fontWeight: 600,
+              padding: isSmallScreen ? '8px 20px' : '12px 30px',
+            }}
+          >
+            Создать статью
+          </Button>
+        </Card>
         {/* Последние статьи */}
-        <Title size="24" mb="20" mt="60" style={{ fontWeight: '600' }}>
+        <Title size="24" mb="20" mt="60">
           Последние статьи
         </Title>
         <Carousel
           height={340}
-          slideGap={{ base: 0, sm: 'md' }} // Адаптивный gap между слайдами
-          slideSize={{
-            base: '100%', // Для мобильных
-            sm: '50%', // Для планшетов
-            md: '33.333%', // Для больших экранов
-          }}
+          slideGap={{ base: 0, sm: 'md' }}
+          slideSize={{ base: '100%', sm: '50%', md: '33.333%' }}
           mb={30}
           loop
           align="start"
@@ -260,6 +294,7 @@ export default function Home() {
           )}
         </Carousel>
       </Container>
+      <FooterLinks />
     </>
   );
 }

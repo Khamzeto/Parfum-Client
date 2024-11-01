@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Spotlight, spotlight } from '@mantine/spotlight';
-import { ActionIcon, Group, Text, Image } from '@mantine/core';
-import { IconSearch, IconPlus } from '@tabler/icons-react';
+import {
+  Modal,
+  TextInput,
+  Group,
+  Text,
+  Image,
+  Button,
+  ActionIcon,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconSearch, IconPlus, IconX } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import $api from '@/components/api/axiosInstance';
 
@@ -16,6 +24,8 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
   const [searchValue, setSearchValue] = useState('');
   const [results, setResults] = useState<Perfume[]>([]);
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
+  const [isOpen, setIsOpen] = useState(false); // Controls modal visibility
+  const theme = useMantineTheme();
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -39,63 +49,84 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
   }, [debouncedSearchValue]);
 
   const items = results.map((perfume) => (
-    <Spotlight.Action
+    <div
       key={perfume.perfume_id}
       onClick={() => {
-        onAddSimiliar(perfume.perfume_id); // Send the perfume ID to be added
-        spotlight.close(); // Close the Spotlight modal
+        onAddSimiliar(perfume.perfume_id);
+        setIsOpen(false);
       }}
-      style={{ minWidth: '100%' }}
+      style={{
+        padding: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        cursor: 'pointer',
+        borderBottom: `1px solid ${theme.colors.gray[2]}`,
+      }}
     >
-      <Group style={{ minWidth: '100%' }}>
-        <Image
-          src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
-          alt={perfume.name}
-          width={50}
-          height={50}
-          radius="md"
-        />
-        <div style={{ flex: 1, overflow: 'hidden' }}>
-          <Text truncate>{perfume.name}</Text>
-          <Text color="dimmed" size="xs" truncate>
-            {perfume.brand}
-          </Text>
-        </div>
-      </Group>
-    </Spotlight.Action>
+      <Image
+        src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
+        alt={perfume.name}
+        width={50}
+        height={50}
+        radius="md"
+        style={{ marginRight: '10px' }}
+      />
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <Text
+          weight={500}
+          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          {perfume.name}
+        </Text>
+        <Text
+          color="dimmed"
+          size="xs"
+          style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          {perfume.brand}
+        </Text>
+      </div>
+    </div>
   ));
 
   return (
     <>
       <ActionIcon
-        onClick={spotlight.open}
+        onClick={() => setIsOpen(true)}
         radius="xl"
         size={32}
         color="blue"
         variant="filled"
-        style={{ marginLeft: '8px' }}
       >
         <IconPlus size={18} />
       </ActionIcon>
 
-      <Spotlight.Root
-        radius="md"
-        query={searchValue}
-        onQueryChange={setSearchValue}
-        styles={{
-          content: {
-            overflow: 'hidden',
-          },
-        }}
+      <Modal
+        opened={isOpen}
+        onClose={() => setIsOpen(false)}
+        title="Поиск парфюмов"
+        radius="14"
+        centered
+        size="md"
       >
-        <Spotlight.Search
+        <TextInput
           placeholder="Поиск парфюмов..."
-          leftSection={<IconSearch stroke={1.5} />}
+          icon={<IconSearch />}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.currentTarget.value)}
+          mb="md"
         />
-        <Spotlight.ActionsList style={{ overflowY: 'auto', maxHeight: '400px' }}>
-          {items.length > 0 ? items : <Spotlight.Empty>Ничего не найдено...</Spotlight.Empty>}
-        </Spotlight.ActionsList>
-      </Spotlight.Root>
+
+        <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          {items.length > 0 ? (
+            items
+          ) : (
+            <Text align="center" color="dimmed" mt="md">
+              Ничего не найдено...
+            </Text>
+          )}
+        </div>
+      </Modal>
     </>
   );
 };

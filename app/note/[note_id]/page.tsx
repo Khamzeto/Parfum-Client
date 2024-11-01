@@ -152,9 +152,16 @@ const PerfumesByNote = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
-
+  const title = `${noteName} – Все Ароматы бренда с отзывами в одном месте – Parfumetrika`;
   return (
     <>
+      <head>
+        <title>{title}</title>
+        <meta
+          name="description"
+          content={`«${noteName}» - В этом разделе вы найдете популярные парфюмы, в которых присутствует эта нота, а также интересные факты о её использовании в парфюмерии.`}
+        />
+      </head>
       <Header />
 
       <div
@@ -492,9 +499,8 @@ const PerfumesByNote = () => {
               {noteName}
             </Title>
             <Text mb="14">
-              Parfumatrix знает {total} парфюм, содержащий ноту африканской амбры.
+              Parfumetrika знает {total} парфюм, содержащий ноту {noteName}.
             </Text>
-            <Text mb="14">Часто используется в сердце аромата.</Text>
           </div>
         </div>
       </div>

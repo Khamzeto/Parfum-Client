@@ -45,6 +45,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/ru';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import debounce from 'lodash.debounce';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -338,13 +339,12 @@ const PerfumeDetailsPage = () => {
         // Очистка поля отзыва после отправки
         setNewReview('');
 
-        // Перезагрузка данных парфюма после отправки отзыва
         await fetchPerfumeDetails(perfume_id);
       } catch (error) {
         console.error('Ошибка при отправке отзыва', error);
         setError('Не удалось отправить отзыв');
       } finally {
-        setLoadingReview(false); // Окончание загрузки
+        setLoadingReview(false);
       }
     } else {
       setError('Пожалуйста, введите текст отзыва');
@@ -1368,6 +1368,7 @@ const PerfumeDetailsPage = () => {
           }
         }
       `}</style>
+      <FooterLinks />
     </>
   );
 };

@@ -35,6 +35,7 @@ import $api from '@/components/api/axiosInstance';
 import { Header } from '@/components/Header/Header';
 import Link from 'next/link';
 import SearchInput from '../../../components/ui/InputSearch/InputSearch';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 interface Perfume {
   _id: string;
@@ -157,9 +158,17 @@ const PerfumesByParfumer = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
+  const title = `${parfumerName} – Полный обзор парфюмерного творчества - Parfumetrika`;
 
   return (
     <>
+      <head>
+        <title>{title}</title>
+        <meta
+          name="description"
+          content={`Узнайте все о парфюмере ${parfumerName}: его биография, ключевые достижения и полный список созданных ароматов. Изучите характеристики каждого парфюма, отзывы пользователей и информацию о брендах, с которыми он сотрудничал. Получите практическое руководство по выбору его ароматов, чтобы найти идеальный вариант.`}
+        />
+      </head>
       <Header />
 
       <div
@@ -458,12 +467,12 @@ const PerfumesByParfumer = () => {
               {parfumerName}
             </Title>
             <Text mb="14">
-              Parfumatrix знает {total} парфюм, содержащий ноту африканской амбры.
+              Parfumetrika знает {total} парфюм от парфюмера {parfumerName}
             </Text>
-            <Text mb="14">Часто используется в сердце аромата.</Text>
           </div>
         </div>
       </div>
+      <FooterLinks />
     </>
   );
 };
