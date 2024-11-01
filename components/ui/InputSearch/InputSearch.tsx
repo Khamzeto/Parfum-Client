@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Spotlight, spotlight } from '@mantine/spotlight';
-import { ActionIcon, Center, Group, Text, Image, Tabs, Flex, Input } from '@mantine/core';
+import { ActionIcon, Group, Text, Image, Tabs, Input } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import $api from '@/components/api/axiosInstance';
@@ -11,15 +11,14 @@ const SpotlightDemo = () => {
   const [notFound, setNotFound] = useState(false);
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
   const [searchType, setSearchType] = useState('perfumes');
-  console.log(results);
-  console.log(searchType);
+
   useEffect(() => {
     const fetchResults = async () => {
       if (debouncedSearchValue.length > 0) {
         try {
           const encodedSearchValue = encodeURIComponent(debouncedSearchValue);
-
           let url = '';
+
           if (searchType === 'perfumes') {
             url = `/perfumes/search?query=${encodedSearchValue}&page=1&limit=8`;
           } else if (searchType === 'brands') {
@@ -32,10 +31,8 @@ const SpotlightDemo = () => {
 
           if (searchType === 'perfumes' && response.data.results) {
             setResults(response.data.results);
-            console.log(response.data);
             setNotFound(response.data.perfumes.length === 0);
           } else if (searchType === 'brands' && response.data.brands) {
-            console.log(response.data);
             const uniqueBrandsMap = new Map();
             response.data.brands.forEach((perfume) => {
               const brandName = perfume.brand;
@@ -78,7 +75,6 @@ const SpotlightDemo = () => {
       key={item._id}
       style={{ minWidth: '100%' }}
       onClick={() => {
-        // Определяем URL в зависимости от типа поиска
         let url = '';
         if (searchType === 'perfumes') {
           url = `/perfumes/${item.perfume_id}`;
@@ -87,7 +83,7 @@ const SpotlightDemo = () => {
         } else if (searchType === 'parfumers') {
           url = `/parfumer/${item.slug}`;
         }
-        window.location.href = url; // Переход по сформированному URL
+        window.location.href = url;
       }}
     >
       <Group noWrap style={{ minWidth: '100%' }} w="100%">
@@ -114,34 +110,34 @@ const SpotlightDemo = () => {
 
   return (
     <>
-      <div
-        style={{
-          marginBottom: '16px',
-          maxWidth: '1440px',
-          margin: '20px auto 20px  auto',
-          marginTop: '20px',
-          paddingLeft: '40px',
-          width: '100%',
-          paddingRight: '40px',
-        }}
-      >
+      <div className="search-container">
         <Input
           leftSection={<IconSearch size={18} stroke={1.5} />}
-          className="input-desk"
+          className="search-input"
           placeholder="Поиск парфюмов или брендов..."
           radius="8"
           onClick={spotlight.open}
-          pointer
           readOnly
         />
+        <ActionIcon
+          size="40"
+          variant="filled"
+          color="blue"
+          radius="12"
+          className="search-icon"
+          onClick={spotlight.open}
+        >
+          <IconSearch size={24} stroke={1.5} />
+        </ActionIcon>
       </div>
+
       <Spotlight.Root
         radius="md"
         query={searchValue}
         onQueryChange={setSearchValue}
         styles={{
           content: {
-            overflow: 'hidden !important', // Скрываем вертикальный скролл
+            overflow: 'hidden !important',
           },
         }}
       >
@@ -230,6 +226,35 @@ const SpotlightDemo = () => {
           </div>
 
           <style jsx>{`
+            .search-container {
+              position: relative;
+              max-width: 1440px;
+              margin: 20px auto;
+              padding: 0 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+
+            .search-input {
+              display: block;
+              width: 100%;
+            }
+
+            .search-icon {
+              display: none;
+            }
+
+            @media (max-width: 768px) {
+              .search-input {
+                display: none;
+              }
+
+              .search-icon {
+                display: flex;
+              }
+            }
+
             div::-webkit-scrollbar {
               display: none;
             }

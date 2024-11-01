@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons-react';
 import { Group, Avatar, Text, Menu, UnstyledButton, rem, useMantineTheme } from '@mantine/core';
 import { useRouter } from 'next/navigation';
-
+import './UserMenu.css';
 interface User {
   id: string;
   username: string;
@@ -36,17 +36,45 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
       {...others}
     >
       <Group>
-        <Avatar src={image} radius="xl" />
+        <Avatar src={image} className="avatar-user" radius="xl" />
         <div style={{ flex: 1 }}>
-          <Text size="sm" fw={500}>
+          <Text
+            size="sm"
+            fw={500}
+            style={{
+              display: 'block',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+            className="user-text"
+          >
             {name}
           </Text>
-          <Text c="dimmed" size="xs">
+          <Text
+            c="dimmed"
+            size="xs"
+            style={{
+              display: 'block',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+            className="user-text"
+          >
             {email}
           </Text>
         </div>
         {icon || <IconChevronRight size="1rem" />}
       </Group>
+
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .user-text {
+            display: none;
+          }
+        }
+      `}</style>
     </UnstyledButton>
   )
 );
@@ -101,7 +129,7 @@ export function UserMenu() {
         <Menu.Label>Настройки</Menu.Label>
         <Menu.Item
           leftSection={<IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-          onClick={() => router.push('/account-settings')}
+          onClick={() => router.push('/change-profile')}
         >
           Настройки аккаунта
         </Menu.Item>

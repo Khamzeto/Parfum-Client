@@ -35,7 +35,22 @@
   .input-desk {
     display: none;
   }
+  .search-icon {
+    display: block !important;
+  }
+  .search-input {
+    display: none;
+  }
+  .search-container {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+  }
 }
+.search-icon {
+  display: none;
+}
+
 @media (max-width: 1120px) {
   .right-notes {
     display: none;

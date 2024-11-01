@@ -12,7 +12,7 @@ export default function BrandsPage() {
         />
         <meta
           name="keywords"
-          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+          content="Парфюм, Аромат, Обзоры, Описание парфюма, Популярные парфюмы"
         />
       </head>
       <Welcome />

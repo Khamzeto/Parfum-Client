@@ -7,29 +7,29 @@ const data = [
   {
     title: 'О нас',
     links: [
-      { label: 'О проекте', link: 'about' },
-      { label: 'Контакты', link: 'contacts' },
-      { label: 'Политика конфиденциальности', link: 'privacy' },
-      { label: 'Условия использования', link: 'terms' },
-      { label: 'FAQ', link: 'faq' },
+      { label: 'О проекте', link: '/about' },
+      { label: 'Контакты', link: '/contacts' },
+      { label: 'Политика конфиденциальности', link: '/privacy' },
+      { label: 'Условия использования', link: '/terms' },
+      { label: 'FAQ', link: '/faq' },
     ],
   },
   {
     title: 'Все о парфюмерии',
     links: [
-      { label: 'Новости', link: 'news' },
-      { label: 'Ароматы', link: 'search' },
-      { label: 'Бренды', link: 'brands' },
-      { label: 'Ноты', link: 'notes' },
-      { label: 'Парфюмеры', link: 'parfumers' },
-      { label: 'Похожее', link: 'similar' },
+      { label: 'Новости', link: '/news' },
+      { label: 'Ароматы', link: '/search' },
+      { label: 'Бренды', link: '/brands' },
+      { label: 'Ноты', link: '/notes' },
+      { label: 'Парфюмеры', link: '/parfumers' },
+      { label: 'Похожее', link: '/similar' },
     ],
   },
   {
     title: 'Комьюнити',
     links: [
-      { label: 'Статьи', link: 'articles' },
-      { label: 'Магазины', link: 'stores' },
+      { label: 'Статьи', link: '/articles' },
+      { label: 'Магазины', link: '/stores' },
     ],
   },
 ];

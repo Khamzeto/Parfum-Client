@@ -129,8 +129,8 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
         <ActionIcon color="blue" radius="xl" size="lg">
           <IconUserFilled size={16} color="white" />
         </ActionIcon>
-        <h2 style={{ marginTop: '-4px', fontSize: '22px' }}>Лучшее в блогах</h2>
-        <ActionIcon variant="outline" radius="xl" size="lg">
+        <h2 style={{ marginTop: '-4px', fontSize: '22px' }}>Последние отзывы</h2>
+        <ActionIcon onClick={() => router.push(`/search`)} variant="outline" radius="xl" size="lg">
           <IconPlus color={theme.colors.blue[6]} size={16} />
         </ActionIcon>
       </div>

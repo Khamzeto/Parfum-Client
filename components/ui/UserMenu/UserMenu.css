@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+  .user-text {
+    display: none !important;
+  }
+  .avatar-user {
+    margin-left: 20px;
+  }
+}

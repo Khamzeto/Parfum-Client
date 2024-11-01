@@ -62,14 +62,14 @@ export default function Home() {
   return (
     <>
       <head>
-        <title>Статьи от пользователей парфюмерики – Мнение и опыт о мире ароматов</title>
+        <title>Статьи от пользователей парфюмерики – Мнение и опыт комьюнити</title>
         <meta
           name="description"
           content="Читайте увлекательные статьи, написанные любителями парфюмерии: обзоры, истории, впечатления и советы. Узнайте больше о любимых ароматах и откройте для себя новые."
         />
         <meta
           name="keywords"
-          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+          content="Парфюм, Аромат, Обзоры, Описание парфюма, Популярные парфюмы"
         />
 
         {/* Open Graph / Facebook */}

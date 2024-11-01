@@ -141,13 +141,13 @@ const PerfumeSearch = () => {
         />
         <meta
           name="keywords"
-          content="Perfume, Fragrance, Reviews, Perfume details, Popular perfumes"
+          content="Парфюм, Аромат, Обзоры, Описание парфюма, Популярные парфюмы"
         />
       </head>
       <Header />
       <Container size="lg" mt="xl">
         <Title order={2} pos="left" mb="30" style={{ fontWeight: 700 }}>
-          Найдите похожие ароматы по звучанию
+          Найдите похожие по звучанию ароматы
         </Title>
 
         <Stack spacing="lg">
