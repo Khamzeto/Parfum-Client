@@ -152,7 +152,7 @@ const PerfumesByNote = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
-  const title = `${noteName} – Все Ароматы бренда с отзывами в одном месте – Parfumetrika`;
+  const title = `${noteName} – Все Ароматы с нотой ${noteName} в одном месте – Parfumetrika`;
   return (
     <>
       <head>

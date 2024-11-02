@@ -508,9 +508,10 @@ export default function Main() {
                 radius="18"
                 bg={isDark ? theme.colors.dark[6] : theme.colors.gray[0]}
                 style={{
-                  border: '4px solid transparent', // Initial border setting
-
-                  borderImageSlice: 1, // Ensure the border is stretched properly
+                  border: '4px solid transparent',
+                  borderImageSlice: 1,
+                  maxWidth: '100%', // Ограничение ширины
+                  overflowX: 'auto', // Горизонтальная прокрутка
                 }}
               >
                 <Card.Section
@@ -521,9 +522,19 @@ export default function Main() {
                     padding: '20px',
                   }}
                 >
-                  <Group spacing="md" style={{ flexWrap: 'wrap', justifyContent: 'left' }}>
+                  <Group
+                    spacing="md"
+                    style={{
+                      flexWrap: 'nowrap', // Запрет переноса элементов
+                      justifyContent: 'left',
+                      display: 'flex',
+                      maxWidth: '100%', // Ограничение для Group
+                      overflowX: 'auto', // Горизонтальная прокрутка для Group
+                    }}
+                  >
                     {popularBrands.map((brand, index) => (
                       <div
+                        key={index}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -533,9 +544,9 @@ export default function Main() {
                         {brand.logo(isDark)}
                       </div>
                     ))}
-
                     {popularBrands.map((brand, index) => (
                       <div
+                        key={index}
                         style={{
                           display: 'flex',
                           alignItems: 'center',

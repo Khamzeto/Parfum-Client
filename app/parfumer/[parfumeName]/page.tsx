@@ -69,7 +69,7 @@ const PerfumesByParfumer = () => {
   const [totalItems, setTotalItems] = useState<number>(0);
   const [parfumerName, setParfumerName] = useState<string>('');
   const [total, setTotal] = useState<number>(0);
-
+  const [parfumerRu, setParfumerRu] = useState<string>('');
   const [sortBy, setSortBy] = useState<string>('A-Z');
   const [genderFilter, setGenderFilter] = useState<string | null>(null);
 
@@ -96,10 +96,12 @@ const PerfumesByParfumer = () => {
           gender: gender,
         },
       });
+      setParfumerRu(response.data.perfumes[0]);
 
       setPerfumes(response.data.perfumes);
       setTotalItems(response.data.total);
       setParfumerName(response.data.parfumer);
+      setParfumerRu(response.data.parfumer_ru);
       setTotal(response.data.total);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to fetch perfumes');
@@ -158,15 +160,19 @@ const PerfumesByParfumer = () => {
   };
 
   if (error) return <Text color="red">{error}</Text>;
-  const title = `${parfumerName} – Полный обзор парфюмерного творчества - Parfumetrika`;
+  const title = `${parfumerRu}`;
+  console.log(title);
 
   return (
     <>
       <head>
-        <title>{title}</title>
+        <title>
+          {`${parfumerRu} - Полный список созданных ароматов с функцией поиска - Parfumetrika`}
+        </title>
+
         <meta
           name="description"
-          content={`Узнайте все о парфюмере ${parfumerName}: его биография, ключевые достижения и полный список созданных ароматов. Изучите характеристики каждого парфюма, отзывы пользователей и информацию о брендах, с которыми он сотрудничал. Получите практическое руководство по выбору его ароматов, чтобы найти идеальный вариант.`}
+          content={`Узнайте все о парфюмере ${parfumerName}: его биография, и ключевые достижения. Изучите характеристики каждого парфюма, отзывы пользователей и информацию о брендах, с которыми он сотрудничал. Получите практическое руководство по выбору его ароматов, чтобы найти идеальный вариант.`}
         />
       </head>
       <Header />

@@ -508,12 +508,13 @@ const PerfumeDetailsPage = () => {
   const title = perfume
     ? `${perfume.name} от ${perfume.brand} - отзывы, ноты и характеристики парфюма`
     : 'Perfume Details';
-  const description = `${perfume?.name} - ${
+
+  const description = `${perfume?.name} - аромат для ${
     perfume?.gender === 'male'
-      ? 'мужской аромат'
+      ? 'МУЖЧИН'
       : perfume?.gender === 'female'
-        ? 'женский аромат'
-        : 'универсальный аромат'
+        ? 'ЖЕНЩИН'
+        : 'МУЖЧИН и ЖЕНЩИН'
   } от ${perfume?.brand}, выпущенный в ${perfume?.release_year}. Оценка ${perfume?.rating_value} из 10.`;
 
   const ogImageUrl = perfume?.main_image || 'https://yourdomain.com/default-image.jpg';

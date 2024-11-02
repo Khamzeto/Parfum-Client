@@ -1,5 +1,12 @@
 import { Text, Container, ActionIcon, Group, rem } from '@mantine/core';
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
+import {
+  IconBrandTwitter,
+  IconBrandYoutube,
+  IconBrandInstagram,
+  IconBrandTelegram,
+  IconBrandVk,
+  IconBrandPinterest,
+} from '@tabler/icons-react';
 
 import classes from './Footer.module.css';
 
@@ -73,14 +80,40 @@ export function FooterLinks() {
         </Text>
 
         <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandTwitter style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          <ActionIcon
+            component="a"
+            href="https://vk.com/parfummetrika"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            color="gray"
+            variant="subtle"
+          >
+            <IconBrandVk style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+
+          <ActionIcon
+            component="a"
+            href="https://t.me/parfumetrika"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            color="gray"
+            variant="subtle"
+          >
+            <IconBrandTelegram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+
+          <ActionIcon
+            component="a"
+            href="https://ru.pinterest.com/Parfumetrika"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            color="gray"
+            variant="subtle"
+          >
+            <IconBrandPinterest style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>
