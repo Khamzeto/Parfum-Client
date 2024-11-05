@@ -82,7 +82,7 @@ const stores = [
 const notes = [
   {
     id: 1,
-    title: 'Апельсин',
+    title: 'Яблоко',
   },
 ];
 

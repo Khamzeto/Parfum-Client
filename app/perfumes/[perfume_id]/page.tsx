@@ -50,6 +50,7 @@ import 'dayjs/locale/ru';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import debounce from 'lodash.debounce';
 import { FooterLinks } from '@/components/ui/Footer/Footer';
+import Link from 'next/link';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -119,7 +120,7 @@ const PerfumeDetailsPage = () => {
   useEffect(() => {
     const checkUserCollections = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      const userId = storedUser._id;
+      const userId = storedUser.id;
 
       try {
         const response = await $api.get(`/users/${userId}/collections`);
@@ -365,10 +366,11 @@ const PerfumeDetailsPage = () => {
       // Combine the original and updated similar perfumes, removing duplicates
       const combinedSimilarPerfumes = Array.from(
         new Set([
-          ...perfume.similar_perfumes, // original similar perfumes
+          ...(perfume.similar_perfumes || []), // если null, заменяем на пустой массив
           ...similarPerfumes, // new perfumes added via the InputSimiliar
         ])
       );
+
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
       const userId = storedUser._id;
       // Filter out any perfumes that need to be removed
@@ -1225,8 +1227,19 @@ const PerfumeDetailsPage = () => {
                           borderRadius: '12px',
                         }}
                       >
-                        <Text weight={500}>
-                          {review?.userId?.username ? review.userId.username : review.username}
+                        {/* Navigate to user profile if userId is available */}
+                        <Text
+                          weight={500}
+                          onClick={() => {
+                            if (review?.userId?._id) {
+                              router.push(`/user/${review.userId._id}`);
+                            }
+                          }}
+                          style={{
+                            cursor: review?.userId ? 'pointer' : 'default',
+                          }}
+                        >
+                          {review?.userId?.username || review.username}
                         </Text>
                         <Text size="sm" mt="xs">
                           {review.body}

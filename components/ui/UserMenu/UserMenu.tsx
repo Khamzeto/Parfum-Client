@@ -57,11 +57,20 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
           >
             {name}
             {isVerified && (
-              <IconCheck
-                size="1rem"
-                color="gray"
-                style={{ marginLeft: '0.2rem' }} // Добавляем иконку галочки, если isVerified === true
-              />
+              <div
+                style={{
+                  backgroundColor: '#007bff', // Blue background
+                  borderRadius: '50%',
+                  width: '16px',
+                  height: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '4px',
+                }}
+              >
+                <IconCheck size="0.68rem" color="white" />
+              </div>
             )}
           </Text>
           <Text

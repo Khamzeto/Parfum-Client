@@ -1,11 +1,20 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Text, Title, Image, Tooltip } from '@mantine/core';
+import { Avatar, Button, Text, Title, Image, Tooltip, Group } from '@mantine/core';
 import { Header } from '@/components/Header/Header';
 import $api from '@/components/api/axiosInstance';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { IconCheck } from '@tabler/icons-react';
+import {
+  IconBrandInstagram,
+  IconBrandPinterest,
+  IconBrandTelegram,
+  IconBrandVk,
+  IconBrandYoutube,
+  IconCheck,
+  IconGlobe,
+  IconWorld,
+} from '@tabler/icons-react';
 
 const ProfileCard = () => {
   const [selectedTab, setSelectedTab] = useState('Коллекция');
@@ -25,6 +34,14 @@ const ProfileCard = () => {
   const [description, setDescription] = useState('');
   const [verified, setVerified] = useState(false);
   const router = useRouter();
+  const [socialLinks, setSocialLinks] = useState({
+    vkUrl: null,
+    instagramUrl: null,
+    youtubeUrl: null,
+    pinterestUrl: null,
+    telegramUrl: null,
+    website: null,
+  });
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -35,6 +52,14 @@ const ProfileCard = () => {
       setUsername(parsedUser?.username || 'Пользователь');
       setDescription(parsedUser?.description);
       setId(parsedUser?.id);
+      setSocialLinks({
+        vkUrl: parsedUser?.vkUrl || null,
+        instagramUrl: parsedUser?.instagramUrl || null,
+        youtubeUrl: parsedUser?.youtubeUrl || null,
+        pinterestUrl: parsedUser?.pinterestUrl || null,
+        telegramUrl: parsedUser?.telegramUrl || null,
+        website: parsedUser?.website || null,
+      });
     }
   }, []);
 
@@ -170,14 +195,28 @@ const ProfileCard = () => {
               padding: '20px 0 20px  0',
             }}
           >
-            <Title order={1} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Title order={1} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
               {username}
               {verified && (
                 <Tooltip label="Подтвержденная личность" withArrow>
-                  <IconCheck size="2rem" color="gray" />
+                  <div
+                    style={{
+                      backgroundColor: '#007bff', // Blue background
+                      borderRadius: '50%',
+                      width: '28px',
+                      height: '28px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconCheck size="1.1rem" color="white" />
+                  </div>
                 </Tooltip>
               )}
             </Title>
+            <Text>{description}</Text>
+
             <Button
               size="md"
               variant="outline"
@@ -187,6 +226,56 @@ const ProfileCard = () => {
             >
               Редактировать профиль
             </Button>
+
+            {socialLinks.website && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '8px',
+                  marginBottom: '8px',
+                  padding: '4px 8px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f7f7f7',
+                  cursor: 'pointer', // Указатель на курсоре при наведении
+                }}
+                onClick={() => router.push(socialLinks.website)} // Переход при клике на блок
+              >
+                <IconWorld size={20} color="#6c757d" />
+                <div style={{ color: '#6c757d', fontSize: '14px', overflowWrap: 'break-word' }}>
+                  {socialLinks.website}
+                </div>
+              </div>
+            )}
+
+            <Group mt="0" spacing="xs">
+              {socialLinks.vkUrl && (
+                <a href={socialLinks.vkUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandVk size={28} color="#0077ff" />
+                </a>
+              )}
+              {socialLinks.instagramUrl && (
+                <a href={socialLinks.instagramUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandInstagram size={28} color="#C13584" />
+                </a>
+              )}
+              {socialLinks.youtubeUrl && (
+                <a href={socialLinks.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandYoutube size={28} color="#FF0000" />
+                </a>
+              )}
+              {socialLinks.pinterestUrl && (
+                <a href={socialLinks.pinterestUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandPinterest size={28} color="#E60023" />
+                </a>
+              )}
+              {socialLinks.telegramUrl && (
+                <a href={socialLinks.telegramUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandTelegram size={28} color="#0088cc" />
+                </a>
+              )}
+            </Group>
           </div>
         </div>
 

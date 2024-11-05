@@ -1,11 +1,19 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Text, Title, Image, Tooltip } from '@mantine/core';
+import { Avatar, Button, Text, Title, Image, Tooltip, Group } from '@mantine/core';
 import { Header } from '@/components/Header/Header';
 import $api from '@/components/api/axiosInstance';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { IconCheck } from '@tabler/icons-react';
+import {
+  IconBrandInstagram,
+  IconBrandPinterest,
+  IconBrandTelegram,
+  IconBrandVk,
+  IconBrandYoutube,
+  IconCheck,
+  IconWorld,
+} from '@tabler/icons-react';
+import Link from 'next/link';
 
 const ProfileCard = () => {
   const [selectedTab, setSelectedTab] = useState('Коллекция');
@@ -13,25 +21,30 @@ const ProfileCard = () => {
   const router = useRouter();
 
   const userId = params.user_id;
-  console.log(`юзер ${userId}`);
-
   const [username, setUsername] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState('');
+  const [description, setDescription] = useState('');
+  const [verified, setVerified] = useState(false);
+  const [error, setError] = useState(false);
+
   const [collectionPerfumes, setCollectionPerfumes] = useState([]);
   const [wishlistPerfumes, setWishlistPerfumes] = useState([]);
   const [posts, setPosts] = useState([]);
-  const [proposedRequests, setProposedRequests] = useState([]);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [proposedRequests, setProposedRequests] = useState([]);
   const [loadingCollection, setLoadingCollection] = useState(true);
   const [loadingWishlist, setLoadingWishlist] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [loadingProposed, setLoadingProposed] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(false);
-  const [avatar, setAvatar] = useState('');
-  const [description, setDescription] = useState('');
-  const [id, setId] = useState(userId);
-  const [verified, setVerified] = useState(false);
-
-  // Получение данных пользователя с сервера
+  const [loadingProposed, setLoadingProposed] = useState(false);
+  const [socialLinks, setSocialLinks] = useState({
+    vkUrl: null,
+    instagramUrl: null,
+    youtubeUrl: null,
+    pinterestUrl: null,
+    telegramUrl: null,
+    website: null,
+  });
   useEffect(() => {
     if (!userId) return;
 
@@ -42,21 +55,35 @@ const ProfileCard = () => {
         setAvatar(userData.avatar);
         setUsername(userData.username || 'Пользователь');
         setDescription(userData.description);
-        setId(userData._id);
-        setVerified(userData?.isVerified);
+        setVerified(userData.isVerified);
+        setError(false);
+        setSocialLinks({
+          vkUrl: userData?.vkUrl || null,
+          instagramUrl: userData?.instagramUrl || null,
+          youtubeUrl: userData?.youtubeUrl || null,
+          pinterestUrl: userData?.pinterestUrl || null,
+          telegramUrl: userData?.telegramUrl || null,
+          website: userData?.website || null,
+        }); // Reset error if the request is successful
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error);
+
+        // Check for 500 status code
+        if (error.response?.status === 500) {
+          setError(true);
+        }
       }
     };
 
     fetchUserData();
   }, [userId]);
 
+  // Data fetching functions for each tab
   const fetchCollection = async () => {
-    if (!id) return;
+    if (!userId) return;
     setLoadingCollection(true);
     try {
-      const response = await $api.get(`/users/${id}/collection`);
+      const response = await $api.get(`/users/${userId}/collection`);
       setCollectionPerfumes(response.data.perfumeCollection || []);
     } catch (error) {
       console.error('Ошибка при получении коллекции:', error);
@@ -66,10 +93,10 @@ const ProfileCard = () => {
   };
 
   const fetchWishlist = async () => {
-    if (!id) return;
+    if (!userId) return;
     setLoadingWishlist(true);
     try {
-      const response = await $api.get(`/users/${id}/wishlist`);
+      const response = await $api.get(`/users/${userId}/wishlist`);
       setWishlistPerfumes(response.data.wishlist || []);
     } catch (error) {
       console.error('Ошибка при получении списка желаемого:', error);
@@ -79,10 +106,10 @@ const ProfileCard = () => {
   };
 
   const fetchPosts = async () => {
-    if (!id) return;
+    if (!userId) return;
     setLoadingPosts(true);
     try {
-      const response = await $api.get(`/article/requests/user/${id}`);
+      const response = await $api.get(`/article/requests/user/${userId}`);
       setPosts(response.data.requests || []);
     } catch (error) {
       console.error('Ошибка при получении постов:', error);
@@ -92,12 +119,12 @@ const ProfileCard = () => {
   };
 
   const fetchGalleryImages = async () => {
-    if (!id) return;
+    if (!userId) return;
     setLoadingGallery(true);
     try {
-      const response = await $api.get(`/gallery/gallery-requests/user/${id}`);
+      const response = await $api.get(`/gallery/gallery-requests/user/${userId}`);
       const images = response.data.requests.flatMap((request: any) => request.images);
-      setGalleryImages(response.data.requests);
+      setGalleryImages(images);
     } catch (error) {
       console.error('Ошибка при загрузке галереи:', error);
     } finally {
@@ -106,10 +133,10 @@ const ProfileCard = () => {
   };
 
   const fetchProposedRequests = async () => {
-    if (!id) return;
+    if (!userId) return;
     setLoadingProposed(true);
     try {
-      const response = await $api.get(`/requests/user/${id}`);
+      const response = await $api.get(`/requests/user/${userId}`);
       setProposedRequests(response.data.requests || []);
     } catch (error) {
       console.error('Ошибка при получении предложенных:', error);
@@ -119,7 +146,7 @@ const ProfileCard = () => {
   };
 
   useEffect(() => {
-    if (id) {
+    if (userId) {
       if (selectedTab === 'Коллекция') {
         fetchCollection();
       } else if (selectedTab === 'Я хочу') {
@@ -132,14 +159,23 @@ const ProfileCard = () => {
         fetchProposedRequests();
       }
     }
-  }, [id, selectedTab]);
+  }, [userId, selectedTab]);
+
+  if (error) {
+    return (
+      <>
+        <Header />
+        <div style={{ textAlign: 'center', padding: '20px' }}>
+          <Text size="lg" weight={500} color="red">
+            Такой пользователь не найден
+          </Text>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
-      <head>
-        <title>Профиль</title>
-        <meta name="description" content="Профиль, Parfumetrika" />
-      </head>
       <Header />
       <div
         style={{
@@ -173,17 +209,77 @@ const ProfileCard = () => {
               padding: '20px 0 20px  0',
             }}
           >
-            <div>
-              <Title order={1}>
-                {username}{' '}
-                {verified && (
-                  <Tooltip label="Подтвержденная личность" withArrow>
-                    <IconCheck size="2rem" color="gray" />
-                  </Tooltip>
-                )}
-              </Title>
-              <Text style={{ fontSize: '18px', color: '#6b6b6b' }}>{description}</Text>
-            </div>
+            <Title order={1} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              {username}
+              {verified && (
+                <Tooltip label="Подтвержденная личность" withArrow>
+                  <div
+                    style={{
+                      backgroundColor: '#007bff', // Blue background
+                      borderRadius: '50%',
+                      width: '28px',
+                      height: '28px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconCheck size="1.1rem" color="white" />
+                  </div>
+                </Tooltip>
+              )}
+            </Title>
+            <Text>{description}</Text>
+
+            {socialLinks.website && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '8px',
+                  marginBottom: '8px',
+                  padding: '4px 8px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f7f7f7',
+                  cursor: 'pointer', // Указатель на курсоре при наведении
+                }}
+                onClick={() => router.push(socialLinks.website)} // Переход при клике на блок
+              >
+                <IconWorld size={20} color="#6c757d" />
+                <div style={{ color: '#6c757d', fontSize: '14px', overflowWrap: 'break-word' }}>
+                  {socialLinks.website}
+                </div>
+              </div>
+            )}
+
+            <Group mt="0" spacing="xs">
+              {socialLinks.vkUrl && (
+                <a href={socialLinks.vkUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandVk size={28} color="#0077ff" />
+                </a>
+              )}
+              {socialLinks.instagramUrl && (
+                <a href={socialLinks.instagramUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandInstagram size={28} color="#C13584" />
+                </a>
+              )}
+              {socialLinks.youtubeUrl && (
+                <a href={socialLinks.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandYoutube size={28} color="#FF0000" />
+                </a>
+              )}
+              {socialLinks.pinterestUrl && (
+                <a href={socialLinks.pinterestUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandPinterest size={28} color="#E60023" />
+                </a>
+              )}
+              {socialLinks.telegramUrl && (
+                <a href={socialLinks.telegramUrl} target="_blank" rel="noopener noreferrer">
+                  <IconBrandTelegram size={28} color="#0088cc" />
+                </a>
+              )}
+            </Group>
           </div>
         </div>
 
@@ -238,7 +334,10 @@ const ProfileCard = () => {
                       style={{ cursor: 'pointer' }}
                     >
                       <img
-                        src="https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg"
+                        src={
+                          perfume.main_image ||
+                          'https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg'
+                        }
                         alt={perfume.name}
                         style={{
                           width: '60%',

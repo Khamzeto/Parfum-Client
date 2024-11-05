@@ -25,12 +25,8 @@ export default function Home() {
   useEffect(() => {
     const fetchUserArticles = async () => {
       try {
-        const storedUser = localStorage.getItem('user');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        if (user && user._id) {
-          const response = await $api.get('/article/requests/');
-          setArticles(response.data.requests);
-        }
+        const response = await $api.get('/article/requests/');
+        setArticles(response.data.requests);
       } catch (error) {
         console.error('Ошибка при получении статей пользователя:', error);
       } finally {
@@ -275,12 +271,6 @@ export default function Home() {
                     </Text>
                   </Group>
                   <Group mt="md">
-                    <Group>
-                      <IconEye size={16} color="#757575" />
-                      <Text size="xs" color="dimmed" style={{ color: '#757575' }}>
-                        {article.views || 0} просмотров
-                      </Text>
-                    </Group>
                     <Group>
                       <IconClock size={16} color="#757575" />
                       <Text size="xs" color="dimmed" style={{ color: '#757575' }}>

@@ -423,6 +423,7 @@ const SearchPage = () => {
           margin: '0 auto',
           paddingLeft: '20px',
           paddingRight: '20px',
+          marginBottom: '200px',
         }}
       >
         <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '50px' }}>
@@ -813,7 +814,7 @@ const SearchPage = () => {
                   </Link>
                 ))
               ) : (
-                <Text align="center" size="lg" mt="lg">
+                <Text size="lg" mb="400px" mt="lg">
                   Нет результатов по вашему запросу. Попробуйте изменить фильтры.
                 </Text>
               )}
@@ -936,7 +937,7 @@ const SearchPage = () => {
                   </Link>
                 ))
               ) : (
-                <Text miw="100%" style={{ position: 'absolute' }} mt="lg">
+                <Text miw="100%" mt="lg" mb="300px">
                   Нет результатов по вашему запросу. Попробуйте изменить фильтры.
                 </Text>
               )}

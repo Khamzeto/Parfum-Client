@@ -116,6 +116,7 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
             <Button
               variant="outline"
               radius="12"
+              onClick={() => router.push(`/note/66e84e5ba0ed7975759f1b1d`)}
               style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
             >
               Читать полностью

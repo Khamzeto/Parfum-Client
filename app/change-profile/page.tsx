@@ -28,6 +28,12 @@ interface User {
   email: string;
   avatar?: string;
   description?: string;
+  vkUrl?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
+  pinterestUrl?: string;
+  telegramUrl?: string;
+  website?: string;
 }
 
 const UserProfile = () => {
@@ -41,6 +47,12 @@ const UserProfile = () => {
     email: '',
     avatar: '',
     description: '',
+    vkUrl: '',
+    instagramUrl: '',
+    youtubeUrl: '',
+    pinterestUrl: '',
+    telegramUrl: '',
+    website: '',
   });
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
@@ -57,6 +69,12 @@ const UserProfile = () => {
         email: parsedUser.email,
         avatar: parsedUser.avatar || '',
         description: parsedUser.description || '',
+        vkUrl: parsedUser.vkUrl || '',
+        instagramUrl: parsedUser.instagramUrl || '',
+        youtubeUrl: parsedUser.youtubeUrl || '',
+        pinterestUrl: parsedUser.pinterestUrl || '',
+        telegramUrl: parsedUser.telegramUrl || '',
+        website: parsedUser.website || '',
       });
     }
     setLoading(false);
@@ -118,12 +136,8 @@ const UserProfile = () => {
     }
   };
 
-  const handleInputChange = (field: keyof User, value: string) => {
+  const handleInputChange = (field: keyof typeof editingData, value: string) => {
     setEditingData((prevData) => ({ ...prevData, [field]: value }));
-  };
-
-  const handlePasswordInputChange = (field: 'oldPassword' | 'newPassword', value: string) => {
-    setPasswordData((prevData) => ({ ...prevData, [field]: value || '' }));
   };
 
   if (loading) {
@@ -180,6 +194,61 @@ const UserProfile = () => {
                   onChange={(e) => handleInputChange('description', e.currentTarget.value)}
                   autosize
                   minRows={3}
+                />
+              </Grid.Col>
+              {/* Social Media and Website Links */}
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="Веб-сайт"
+                  placeholder="https://example.com"
+                  value={editingData.website}
+                  onChange={(e) => handleInputChange('website', e.currentTarget.value)}
+                />
+              </Grid.Col>
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="VK"
+                  placeholder="https://vk.com/yourprofile"
+                  value={editingData.vkUrl}
+                  onChange={(e) => handleInputChange('vkUrl', e.currentTarget.value)}
+                />
+              </Grid.Col>
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="Instagram"
+                  placeholder="https://instagram.com/yourprofile"
+                  value={editingData.instagramUrl}
+                  onChange={(e) => handleInputChange('instagramUrl', e.currentTarget.value)}
+                />
+              </Grid.Col>
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="YouTube"
+                  placeholder="https://youtube.com/yourchannel"
+                  value={editingData.youtubeUrl}
+                  onChange={(e) => handleInputChange('youtubeUrl', e.currentTarget.value)}
+                />
+              </Grid.Col>
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="Pinterest"
+                  placeholder="https://pinterest.com/yourprofile"
+                  value={editingData.pinterestUrl}
+                  onChange={(e) => handleInputChange('pinterestUrl', e.currentTarget.value)}
+                />
+              </Grid.Col>
+              <Grid.Col span={12} mt="6" mb="6">
+                <TextInput
+                  radius={9}
+                  label="Telegram"
+                  placeholder="https://t.me/yourprofile"
+                  value={editingData.telegramUrl}
+                  onChange={(e) => handleInputChange('telegramUrl', e.currentTarget.value)}
                 />
               </Grid.Col>
             </Grid>
