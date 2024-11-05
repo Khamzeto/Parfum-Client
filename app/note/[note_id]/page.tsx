@@ -36,6 +36,7 @@ import { Header } from '@/components/Header/Header';
 import Link from 'next/link';
 import SearchInput from '../../../components/ui/InputSearch/InputSearch';
 import { NavigationButtons } from '@/components/ui/NavigationButtons/NavigationButtons';
+import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 interface Perfume {
   _id: string;
@@ -327,7 +328,7 @@ const PerfumesByNote = () => {
                                   style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
                                 >
                                   <IconStar size={12} style={{ verticalAlign: 'middle' }} />{' '}
-                                  {perfume.rating_value} ({perfume.rating_count} отзывов)
+                                  {perfume.rating_value} ({perfume.rating_count} оценок)
                                 </Text>
                                 <Text
                                   size="xs"
@@ -443,7 +444,7 @@ const PerfumesByNote = () => {
                                 }}
                               >
                                 <IconStar size={16} style={{ color: theme.colors.yellow[6] }} />{' '}
-                                {perfume.rating_value} ({perfume.rating_count} отзывов)
+                                {perfume.rating_value} ({perfume.rating_count} оценок)
                               </Text>
                             </Group>
 
@@ -504,6 +505,8 @@ const PerfumesByNote = () => {
           </div>
         </div>
       </div>
+
+      <FooterLinks />
     </>
   );
 };

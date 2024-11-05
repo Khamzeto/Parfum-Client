@@ -1,10 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Text, Title, Image } from '@mantine/core';
+import { Avatar, Button, Text, Title, Image, Tooltip } from '@mantine/core';
 import { Header } from '@/components/Header/Header';
 import $api from '@/components/api/axiosInstance';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { IconCheck } from '@tabler/icons-react';
 
 const ProfileCard = () => {
   const [selectedTab, setSelectedTab] = useState('Коллекция');
@@ -22,6 +23,7 @@ const ProfileCard = () => {
   const [loadingGallery, setLoadingGallery] = useState(false);
   const [avatar, setAvatar] = useState('');
   const [description, setDescription] = useState('');
+  const [verified, setVerified] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +31,7 @@ const ProfileCard = () => {
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setAvatar(parsedUser?.avatar);
+      setVerified(parsedUser?.isVerified);
       setUsername(parsedUser?.username || 'Пользователь');
       setDescription(parsedUser?.description);
       setId(parsedUser?.id);
@@ -167,10 +170,14 @@ const ProfileCard = () => {
               padding: '20px 0 20px  0',
             }}
           >
-            <div>
-              <Title order={1}>{username}</Title>
-              <Text style={{ fontSize: '18px', color: '#6b6b6b' }}>{description}</Text>
-            </div>
+            <Title order={1} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {username}
+              {verified && (
+                <Tooltip label="Подтвержденная личность" withArrow>
+                  <IconCheck size="2rem" color="gray" />
+                </Tooltip>
+              )}
+            </Title>
             <Button
               size="md"
               variant="outline"

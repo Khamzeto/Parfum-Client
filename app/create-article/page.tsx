@@ -78,7 +78,7 @@ export default function Home() {
           content,
           coverImage,
           captchaToken,
-          userId: user.id,
+          userId: user._id,
         });
 
         setNotification({

@@ -67,7 +67,7 @@ export default function CreateNews() {
           description,
           content,
           coverImage, // Добавляем обложку
-          userId: user.id,
+          userId: user._id,
         });
 
         setNotification({

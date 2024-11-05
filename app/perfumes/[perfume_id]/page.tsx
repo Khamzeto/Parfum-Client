@@ -33,6 +33,10 @@ import {
   IconHeart,
   IconCheck,
   IconPlus,
+  IconBrandWhatsapp,
+  IconBrandTelegram,
+  IconBrandTwitter,
+  IconBrandFacebook,
 } from '@tabler/icons-react';
 import InputSimiliar from '@/components/ui/inputSimiliar/inputSimiliar';
 
@@ -115,7 +119,7 @@ const PerfumeDetailsPage = () => {
   useEffect(() => {
     const checkUserCollections = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      const userId = storedUser.id;
+      const userId = storedUser._id;
 
       try {
         const response = await $api.get(`/users/${userId}/collections`);
@@ -269,7 +273,7 @@ const PerfumeDetailsPage = () => {
     try {
       // Получаем user из localStorage
       const storedUser = JSON.parse(localStorage.getItem('user'));
-      const userId = storedUser.id; // Получаем ID пользователя
+      const userId = storedUser._id; // Получаем ID пользователя
 
       if (isInWishlist) {
         // Отправляем DELETE запрос с параметром userId и perfumeId
@@ -293,7 +297,7 @@ const PerfumeDetailsPage = () => {
     try {
       // Получаем user из localStorage
       const storedUser = JSON.parse(localStorage.getItem('user'));
-      const userId = storedUser.id; // Получаем ID пользователя
+      const userId = storedUser._id; // Получаем ID пользователя
 
       if (isInCollection) {
         // Отправляем DELETE запрос с параметром userId и perfumeId
@@ -322,7 +326,7 @@ const PerfumeDetailsPage = () => {
       try {
         setLoadingReview(true); // Начало загрузки
         const storedUser = JSON.parse(localStorage.getItem('user'));
-        const userId = storedUser?.id;
+        const userId = storedUser?._id;
 
         if (!userId) {
           setError('Пользователь не найден');
@@ -366,7 +370,7 @@ const PerfumeDetailsPage = () => {
         ])
       );
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      const userId = storedUser.id;
+      const userId = storedUser._id;
       // Filter out any perfumes that need to be removed
       const updatedPerfume = {
         ...perfume, // Keep original fields from the perfume object
@@ -1341,6 +1345,56 @@ const PerfumeDetailsPage = () => {
             onRate={handleRatingSubmit}
           />
         </Flex>
+        <Box mt="10" mb="20">
+          <Title size="lg" mb="sm">
+            Поделиться:
+          </Title>
+          <Group spacing="sm">
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandFacebook strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(perfume?.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandTwitter strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(perfume?.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandTelegram size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://wa.me/?text=${encodeURIComponent(perfume?.name)} ${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="green"
+            >
+              <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+            </ActionIcon>
+          </Group>
+        </Box>
       </Container>
 
       <style jsx>{`

@@ -36,7 +36,7 @@ const RatingModal: React.FC<RatingModalProps> = ({ opened, onClose, perfumeId, o
 
   const handleSubmit = async () => {
     const storedUser = localStorage.getItem('user');
-    const userId = storedUser ? JSON.parse(storedUser).id : null;
+    const userId = storedUser ? JSON.parse(storedUser)._id : null;
 
     if (!userId) {
       alert('Не удалось найти пользователя');

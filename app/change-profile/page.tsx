@@ -65,7 +65,7 @@ const UserProfile = () => {
   const handleUpdateProfile = async () => {
     if (!user) return;
     try {
-      await axios.put(`https://hltback.parfumetrika.ru/users/${user.id}`, editingData);
+      await axios.put(`https://hltback.parfumetrika.ru/users/${user._id}`, editingData);
       const updatedUser = { ...user, ...editingData };
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
@@ -99,7 +99,7 @@ const UserProfile = () => {
     if (!user) return;
     try {
       await axios.put(
-        `https://hltback.parfumetrika.ru/users/${user.id}/change-password`,
+        `https://hltback.parfumetrika.ru/users/${user._id}/change-password`,
         passwordData
       );
       notifications.show({

@@ -100,7 +100,7 @@ export default function EditArticle() {
           content,
           coverImage, // Обновляем обложку
           captchaToken, // Токен капчи
-          userId: user.id,
+          userId: user._id,
         });
 
         setNotification({

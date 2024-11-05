@@ -27,7 +27,7 @@ export default function Home() {
       try {
         const storedUser = localStorage.getItem('user');
         const user = storedUser ? JSON.parse(storedUser) : null;
-        if (user && user.id) {
+        if (user && user._id) {
           const response = await $api.get('/article/requests/');
           setArticles(response.data.requests);
         }

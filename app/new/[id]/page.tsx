@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import {
   Container,
   Image,
@@ -16,7 +16,14 @@ import {
   Avatar,
   Skeleton,
 } from '@mantine/core';
-import { IconEye, IconTrash } from '@tabler/icons-react';
+import {
+  IconBrandFacebook,
+  IconBrandTelegram,
+  IconBrandTwitter,
+  IconBrandWhatsapp,
+  IconEye,
+  IconTrash,
+} from '@tabler/icons-react';
 import { Carousel } from '@mantine/carousel';
 import $api from '@/components/api/axiosInstance';
 import ReactHtmlParser from 'react-html-parser';
@@ -44,7 +51,10 @@ export default function ArticlePage() {
   const [username, setUsername] = useState<string | null>(null);
   const [replyLimit, setReplyLimit] = useState(3);
   const [reloadCommentsTrigger, setReloadCommentsTrigger] = useState(false);
-
+  const router = useRouter();
+  const handleUserClick = (userId) => {
+    router.push(`/user/${userId}`);
+  };
   // Загрузка статьи, комментариев и популярных статей
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -195,11 +205,7 @@ export default function ArticlePage() {
             {loading ? (
               <Skeleton height={48} circle mb="sm" />
             ) : (
-              <Avatar
-                src={article?.userAvatar || undefined}
-                alt={article?.username || 'Анонимно'}
-                size="lg"
-              />
+              <Avatar src="/avate.png" alt={article?.username || 'Анонимно'} size="lg" />
             )}
             <div>
               {loading ? (
@@ -207,7 +213,7 @@ export default function ArticlePage() {
               ) : (
                 <Text size="sm">
                   <Group>
-                    {article?.username || 'Анонимно'}
+                    Parfumetrika
                     <div
                       style={{
                         display: 'flex',
@@ -223,6 +229,7 @@ export default function ArticlePage() {
                   </Group>
                 </Text>
               )}
+
               <Title mt="10" size="24" mb="sm">
                 {loading ? <Skeleton height={32} width="250px" /> : article.title}
               </Title>
@@ -231,6 +238,56 @@ export default function ArticlePage() {
               </Text>
             </div>
           </Group>
+          <Box mt="10" mb="20">
+            <Title size="lg" mb="sm">
+              Поделиться:
+            </Title>
+            <Group spacing="sm">
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue"
+              >
+                <IconBrandFacebook strokeWidth={1.6} size={24} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue"
+              >
+                <IconBrandTwitter strokeWidth={1.6} size={24} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue"
+              >
+                <IconBrandTelegram size={24} strokeWidth={1.6} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="green"
+              >
+                <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+              </ActionIcon>
+            </Group>
+          </Box>
 
           {article?.coverImage && !loading ? (
             <Image
@@ -241,7 +298,7 @@ export default function ArticlePage() {
               mb="lg"
               style={{
                 borderRadius: '14px',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                border: '1px solid #dee2e6',
                 position: 'relative',
                 maxHeight: '320px',
               }}
@@ -328,9 +385,7 @@ export default function ArticlePage() {
           </Title>
 
           <Box mb="lg">
-            {loading ? (
-              <Skeleton height={20} width="100%" />
-            ) : comments.length === 0 ? (
+            {comments.length === 0 ? (
               <Text size="sm" color="dimmed">
                 Пока нет комментариев.
               </Text>
@@ -344,11 +399,17 @@ export default function ArticlePage() {
                           <div style={{ display: 'flex', gap: '20px' }}>
                             <Avatar
                               src={comment.avatar || undefined}
-                              alt={comment.username}
+                              alt={comment.username || 'Анонимно'}
                               size="md"
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => handleUserClick(comment.userId)} // Переход по userId
                             />
                             <div>
-                              <Text size="xs">
+                              <Text
+                                size="xs"
+                                onClick={() => handleUserClick(comment.userId)}
+                                style={{ cursor: 'pointer' }}
+                              >
                                 {comment.username || 'Анонимно'}
                                 {comment.userId === article.userId && (
                                   <span
@@ -397,7 +458,6 @@ export default function ArticlePage() {
                             </ActionIcon>
                           )}
                         </div>
-
                         {/* Отображение ответов на комментарии */}
                         {comment.replies?.length > 0 &&
                           comment.replies.slice(0, replyLimit).map((reply, replyIndex) => (
@@ -413,9 +473,16 @@ export default function ArticlePage() {
                                           src={reply.avatar || undefined}
                                           alt={reply.username}
                                           size="sm"
+                                          style={{ cursor: 'pointer' }}
+                                          onClick={() => handleUserClick(reply.userId)} // Переход по userId
                                         />
                                         <div>
-                                          <Text size="xs" color="dimmed">
+                                          <Text
+                                            size="xs"
+                                            color="dimmed"
+                                            onClick={() => handleUserClick(reply.userId)}
+                                            style={{ cursor: 'pointer' }}
+                                          >
                                             Ответил(a): {reply.username || 'Анонимно'}
                                             {reply.userId === article.userId && (
                                               <span
@@ -458,44 +525,6 @@ export default function ArticlePage() {
                               </Card>
                             </Box>
                           ))}
-
-                        {/* Показать еще ответы */}
-                        {comment.replies?.length > replyLimit && (
-                          <div
-                            style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
-                          >
-                            <Button
-                              variant="outline"
-                              radius={9}
-                              size="xs"
-                              onClick={handleShowMoreReplies}
-                            >
-                              Показать еще
-                            </Button>
-                          </div>
-                        )}
-
-                        {/* Форма ответа на комментарий */}
-                        {replyingTo === comment._id && (
-                          <Box mt="md">
-                            <Textarea
-                              radius="12"
-                              placeholder="Ответить на комментарий..."
-                              minRows={2}
-                              value={newReply}
-                              onChange={(e) => setNewReply(e.currentTarget.value)}
-                            />
-                            <Button
-                              radius="12"
-                              mt="sm"
-                              onClick={() => handleReplySubmit(comment._id)}
-                              loading={submitting}
-                              disabled={submitting}
-                            >
-                              Отправить ответ
-                            </Button>
-                          </Box>
-                        )}
                       </div>
                     </Group>
                   </Card>
@@ -526,6 +555,56 @@ export default function ArticlePage() {
             Отправить комментарий
           </Button>
         </Card>
+        <Box mt="xl">
+          <Title size="lg" mb="sm">
+            Поделиться:
+          </Title>
+          <Group spacing="sm">
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandFacebook strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandTwitter strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandTelegram size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(window.location.href)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="green"
+            >
+              <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+            </ActionIcon>
+          </Group>
+        </Box>
       </Container>
       <FooterLinks />
     </>

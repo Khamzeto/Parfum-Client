@@ -1,10 +1,11 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Text, Title, Image } from '@mantine/core';
+import { Avatar, Button, Text, Title, Image, Tooltip } from '@mantine/core';
 import { Header } from '@/components/Header/Header';
 import $api from '@/components/api/axiosInstance';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
+import { IconCheck } from '@tabler/icons-react';
 
 const ProfileCard = () => {
   const [selectedTab, setSelectedTab] = useState('Коллекция');
@@ -28,6 +29,7 @@ const ProfileCard = () => {
   const [avatar, setAvatar] = useState('');
   const [description, setDescription] = useState('');
   const [id, setId] = useState(userId);
+  const [verified, setVerified] = useState(false);
 
   // Получение данных пользователя с сервера
   useEffect(() => {
@@ -41,6 +43,7 @@ const ProfileCard = () => {
         setUsername(userData.username || 'Пользователь');
         setDescription(userData.description);
         setId(userData._id);
+        setVerified(userData?.isVerified);
       } catch (error) {
         console.error('Ошибка при получении данных пользователя:', error);
       }
@@ -171,7 +174,14 @@ const ProfileCard = () => {
             }}
           >
             <div>
-              <Title order={1}>{username}</Title>
+              <Title order={1}>
+                {username}{' '}
+                {verified && (
+                  <Tooltip label="Подтвержденная личность" withArrow>
+                    <IconCheck size="2rem" color="gray" />
+                  </Tooltip>
+                )}
+              </Title>
               <Text style={{ fontSize: '18px', color: '#6b6b6b' }}>{description}</Text>
             </div>
           </div>

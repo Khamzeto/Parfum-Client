@@ -84,7 +84,7 @@ export default function Home() {
           <Card padding="20" withBorder radius="14" style={{ display: 'flex' }}>
             <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
               <Text size="lg">Мои Статьи</Text>
-              <Button onClick={() => router.push('/create-post')} radius="12" maxWidth="200px">
+              <Button onClick={() => router.push('/create-article')} radius="12" maxWidth="200px">
                 Создать статью
               </Button>
             </div>

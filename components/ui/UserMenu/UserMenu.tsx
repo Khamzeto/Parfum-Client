@@ -1,3 +1,4 @@
+import { IconCheck } from '@tabler/icons-react'; // Импортируем иконку галочки
 import { forwardRef, useEffect, useState } from 'react';
 import {
   IconChevronRight,
@@ -9,23 +10,27 @@ import {
 } from '@tabler/icons-react';
 import { Group, Avatar, Text, Menu, UnstyledButton, rem, useMantineTheme } from '@mantine/core';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import './UserMenu.css';
+
 interface User {
   id: string;
   username: string;
   email: string;
   avatar: string;
+  isVerified?: boolean; // Добавляем поле isVerified
 }
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   image: string;
   name: string;
   email: string;
+  isVerified?: boolean;
   icon?: React.ReactNode;
 }
 
 const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
-  ({ image, name, email, icon, ...others }: UserButtonProps, ref) => (
+  ({ image, name, email, isVerified, icon, ...others }: UserButtonProps, ref) => (
     <UnstyledButton
       ref={ref}
       style={{
@@ -42,7 +47,8 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
             size="sm"
             fw={500}
             style={{
-              display: 'block',
+              display: 'flex',
+              alignItems: 'center',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -50,6 +56,13 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
             className="user-text"
           >
             {name}
+            {isVerified && (
+              <IconCheck
+                size="1rem"
+                color="gray"
+                style={{ marginLeft: '0.2rem' }} // Добавляем иконку галочки, если isVerified === true
+              />
+            )}
           </Text>
           <Text
             c="dimmed"
@@ -84,17 +97,43 @@ export function UserMenu() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
 
+  // Функция для запроса данных пользователя
+  const fetchUser = async (userId: string) => {
+    try {
+      const response = await axios.get<User>(`https://hltback.parfumetrika.ru/users/${userId}`);
+      setUser(response.data);
+      localStorage.setItem('user', JSON.stringify(response.data)); // Обновляем данные в localStorage
+    } catch (error) {
+      console.error('Ошибка загрузки данных пользователя:', error);
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      let parsedUser = JSON.parse(storedUser);
+
+      // Если существует _id, преобразуем его в id и обновляем localStorage
+      if (parsedUser._id && !parsedUser.id) {
+        parsedUser.id = parsedUser._id;
+        delete parsedUser._id; // Удаляем _id, чтобы не было путаницы
+        localStorage.setItem('user', JSON.stringify(parsedUser)); // Обновляем в localStorage
+      }
+
+      setUser(parsedUser);
+      const userId = parsedUser.id; // Теперь мы всегда используем id
+
+      if (userId) {
+        console.log(parsedUser);
+        fetchUser(userId); // Передаем идентификатор для загрузки данных
+      }
     }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    router.push('/Login');
+    router.push('/login');
   };
 
   return (
@@ -104,6 +143,7 @@ export function UserMenu() {
           image={user?.avatar || 'Unknown User'}
           name={user?.username || 'Unknown User'}
           email={user?.email || 'unknown@mail.com'}
+          isVerified={user?.isVerified} // Передаем isVerified в UserButton
         />
       </Menu.Target>
       <Menu.Dropdown>

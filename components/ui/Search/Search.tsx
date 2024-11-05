@@ -108,7 +108,10 @@ const SearchPage = () => {
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [activePage, setActivePage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<number>(() => {
+    const savedPage = localStorage.getItem('activePage');
+    return savedPage ? Number(savedPage) : 1;
+  });
   const [totalPages, setTotalPages] = useState<number>(1);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isListView, setIsListView] = useState(false);
@@ -281,6 +284,20 @@ const SearchPage = () => {
       console.error('Failed to fetch brands:', err);
     }
   };
+  useEffect(() => {
+    // Сохраняем `activePage` в `localStorage`, когда оно меняется
+    localStorage.setItem('activePage', activePage.toString());
+  }, [activePage]);
+
+  // useEffect для установки сохраненного `activePage` при первой загрузке
+  useEffect(() => {
+    const savedPage = localStorage.getItem('activePage');
+    console.log(savedPage);
+    if (savedPage) {
+      setActivePage(Number(savedPage));
+      console.log(savedPage);
+    }
+  }, []);
 
   // Debounce fetch functions
   const fetchNotesDebounced = useMemo(() => debounce(fetchNotes, 300), []);
@@ -310,8 +327,7 @@ const SearchPage = () => {
   // Убедитесь, что отслеживается только searchQuery
 
   const fetchData = async (page: number) => {
-    setLoading(true);
-
+    setLoading(true); // Установить загрузку перед началом запроса
     try {
       const params: any = {
         page: page,
@@ -336,11 +352,10 @@ const SearchPage = () => {
 
       // Устанавливаем параметры пагинации на основе ответа
       setTotalPages(response.data.totalPages);
-      setActivePage(response.data.currentPage);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Не удалось получить данные');
     } finally {
-      setLoading(false);
+      setLoading(false); // Убедитесь, что loading сбрасывается после запроса
     }
   };
 
@@ -379,6 +394,8 @@ const SearchPage = () => {
 
   const handlePageChange = (page: number) => {
     setActivePage(page);
+
+    localStorage.setItem('activePage', page.toString());
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -777,7 +794,7 @@ const SearchPage = () => {
                             style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
                           >
                             <IconStar size={12} style={{ verticalAlign: 'middle' }} />{' '}
-                            {perfume.rating_value} ({perfume.rating_count} отзывов)
+                            {perfume.rating_value} ({perfume.rating_count} оценок)
                           </Text>
                           <Text
                             size="xs"
@@ -897,7 +914,7 @@ const SearchPage = () => {
                           }}
                         >
                           <IconStar size={16} style={{ color: theme.colors.yellow[6] }} />{' '}
-                          {perfume.rating_value} ({perfume.rating_count} отзывов)
+                          {perfume.rating_value} ({perfume.rating_count} оценок)
                         </Text>
                       </Group>
                       <Group spacing="xs" style={{ display: 'flex', alignItems: 'center' }}>
@@ -928,7 +945,12 @@ const SearchPage = () => {
         </div>
 
         <Group mt="lg" mb="12" style={{ display: 'flex', justifyContent: 'center' }}>
-          <Pagination page={activePage} radius="8" onChange={handlePageChange} total={totalPages} />
+          <Pagination
+            value={activePage}
+            radius="8"
+            onChange={handlePageChange}
+            total={totalPages}
+          />
         </Group>
       </div>
     </>
