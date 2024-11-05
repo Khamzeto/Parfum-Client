@@ -37,6 +37,8 @@ import {
   IconBrandTelegram,
   IconBrandTwitter,
   IconBrandFacebook,
+  IconBrandVk,
+  IconBrandOkRu,
 } from '@tabler/icons-react';
 import InputSimiliar from '@/components/ui/inputSimiliar/inputSimiliar';
 
@@ -1373,28 +1375,6 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              color="blue"
-            >
-              <IconBrandFacebook strokeWidth={1.6} size={24} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="lg"
-              component="a"
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(perfume?.name)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              color="blue"
-            >
-              <IconBrandTwitter strokeWidth={1.6} size={24} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="lg"
-              component="a"
               href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(perfume?.name)}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -1412,6 +1392,28 @@ const PerfumeDetailsPage = () => {
               color="green"
             >
               <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://vk.com/share.php?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(perfume?.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandVk size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://connect.ok.ru/offer?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(perfume?.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="orange"
+            >
+              <IconBrandOkRu size={24} strokeWidth={1.6} />
             </ActionIcon>
           </Group>
         </Box>

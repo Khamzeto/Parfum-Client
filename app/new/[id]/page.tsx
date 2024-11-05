@@ -18,8 +18,10 @@ import {
 } from '@mantine/core';
 import {
   IconBrandFacebook,
+  IconBrandOkRu,
   IconBrandTelegram,
   IconBrandTwitter,
+  IconBrandVk,
   IconBrandWhatsapp,
   IconEye,
   IconTrash,
@@ -55,6 +57,14 @@ export default function ArticlePage() {
   const handleUserClick = (userId) => {
     router.push(`/user/${userId}`);
   };
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
+
   // Загрузка статьи, комментариев и популярных статей
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -246,29 +256,7 @@ export default function ArticlePage() {
               <ActionIcon
                 size="lg"
                 component="a"
-                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                color="blue"
-              >
-                <IconBrandFacebook strokeWidth={1.6} size={24} />
-              </ActionIcon>
-
-              <ActionIcon
-                size="lg"
-                component="a"
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                color="blue"
-              >
-                <IconBrandTwitter strokeWidth={1.6} size={24} />
-              </ActionIcon>
-
-              <ActionIcon
-                size="lg"
-                component="a"
-                href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+                href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(article?.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="blue"
@@ -279,12 +267,34 @@ export default function ArticlePage() {
               <ActionIcon
                 size="lg"
                 component="a"
-                href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(window.location.href)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(currentUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 color="green"
               >
                 <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://vk.com/share.php?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(article?.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="blue"
+              >
+                <IconBrandVk size={24} strokeWidth={1.6} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://connect.ok.ru/offer?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(article?.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="orange"
+              >
+                <IconBrandOkRu size={24} strokeWidth={1.6} />
               </ActionIcon>
             </Group>
           </Box>
@@ -555,7 +565,7 @@ export default function ArticlePage() {
             Отправить комментарий
           </Button>
         </Card>
-        <Box mt="xl">
+        <Box mt="10" mb="20">
           <Title size="lg" mb="sm">
             Поделиться:
           </Title>
@@ -563,29 +573,7 @@ export default function ArticlePage() {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              color="blue"
-            >
-              <IconBrandFacebook strokeWidth={1.6} size={24} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="lg"
-              component="a"
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              color="blue"
-            >
-              <IconBrandTwitter strokeWidth={1.6} size={24} />
-            </ActionIcon>
-
-            <ActionIcon
-              size="lg"
-              component="a"
-              href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article?.title)}`}
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(article?.title)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="blue"
@@ -596,12 +584,34 @@ export default function ArticlePage() {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(window.location.href)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(article?.title)} ${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="green"
             >
               <IconBrandWhatsapp strokeWidth={1.6} size={24} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://vk.com/share.php?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(article?.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="blue"
+            >
+              <IconBrandVk size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://connect.ok.ru/offer?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(article?.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="orange"
+            >
+              <IconBrandOkRu size={24} strokeWidth={1.6} />
             </ActionIcon>
           </Group>
         </Box>
