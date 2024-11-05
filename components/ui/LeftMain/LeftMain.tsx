@@ -91,7 +91,7 @@ export function LeftMain({ stores, perfume }) {
           className="card-perfume"
           shadow="2"
           h="280px"
-          padding="15.8px "
+          padding="15.8px"
           radius="18"
           bg={theme.colors.gray[0]}
           style={{ marginBottom: '20px' }}
@@ -128,7 +128,7 @@ export function LeftMain({ stores, perfume }) {
                 {perfume.brand}
               </Text>
 
-              <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center' }}>
+              <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}>
                 <IconCalendar size={16} color={theme.colors.blue[6]} />
                 <Text size="xs" style={{ color: theme.colors.gray[6] }}>
                   Год выпуска: {perfume.release_year}
@@ -136,9 +136,10 @@ export function LeftMain({ stores, perfume }) {
               </Group>
             </div>
             <Button
+              onClick={() => router.push(`/perfumes/47577`)}
               variant="outline"
               radius="12"
-              style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
+              style={{ borderColor: theme.colors.gray[4] }}
             >
               Читать полностью
             </Button>

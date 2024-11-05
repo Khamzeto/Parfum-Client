@@ -21,8 +21,10 @@ import { IconX, IconCheck, IconUpload } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { FooterLinks } from '@/components/ui/Footer/Footer';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -231,7 +233,14 @@ export default function Home() {
           <Text align="center" color="teal" size="md" mb="lg">
             Ваша статья была успешно отправлена и будет рассмотрена в ближайшее время.
           </Text>
-          <Button onClick={() => setIsModalOpen(false)} fullWidth radius="md">
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+              router.push('/');
+            }}
+            fullWidth
+            radius="md"
+          >
             Понятно
           </Button>
         </Modal>

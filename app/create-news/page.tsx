@@ -14,11 +14,14 @@ import {
   Image,
   rem,
   Group,
+  Modal,
 } from '@mantine/core';
 import { IconX, IconCheck, IconUpload } from '@tabler/icons-react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 export default function CreateNews() {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -29,6 +32,7 @@ export default function CreateNews() {
     color: string;
     icon: React.ReactNode;
   } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -75,6 +79,7 @@ export default function CreateNews() {
           color: 'teal',
           icon: checkIcon,
         });
+        setIsModalOpen(true);
       } else {
         setNotification({ message: 'Пользователь не найден.', color: 'red', icon: xIcon });
       }
@@ -191,6 +196,28 @@ export default function CreateNews() {
             Отправить новость
           </Button>
         </Card>
+        <Modal
+          opened={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Статья успешно отправлена!"
+          centered
+          radius="md"
+          padding="lg"
+        >
+          <Text align="center" color="teal" size="md" mb="lg">
+            Ваша статья была успешно отправлена и будет рассмотрена в ближайшее время.
+          </Text>
+          <Button
+            onClick={() => {
+              setIsModalOpen(false);
+              router.push('/');
+            }}
+            fullWidth
+            radius="md"
+          >
+            Понятно
+          </Button>
+        </Modal>
       </Container>
     </>
   );

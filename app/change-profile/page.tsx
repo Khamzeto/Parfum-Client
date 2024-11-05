@@ -255,7 +255,7 @@ const UserProfile = () => {
 
             <Group mt="md">
               <Button radius={12} onClick={handleUpdateProfile}>
-                Редактировать профиль
+                Сохранить изменения
               </Button>
               <Button radius={12} color="blue" onClick={() => setChangePasswordModal(true)}>
                 Сменить пароль
