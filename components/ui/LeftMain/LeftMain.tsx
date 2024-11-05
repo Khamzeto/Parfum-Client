@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/ru';
+import 'dayjs/locale/ru'; // Подключение русской локализации
 import { useEffect, useState } from 'react';
+import { Carousel } from '@mantine/carousel';
 import {
   Text,
   Container,
@@ -14,6 +15,7 @@ import {
   Button,
   Rating,
   useMantineTheme,
+  useMantineColorScheme,
   Image,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -30,13 +32,16 @@ import {
 import $api from '@/components/api/axiosInstance';
 import { useRouter } from 'next/navigation';
 
-dayjs.locale('ru');
+dayjs.locale('ru'); // Устанавливаем локализацию на русский
 dayjs.extend(relativeTime);
 
-export function LeftMain({ perfume }) {
+export function LeftMain({ stores, perfume }) {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [posts, setPosts] = useState([]);
+  const { colorScheme } = useMantineColorScheme();
+  const isDark = colorScheme === 'dark';
+
   const [shops, setShops] = useState([]);
   const router = useRouter();
 
@@ -66,6 +71,7 @@ export function LeftMain({ perfume }) {
     fetchData();
   }, []);
 
+  // Функция для форматирования даты
   const formatDate = (date: string) => dayjs(date).fromNow();
 
   return (
@@ -78,13 +84,14 @@ export function LeftMain({ perfume }) {
           Парфюм дня
         </Title>
       </Group>
+
       {perfume.map((perfume) => (
         <Card
           key={perfume._id}
           className="card-perfume"
           shadow="2"
           h="280px"
-          padding="15.8px"
+          padding="15.8px "
           radius="18"
           bg={theme.colors.gray[0]}
           style={{ marginBottom: '20px' }}
@@ -121,7 +128,7 @@ export function LeftMain({ perfume }) {
                 {perfume.brand}
               </Text>
 
-              <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}>
+              <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center' }}>
                 <IconCalendar size={16} color={theme.colors.blue[6]} />
                 <Text size="xs" style={{ color: theme.colors.gray[6] }}>
                   Год выпуска: {perfume.release_year}
@@ -129,10 +136,9 @@ export function LeftMain({ perfume }) {
               </Group>
             </div>
             <Button
-              onClick={() => router.push(`/perfumes/47577`)}
               variant="outline"
               radius="12"
-              style={{ borderColor: theme.colors.gray[4] }}
+              style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
             >
               Читать полностью
             </Button>
@@ -140,11 +146,86 @@ export function LeftMain({ perfume }) {
         </Card>
       ))}
 
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
+        <ActionIcon color="yellow" radius="xl" size="lg">
+          <IconStar size={16} color="white" />
+        </ActionIcon>
+        <h2 style={{ marginTop: '-4px', fontSize: '22px' }}>Лучшее в блогах</h2>
+        <ActionIcon
+          onClick={() => router.push(`/create-article`)}
+          variant="outline"
+          radius="xl"
+          size="lg"
+        >
+          <IconPlus size={16} />
+        </ActionIcon>
+      </div>
+
+      {posts.map((post, index) => (
+        <div
+          key={post.id}
+          onClick={() => (window.location.href = `/article/${post._id}`)}
+          style={{ cursor: 'pointer' }}
+        >
+          <div
+            style={{
+              marginBottom: '0px',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+            }}
+          >
+            <div>
+              <Avatar src={post?.userId?.avatar} alt={post.author} radius="xl" size="lg" />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '0px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0px', margin: '0' }}>
+                <Text size="sm" style={{ margin: 0, padding: 0 }}>
+                  {post.author}
+                </Text>
+                <Text size="xs" color="dimmed" style={{ margin: 0, padding: 0 }}>
+                  {formatDate(post.createdAt)}
+                </Text>
+              </div>
+              <div style={{ marginTop: '2px' }}>
+                <Text size="sm" style={{ margin: 0, padding: 0, width: '160px' }}>
+                  {post.title}
+                </Text>
+              </div>
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '5px' }}
+                >
+                  <IconMessageCircle size={16} color="gray" />
+                  <Text size="xs" style={{ margin: 0, padding: 0, color: 'gray' }}>
+                    {post.comments?.length || 0}
+                  </Text>
+                </div>
+              </div>
+            </div>
+          </div>
+          {index < posts.length - 1 && <Divider size="1" my="8" mt="20" />}
+        </div>
+      ))}
+      <Button radius="12" variant="outline" mt="20">
+        Показать еще
+      </Button>
+
       <div style={{ padding: '0px', borderRadius: '12px', marginTop: '50px' }}>
-        <Group align="center" mb="xl">
-          <IconShoppingBag color={theme.colors.blue[6]} />
-          <Title style={{ fontSize: '22px' }}>Aromo магазины</Title>
-        </Group>
+        {shops.length > 0 && (
+          <Group align="center" mb="xl">
+            <IconShoppingBag color={theme.colors.blue[6]} />
+            <Title style={{ fontSize: '22px' }}>Aromo магазины</Title>
+          </Group>
+        )}
 
         {shops.map((shop) => (
           <div key={shop._id} style={{ marginBottom: '40px' }}>
