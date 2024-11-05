@@ -89,6 +89,13 @@ const PerfumeDetailsPage = () => {
     console.log('Оценки:', ratings);
     // Тут можно обработать отправку оценок на сервер
   };
+  const [currentUrl, setCurrentUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -1366,7 +1373,7 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="blue"
@@ -1377,7 +1384,7 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(perfume?.name)}`}
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(perfume?.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="blue"
@@ -1388,7 +1395,7 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://telegram.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(perfume?.name)}`}
+              href={`https://telegram.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(perfume?.name)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="blue"
@@ -1399,7 +1406,7 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://wa.me/?text=${encodeURIComponent(perfume?.name)} ${encodeURIComponent(window.location.href)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(perfume?.name)} ${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="green"
