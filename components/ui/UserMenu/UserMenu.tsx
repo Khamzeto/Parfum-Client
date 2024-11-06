@@ -1,4 +1,4 @@
-import { IconCheck } from '@tabler/icons-react'; // Импортируем иконку галочки
+import { IconCheck, IconEdit, IconNews } from '@tabler/icons-react'; // Импортируем иконку галочки
 import { forwardRef, useEffect, useState } from 'react';
 import {
   IconChevronRight,
@@ -156,12 +156,29 @@ export function UserMenu() {
         />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
-          leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-          onClick={() => router.push('/profile')}
-        >
-          Профиль
-        </Menu.Item>
+        {user?.roles?.includes('admin') && (
+          <>
+            <Menu.Item
+              leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+              onClick={() => router.push('/profile')}
+            >
+              Профиль
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconNews style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+              onClick={() => router.push('/my-news')}
+            >
+              Мои новости
+            </Menu.Item>
+            <Menu.Item
+              leftSection={<IconEdit style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+              onClick={() => router.push('/create-news')}
+            >
+              Создать новость
+            </Menu.Item>
+          </>
+        )}
+
         <Menu.Item
           leftSection={<IconArticle style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
           onClick={() => router.push('/my-articles')}

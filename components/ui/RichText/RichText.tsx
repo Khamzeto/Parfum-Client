@@ -7,16 +7,18 @@ import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
-import { useRef } from 'react'; // Используем useRef для управления input
-import { Button } from '@mantine/core'; // Используем Button из Mantine
-import { IconUpload } from '@tabler/icons-react'; // Импорт иконки загрузки
+import { useRef, useEffect } from 'react';
+import { Button } from '@mantine/core';
+import { IconUpload } from '@tabler/icons-react';
+import debounce from 'lodash.debounce';
 import '@mantine/tiptap/styles.css';
 
 interface RichTextProps {
   setContent: (content: string) => void;
+  initialContent?: string;
 }
 
-export default function RichText({ setContent }: RichTextProps) {
+export default function RichText({ setContent, initialContent = '' }: RichTextProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -26,33 +28,38 @@ export default function RichText({ setContent }: RichTextProps) {
       SubScript,
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Image, // Подключаем Image
+      Image.configure({ allowBase64: true }),
     ],
-    content: '',
-    onUpdate: ({ editor }) => {
+    content: '', // Устанавливаем пустое значение при инициализации
+    onUpdate: debounce(({ editor }) => {
       setContent(editor.getHTML());
-    },
+    }, 300),
   });
 
-  const fileInputRef = useRef<HTMLInputElement>(null); // Используем реф для input
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Обработчик загрузки изображений
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         const base64Image = reader.result as string;
-        editor?.commands.setImage({ src: base64Image }); // Добавляем изображение в редактор
+        editor?.commands.setImage({ src: base64Image });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  // Открываем диалог выбора файла при клике на кнопку
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
+
+  useEffect(() => {
+    // Проверяем, что редактор полностью инициализировался перед установкой начального содержимого
+    if (editor?.isEmpty && initialContent) {
+      editor.commands.setContent(initialContent, false); // Загружаем начальный контент один раз
+    }
+  }, [editor, initialContent]);
 
   return (
     <RichTextEditor style={{ borderRadius: '14px', padding: '8px' }} editor={editor}>
@@ -105,28 +112,27 @@ export default function RichText({ setContent }: RichTextProps) {
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          ref={fileInputRef} // Привязываем реф к input
+          ref={fileInputRef}
           style={{ display: 'none' }}
         />
 
-        {/* Красивая кнопка для загрузки изображения */}
         <Button
           onClick={handleButtonClick}
           variant="outline"
           color="#cfcfcf"
           radius="4"
-          w="30px" // Ширина кнопки
-          h="26px" // Высота кнопки
+          w="30px"
+          h="26px"
           styles={() => ({
             root: {
               display: 'flex',
-              justifyContent: 'center', // Центрируем по горизонтали
-              alignItems: 'center', // Центрируем по вертикали
-              padding: '0', // Убираем внутренние отступы
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: '0',
             },
           })}
         >
-          <IconUpload size={14} color="black" /> {/* Иконка будет по центру кнопки */}
+          <IconUpload size={14} color="black" />
         </Button>
       </RichTextEditor.Toolbar>
 

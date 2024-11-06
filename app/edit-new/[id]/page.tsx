@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'next/navigation'; // Импорт useParams из Next.js
+import { useParams } from 'next/navigation';
 import {
   Container,
   TextInput,
@@ -15,9 +15,9 @@ import {
   Group,
 } from '@mantine/core';
 import { IconX, IconCheck, IconUpload } from '@tabler/icons-react';
-import $api from '@/components/api/axiosInstance'; // Ваш axios instance
-import HCaptcha from '@hcaptcha/react-hcaptcha'; // Импорт HCaptcha
-import RichText from '@/components/ui/RichText/RichText'; // Редактор текста
+import $api from '@/components/api/axiosInstance';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
+import RichText from '@/components/ui/RichText/RichText';
 import { Header } from '@/components/Header/Header';
 import { FooterLinks } from '@/components/ui/Footer/Footer';
 
@@ -26,8 +26,8 @@ export default function EditArticle() {
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
-  const [coverImage, setCoverImage] = useState<string | null>(null); // Для хранения обложки
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // Для токена капчи
+  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [notification, setNotification] = useState<{
     message: string;
     color: string;
@@ -35,18 +35,17 @@ export default function EditArticle() {
   } | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const captchaRef = useRef<HCaptcha>(null); // Реф капчи
-  const { id } = useParams(); // Получаем ID статьи из URL
+  const captchaRef = useRef<HCaptcha>(null);
+  const { id } = useParams();
 
   const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
   const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
-  // Функция загрузки данных статьи
   useEffect(() => {
     const fetchArticleData = async () => {
       if (id) {
         try {
-          const response = await $api.get(`/article/requests/id/${id}`);
+          const response = await $api.get(`/news/requests/id/${id}`);
           const { title, description, content, coverImage } = response.data;
           setTitle(title);
           setDescription(description);
@@ -61,7 +60,6 @@ export default function EditArticle() {
     fetchArticleData();
   }, [id]);
 
-  // Функция обработки загрузки изображения
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -69,11 +67,10 @@ export default function EditArticle() {
       reader.onloadend = () => {
         setCoverImage(reader.result as string);
       };
-      reader.readAsDataURL(file); // Преобразуем изображение в base64
+      reader.readAsDataURL(file);
     }
   };
 
-  // Функция отправки данных на сервер
   const handleSubmit = async () => {
     if (!title || !description || !content) {
       setNotification({ message: 'Пожалуйста, заполните все поля.', color: 'red', icon: xIcon });
@@ -93,13 +90,12 @@ export default function EditArticle() {
       if (storedUser) {
         const user = JSON.parse(storedUser);
 
-        // Отправляем PUT запрос для обновления статьи
-        const response = await $api.put(`/article/requests/${id}`, {
+        const response = await $api.put(`/news/requests/${id}`, {
           title,
           description,
           content,
-          coverImage, // Обновляем обложку
-          captchaToken, // Токен капчи
+          coverImage,
+          captchaToken,
           userId: user._id,
         });
 
@@ -108,8 +104,8 @@ export default function EditArticle() {
           color: 'teal',
           icon: checkIcon,
         });
-        setCaptchaToken(null); // Сброс капчи после успешной отправки
-        captchaRef.current?.resetCaptcha(); // Сброс капчи
+        setCaptchaToken(null);
+        captchaRef.current?.resetCaptcha();
       } else {
         setNotification({ message: 'Пользователь не найден.', color: 'red', icon: xIcon });
       }
@@ -121,25 +117,10 @@ export default function EditArticle() {
     }
   };
 
-  const handleButtonClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click(); // Открываем диалог выбора файла
-    }
-  };
-
-  const handleCaptchaVerification = (token: string | null) => {
-    setCaptchaToken(token); // Устанавливаем токен капчи при верификации
-  };
-
   return (
     <>
-      <head>
-        <title>Изменить статью | Parfumetrika</title>
-        <meta name="description" content="Изменить статью,Parfumetrika" />
-      </head>
       <Header />
       <Container fluid maw="1440px" style={{ margin: '60px auto 0 auto' }} mt="20">
-        {/* Notification */}
         {notification && (
           <Notification
             icon={notification.icon}
@@ -152,14 +133,11 @@ export default function EditArticle() {
           </Notification>
         )}
 
-        {/* Card wraps the content */}
         <Card shadow="sm" padding="lg" radius="16">
           <Box mb="lg">
             <Text size="lg" weight={500} mb="md">
               Редактировать статью
             </Text>
-
-            {/* Title Input */}
             <TextInput
               label="Заголовок"
               placeholder="Введите заголовок"
@@ -169,7 +147,6 @@ export default function EditArticle() {
               mb="md"
             />
 
-            {/* Description Textarea */}
             <Textarea
               label="Описание"
               placeholder="Введите описание статьи"
@@ -180,14 +157,13 @@ export default function EditArticle() {
               minRows={3}
             />
 
-            {/* Загрузка обложки */}
             <Text size="sm" mb="xs">
               Обложка статьи
             </Text>
             <Button
               variant="outline"
               leftSection={<IconUpload size={16} />}
-              onClick={handleButtonClick}
+              onClick={() => fileInputRef.current?.click()}
               radius="md"
               fullWidth
               mb="md"
@@ -202,42 +178,41 @@ export default function EditArticle() {
               style={{ display: 'none' }}
             />
 
-            {/* Предварительный просмотр обложки */}
             {coverImage && (
               <Group position="center">
                 <Image
                   src={coverImage}
                   alt="Обложка статьи"
                   radius="md"
-                  height={200} // Примерная высота
-                  width={320} // Примерная ширина (шире чем высота)
+                  height={200}
+                  width={320}
                   fit="cover"
                   mb="md"
                 />
               </Group>
             )}
           </Box>
-          {/* HCaptcha */}
+
           <Text style={{ fontSize: '14px', fontWeight: 500 }} mb="xs">
             Статья
           </Text>
-          <RichText setContent={setContent} initialContent={content} />{' '}
-          {/* Передаем функцию установки контента */}
+          <RichText setContent={setContent} initialContent={content} />
+
           <Group mb="lg" mt="20">
             <HCaptcha
-              sitekey="c4923d66-7fe4-436e-bf08-068675b075d4" // Замените на ваш сайт-ключ
-              onVerify={handleCaptchaVerification}
+              sitekey="c4923d66-7fe4-436e-bf08-068675b075d4"
+              onVerify={(token) => setCaptchaToken(token)}
               ref={captchaRef}
             />
           </Group>
-          {/* Submit Button */}
+
           <Button
             fullWidth
             mt="md"
             radius="md"
             onClick={handleSubmit}
             loading={loading}
-            disabled={loading || !captchaToken} // Отключаем кнопку, если капча не пройдена
+            disabled={loading || !captchaToken}
           >
             Обновить статью
           </Button>
