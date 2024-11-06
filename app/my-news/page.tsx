@@ -119,64 +119,67 @@ export default function Home() {
                 </Card>
               ) : (
                 <div className="myarticles-container">
-                  {articles.map((article) => (
-                    <div
-                      key={article._id}
-                      className="myarticles-card"
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => handleCardClick(article._id)}
-                    >
-                      <Card radius="16" shadow="0" padding="lg" withBorder>
-                        <Group align="flex-start">
-                          <div style={{ width: '100%', height: '140px' }}>
-                            <Image
-                              src={article.coverImage || '/images/placeholder.jpg'}
-                              alt={article.title}
-                              height={140}
-                              width={200}
-                              fit="cover"
-                              radius="14"
-                            />
-                          </div>
-                          <Box style={{ width: '100%' }}>
-                            <Group position="apart">
-                              <Text size="lg" weight={500}>
-                                {article.title}
+                  {articles
+                    .slice()
+                    .reverse()
+                    .map((article) => (
+                      <div
+                        key={article._id}
+                        className="myarticles-card"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleCardClick(article._id)}
+                      >
+                        <Card radius="16" shadow="0" padding="lg" withBorder>
+                          <Group align="flex-start">
+                            <div style={{ width: '100%', height: '140px' }}>
+                              <Image
+                                src={article.coverImage || '/images/placeholder.jpg'}
+                                alt={article.title}
+                                height={140}
+                                width={200}
+                                fit="cover"
+                                radius="14"
+                              />
+                            </div>
+                            <Box style={{ width: '100%' }}>
+                              <Group position="apart">
+                                <Text size="lg" weight={500}>
+                                  {article.title}
+                                </Text>
+                              </Group>
+                              <Text size="sm" color="dimmed" mt="xs">
+                                {article.description}
                               </Text>
-                            </Group>
-                            <Text size="sm" color="dimmed" mt="xs">
-                              {article.description}
-                            </Text>
-                            <Group mt="md">
-                              <Button
-                                variant="light"
-                                radius="md"
-                                leftSection={<IconEdit size={18} />}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleEdit(article._id);
-                                }}
-                              >
-                                Изменить
-                              </Button>
-                              <Button
-                                variant="light"
-                                color="red"
-                                radius="md"
-                                leftSection={<IconTrash size={18} />}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDelete(article._id);
-                                }}
-                              >
-                                Удалить
-                              </Button>
-                            </Group>
-                          </Box>
-                        </Group>
-                      </Card>
-                    </div>
-                  ))}
+                              <Group mt="md">
+                                <Button
+                                  variant="light"
+                                  radius="md"
+                                  leftSection={<IconEdit size={18} />}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleEdit(article._id);
+                                  }}
+                                >
+                                  Изменить
+                                </Button>
+                                <Button
+                                  variant="light"
+                                  color="red"
+                                  radius="md"
+                                  leftSection={<IconTrash size={18} />}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete(article._id);
+                                  }}
+                                >
+                                  Удалить
+                                </Button>
+                              </Group>
+                            </Box>
+                          </Group>
+                        </Card>
+                      </div>
+                    ))}
                 </div>
               )}
             </Box>

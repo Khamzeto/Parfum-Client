@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Avatar,
   Skeleton,
+  Tooltip,
 } from '@mantine/core';
 import {
   IconBrandFacebook,
@@ -23,6 +24,7 @@ import {
   IconBrandTwitter,
   IconBrandVk,
   IconBrandWhatsapp,
+  IconCheck,
   IconEye,
   IconTrash,
 } from '@tabler/icons-react';
@@ -223,7 +225,24 @@ export default function ArticlePage() {
               ) : (
                 <Text size="sm">
                   <Group>
-                    Parfumetrika
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <div>Parfumetrika</div>
+                      <Tooltip label="Подтвержденная личность" withArrow>
+                        <div
+                          style={{
+                            backgroundColor: '#007bff', // Blue background
+                            borderRadius: '50%',
+                            width: '20px',
+                            height: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <IconCheck size="0.74rem" color="white" />
+                        </div>
+                      </Tooltip>
+                    </div>
                     <div
                       style={{
                         display: 'flex',

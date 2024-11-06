@@ -12,7 +12,8 @@ export default function RootLayout({ children }: { children: any }) {
     <html lang="en">
       <head>
         <ColorSchemeScript />
-        <link rel="shortcut icon" href="/favicon.svg" />
+        <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon" />
+        <link type="Image/x-icon" href="/favicon.ico" rel="icon" />
         <link
           href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
           rel="stylesheet"

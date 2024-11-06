@@ -22,6 +22,7 @@ import {
   AspectRatio,
   TagsInput,
   ActionIcon,
+  Tooltip,
 } from '@mantine/core';
 import { slugify } from '@/utils/slugify';
 import axios from 'axios'; // используем axios для запросов
@@ -526,10 +527,10 @@ const PerfumeDetailsPage = () => {
 
   const description = `${perfume?.name} - аромат для ${
     perfume?.gender === 'male'
-      ? 'МУЖЧИН'
+      ? 'Мужчин'
       : perfume?.gender === 'female'
-        ? 'ЖЕНЩИН'
-        : 'МУЖЧИН и ЖЕНЩИН'
+        ? 'Женщин'
+        : 'Мужчин и Женщин'
   } от ${perfume?.brand}, выпущенный в ${perfume?.release_year}. Оценка ${perfume?.rating_value} из 10.`;
 
   const ogImageUrl = perfume?.main_image || 'https://yourdomain.com/default-image.jpg';
@@ -1236,20 +1237,38 @@ const PerfumeDetailsPage = () => {
                           borderRadius: '12px',
                         }}
                       >
-                        {/* Navigate to user profile if userId is available */}
-                        <Text
-                          weight={500}
-                          onClick={() => {
-                            if (review?.userId?._id) {
-                              router.push(`/user/${review.userId._id}`);
-                            }
-                          }}
-                          style={{
-                            cursor: review?.userId ? 'pointer' : 'default',
-                          }}
-                        >
-                          {review?.userId?.username || review.username}
-                        </Text>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Text
+                            weight={500}
+                            onClick={() => {
+                              if (review?.userId?._id) {
+                                router.push(`/user/${review.userId._id}`);
+                              }
+                            }}
+                            style={{
+                              cursor: review?.userId ? 'pointer' : 'default',
+                            }}
+                          >
+                            {review?.userId?.username || review.username}
+                          </Text>
+                          {review?.userId?.isVerified && (
+                            <Tooltip label="Подтвержденная личность" withArrow>
+                              <div
+                                style={{
+                                  backgroundColor: '#007bff', // Blue background
+                                  borderRadius: '50%',
+                                  width: '16px',
+                                  height: '16px',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <IconCheck size="0.6rem" color="white" />
+                              </div>
+                            </Tooltip>
+                          )}
+                        </div>
                         <Text size="sm" mt="xs">
                           {review.body}
                         </Text>
