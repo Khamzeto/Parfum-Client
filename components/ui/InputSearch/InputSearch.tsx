@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Spotlight, spotlight } from '@mantine/spotlight';
-import { ActionIcon, Group, Text, Image, Tabs, Input } from '@mantine/core';
+import { ActionIcon, Group, Text, Image, Tabs, Input, Button } from '@mantine/core';
 import { IconArrowRight, IconSearch } from '@tabler/icons-react';
 import { useDebouncedValue } from '@mantine/hooks';
 import $api from '@/components/api/axiosInstance';
+import { UserMenu } from '../UserMenu/UserMenu';
 
 const SpotlightDemo = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -11,6 +12,13 @@ const SpotlightDemo = () => {
   const [notFound, setNotFound] = useState(false);
   const [debouncedSearchValue] = useDebouncedValue(searchValue, 300);
   const [searchType, setSearchType] = useState('perfumes');
+  const [tokenExists, setTokenExists] = useState(false); // Новое состояние для проверки токена
+
+  useEffect(() => {
+    // Проверяем наличие токена в localStorage при монтировании компонента
+    const token = localStorage.getItem('token');
+    setTokenExists(!!token);
+  }, []);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -129,6 +137,23 @@ const SpotlightDemo = () => {
         >
           <IconSearch size={24} stroke={1.5} />
         </ActionIcon>
+
+        {/* Здесь мы условно рендерим UserMenu или кнопку "Войти" */}
+        <Group w="100%" h="100px" hiddenFrom="sm">
+          {tokenExists ? (
+            <UserMenu />
+          ) : (
+            <Button
+              radius="8"
+              ml="14"
+              mr="18"
+              variant="default"
+              onClick={() => (window.location.href = '/login')}
+            >
+              Войти
+            </Button>
+          )}
+        </Group>
       </div>
 
       <Spotlight.Root

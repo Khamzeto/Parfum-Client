@@ -185,7 +185,7 @@ export function Header() {
               alt="Logo"
             />
           </div>
-          <div style={{ width: '40%' }}>
+          <div style={{ width: '40%' }} className="global-input">
             <SpotlightDemo />
           </div>
 
@@ -208,10 +208,9 @@ export function Header() {
                 </>
               ))}
           </Group>
-
-          <Group hiddenFrom="sm" gap="xs">
-            <UserMenu />
-          </Group>
+          <div className="global-input-mob">
+            <SpotlightDemo />
+          </div>
         </div>
       </header>
       <Divider mt="44" />

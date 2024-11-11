@@ -14,7 +14,22 @@
     display: none;
   }
 }
+.global-input-mob {
+  display: none !important;
+}
 @media (max-width: 768px) {
+  .global-input {
+    display: none !important;
+  }
+  .global-input-mob {
+    display: flex !important;
+    position: absolute;
+    right: 0;
+
+    /* Если нужно, установите ширину */
+    width: auto;
+  }
+
   .perfume-actions {
     order: 2;
     margin-bottom: 20px;
@@ -43,8 +58,9 @@
   }
   .search-container {
     display: flex;
-    justify-content: end;
-    width: 100%;
+
+    align-items: center;
+    min-width: 100%;
   }
 }
 .search-icon {

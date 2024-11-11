@@ -207,9 +207,15 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
         radius="18"
         style={{ textAlign: 'center', maxWidth: '300px', width: '100%', margin: '0 auto' }}
       >
-        <Text size="xs">Бренд дня</Text>
-        <Text size="xl" style={{ marginBottom: '10px' }}>
-          Acqua dell Elba
+        <Text size="xl" style={{ marginBottom: '10px' }} size="xs">
+          Бренд дня
+        </Text>
+        <Text
+          onClick={() => router.push(`/brand/Gucci`)}
+          size="xl"
+          style={{ marginBottom: '10px', cursor: 'pointer' }}
+        >
+          Gucci
         </Text>
 
         <div
@@ -219,12 +225,19 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
             justifyContent: 'center',
             width: '100%',
           }}
+          style={{ cursor: 'pointer' }}
+          onClick={() => router.push(`/brand/Gucci`)}
         >
           {firstBrand.logo(isDark)}
         </div>
 
-        <Text size="sm" color="dimmed">
-          Ароматы Acqua dell Elba
+        <Text
+          size="sm"
+          style={{ cursor: 'pointer' }}
+          onClick={() => router.push(`/brand/Gucci`)}
+          color="dimmed"
+        >
+          Ароматы Gucci
         </Text>
         <Carousel
           loop
@@ -240,17 +253,36 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
                 width={50}
                 height={80}
                 fit="contain"
-                style={{ marginBottom: '10px' }}
+                style={{ marginBottom: '10px', cursor: 'pointer' }}
+                onClick={() => router.push(`/perfumes/${perfume.perfume_id}`)}
               />
-              <Text weight={500}>{perfume.name}</Text>
-              <Text size="sm" color="dimmed">
+              <Text
+                style={{ cursor: 'pointer' }}
+                onClick={() => router.push(`/perfumes/${perfume.perfume_id}`)}
+                weight={500}
+              >
+                {perfume.name}
+              </Text>
+              <Text
+                style={{ cursor: 'pointer' }}
+                onClick={() => router.push(`/perfumes/${perfume.perfume_id}`)}
+                size="sm"
+                color="dimmed"
+              >
                 {perfume.type}
               </Text>
             </Carousel.Slide>
           ))}
         </Carousel>
 
-        <Button variant="outline" radius="md" fullWidth style={{ marginTop: '20px' }}>
+        <Button
+          style={{ cursor: 'pointer' }}
+          onClick={() => router.push(`/brand/Gucci`)}
+          variant="outline"
+          radius="md"
+          fullWidth
+          style={{ marginTop: '20px' }}
+        >
           Вся информация о бренде
         </Button>
       </Card>

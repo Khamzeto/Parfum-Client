@@ -25,6 +25,7 @@ export function CardCustom({ image, title, category, id }: CardProps) {
       radius="15"
       style={{ backgroundImage: `url(${image})` }}
       className={classes.card}
+      onClick={handleNavigate}
     >
       <div>
         <Text className={classes.cardCategory} size="xs">

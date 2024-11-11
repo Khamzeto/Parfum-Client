@@ -55,6 +55,7 @@ import { RightMain } from '../ui/RightMain/RightMain';
 import { LeftMain } from '../ui/LeftMain/LeftMain';
 import { useEffect, useState } from 'react';
 import $api from '../api/axiosInstance';
+import { useRouter } from 'next/navigation';
 
 const stores = [
   {
@@ -162,87 +163,24 @@ const perfume = [
 const perfumes = [
   {
     _id: 1,
-    perfume_id: 'bleu-de-chanel',
-    name: 'Bleu de Chanel',
+    perfume_id: '74',
+    name: 'Gucci pour Homme II',
     image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.5,
-    rating_count: 120,
-    release_year: 2018,
-    gender: 'male',
-    brand: 'Chanel',
-  },
-  {
-    _id: 1,
-    perfume_id: 'bleu-de-chanel',
-    name: 'Bleu de Chanel',
-    image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.5,
-    rating_count: 120,
-    release_year: 2018,
-    gender: 'male',
-    brand: 'Chanel',
+    type: 'Парфюмированная вода',
   },
   {
     _id: 2,
-    perfume_id: 'la-vie-est-belle',
-    name: 'La Vie Est Belle',
+    perfume_id: '638',
+    name: 'Gucci pour Homme',
     image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.8,
-    rating_count: 98,
-    release_year: 2015,
-    gender: 'female',
-    brand: 'Chanel',
+    type: 'Туалетная вода',
   },
   {
     _id: 3,
-    perfume_id: 'la-vie-est-belle',
-    name: 'La Vie Est Belle',
+    perfume_id: '88776',
+    name: 'Bloom',
     image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.8,
-    rating_count: 98,
-    release_year: 2015,
-    gender: 'female',
-    brand: 'Chanel',
-  },
-  {
-    _id: 4,
-    perfume_id: 'la-vie-est-belle',
-    name: 'La Vie Est Belle',
-    image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.8,
-    rating_count: 98,
-    release_year: 2015,
-    gender: 'female',
-    brand: 'Chanel',
-  },
-  {
-    _id: 4,
-    perfume_id: 'la-vie-est-belle',
-    name: 'La Vie Est Belle',
-    image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.8,
-    rating_count: 98,
-    release_year: 2015,
-    gender: 'female',
-    brand: 'Chanel',
-  },
-  {
-    _id: 4,
-    perfume_id: 'la-vie-est-belle',
-    name: 'La Vie Est Belle',
-    image: 'https://pimages.parfumo.de/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette.jpg',
-    type: 'Eau de Parfum',
-    rating_value: 4.8,
-    rating_count: 98,
-    release_year: 2015,
-    gender: 'female',
-    brand: 'Chanel',
+    type: 'Парфюмированная вода',
   },
 
   // Add more perfumes as needed...
@@ -329,6 +267,7 @@ export default function Main() {
   const [latestArticles, setLatestArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   const [recentlyViewedPerfumes, setRecentlyViewedPerfumes] = useState([]);
   console.log(recentlyViewedPerfumes);
   // Функция для загрузки просмотренных духов из localStorage
@@ -662,7 +601,12 @@ export default function Main() {
                   </h2>
 
                   {/* Plus icon inside a circle */}
-                  <ActionIcon variant="outline" radius="xl" size="lg">
+                  <ActionIcon
+                    onClick={() => router.push(`/articles`)}
+                    variant="outline"
+                    radius="xl"
+                    size="lg"
+                  >
                     <IconPlus size={16} />
                   </ActionIcon>
                 </div>
