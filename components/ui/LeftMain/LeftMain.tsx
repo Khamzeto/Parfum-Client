@@ -94,7 +94,8 @@ export function LeftMain({ stores, perfume }) {
           padding="15.8px"
           radius="18"
           bg={theme.colors.gray[0]}
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '20px', cursor: 'pointer' }}
+          onClick={() => router.push(`/perfumes/47577`)}
         >
           <Group
             style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
@@ -216,7 +217,7 @@ export function LeftMain({ stores, perfume }) {
           {index < posts.length - 1 && <Divider size="1" my="8" mt="20" />}
         </div>
       ))}
-      <Button radius="12" variant="outline" mt="20">
+      <Button radius="12" onClick={() => router.push(`/articles`)} variant="outline" mt="20">
         Показать еще
       </Button>
 

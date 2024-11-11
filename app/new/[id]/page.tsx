@@ -377,7 +377,14 @@ export default function ArticlePage() {
               >
                 {popularArticles.map((popArticle) => (
                   <Carousel.Slide key={popArticle._id}>
-                    <Card radius="16" shadow="0" padding="lg" withBorder>
+                    <Card
+                      radius="16"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => router.push(`/new/${popArticle._id}`)}
+                      shadow="0"
+                      padding="lg"
+                      withBorder
+                    >
                       <Group align="flex-start">
                         <div style={{ width: '100%', height: '140px' }}>
                           <Image

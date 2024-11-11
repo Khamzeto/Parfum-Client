@@ -70,7 +70,7 @@ const PerfumesByParfumer = () => {
   const [parfumerName, setParfumerName] = useState<string>('');
   const [total, setTotal] = useState<number>(0);
   const [parfumerRu, setParfumerRu] = useState<string>('');
-  const [sortBy, setSortBy] = useState<string>('A-Z');
+  const [sortBy, setSortBy] = useState<string>('popular');
   const [genderFilter, setGenderFilter] = useState<string | null>(null);
 
   useEffect(() => {

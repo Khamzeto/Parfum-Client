@@ -73,7 +73,8 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
           h="280px"
           padding="lg"
           radius="18"
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '20px', cursor: 'pointer' }}
+          onClick={() => router.push(`/note/66e84e5ba0ed7975759f1b1d`)}
         >
           <Group
             style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
@@ -197,10 +198,6 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
           {index < recentReviews.length - 1 && <Divider size="1" my="lg" />}
         </div>
       ))}
-
-      <Button radius="12" variant="outline" mt="20">
-        Показать еще
-      </Button>
 
       {/* Карточка Бренд дня */}
       <Card

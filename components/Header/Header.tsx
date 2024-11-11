@@ -43,6 +43,7 @@ import { ActionToggle } from '../ui/ActionToggle/ActionToggle';
 import { UserMenu } from '../ui/UserMenu/UserMenu';
 import SpotlightDemo from '../ui/InputSearch/InputSearch';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   image: string;
@@ -168,13 +169,21 @@ export function Header() {
       </Group>
     </UnstyledButton>
   ));
+  const router = useRouter();
 
   return (
     <Box pb={4}>
       <header className={classes.header}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ height: '150px', position: 'relative', width: '20%' }}>
-            <img style={{ height: '150px', position: 'absolute' }} src={logoSrc} alt="Logo" />
+          <div
+            onClick={() => router.push(`/`)}
+            style={{ height: '150px', position: 'relative', width: '20%' }}
+          >
+            <img
+              style={{ width: '150px', height: '150px', cursor: 'pointer' }}
+              src={logoSrc}
+              alt="Logo"
+            />
           </div>
           <div style={{ width: '40%' }}>
             <SpotlightDemo />

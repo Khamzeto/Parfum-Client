@@ -257,6 +257,39 @@ const PerfumeDetailsPage = () => {
       fetchPerfumeDetails(perfume_id);
     }
   }, [perfume_id]);
+  const jsonLdData = useMemo(() => {
+    if (!perfume) return null;
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: perfume.name || 'Название парфюма',
+      description: perfume.description || 'Описание парфюма',
+      image: perfume.main_image || 'https://yourdomain.com/default-image.jpg',
+      brand: {
+        '@type': 'Brand',
+        name: perfume.brand || 'Бренд парфюма',
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: perfume.rating_value ? perfume.rating_value.toString() : '0',
+        reviewCount: perfume.rating_count ? perfume.rating_count.toString() : '0',
+      },
+      review: perfume.reviews?.map((review) => ({
+        '@type': 'Review',
+        author: {
+          '@type': 'Person',
+          name: review.userId?.username || review.username || 'Аноним',
+        },
+        datePublished: review.createdAt,
+        reviewBody: review.body,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: review.ratingValue ? review.ratingValue.toString() : '0',
+        },
+      })),
+    };
+  }, [perfume]);
 
   const fetchPerfumeDetails = async (id) => {
     setLoading(true);
@@ -557,6 +590,12 @@ const PerfumeDetailsPage = () => {
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImageUrl} />
+        {jsonLdData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdData) }}
+          />
+        )}
       </head>
 
       <Header />

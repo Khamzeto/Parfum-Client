@@ -71,7 +71,7 @@ const PerfumesByNote = () => {
   const [noteName, setNoteName] = useState<string>('');
   const [total, setTotal] = useState<number>(0); // State for note name
 
-  const [sortBy, setSortBy] = useState<string>('A-Z'); // Default sorting
+  const [sortBy, setSortBy] = useState<string>('popular'); // Default sorting
   const [genderFilter, setGenderFilter] = useState<string | null>(null); // Gender filter
 
   useEffect(() => {

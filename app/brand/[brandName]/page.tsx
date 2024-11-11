@@ -68,7 +68,7 @@ const PerfumesByBrand = () => {
   const [brandName, setBrandName] = useState<string>(''); // Название бренда
   const [total, setTotal] = useState<number>(0); // Общее количество духов
   console.log(brandName);
-  const [sortBy, setSortBy] = useState<string>('A-Z');
+  const [sortBy, setSortBy] = useState<string>('popular');
   const [genderFilter, setGenderFilter] = useState<string | null>(null);
 
   useEffect(() => {

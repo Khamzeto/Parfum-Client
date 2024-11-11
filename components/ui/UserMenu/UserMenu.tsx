@@ -87,7 +87,7 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
             {email}
           </Text>
         </div>
-        {icon || <IconChevronRight size="1rem" />}
+        <div className="user-text">{icon || <IconChevronRight size="1rem" />}</div>
       </Group>
 
       <style jsx>{`
