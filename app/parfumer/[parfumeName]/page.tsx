@@ -314,7 +314,6 @@ const PerfumesByParfumer = () => {
                             <Image
                               src={`https://parfumetrika.ru/${perfume.main_image}`}
                               alt={perfume.name}
-                              alt={perfume.name}
                               width={50}
                               height={50}
                               fit="contain"

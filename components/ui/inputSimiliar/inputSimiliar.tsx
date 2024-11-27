@@ -18,6 +18,7 @@ interface Perfume {
   name: string;
   brand: string;
   perfume_id: string;
+  main_image: string;
 }
 
 const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void }) => {
@@ -64,7 +65,7 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
       }}
     >
       <Image
-        src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
+        src={`https://parfumetrika.ru/${perfume.main_image}`}
         alt={perfume.name}
         width={50}
         height={50}
@@ -111,7 +112,7 @@ const InputSimiliar = ({ onAddSimiliar }: { onAddSimiliar: (id: string) => void 
       >
         <TextInput
           placeholder="Поиск парфюмов..."
-          icon={<IconSearch />}
+          leftSection={<IconSearch />}
           value={searchValue}
           onChange={(e) => setSearchValue(e.currentTarget.value)}
           mb="md"

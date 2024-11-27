@@ -271,7 +271,7 @@ const PerfumeSearch = () => {
                         <Group key={similarIndex} style={{ display: 'flex', gap: '2px' }}>
                           <div className={styles.roundImageContainer}>
                             <img
-                              src="https://piimages.parfumo.de/5/6/1_2c79fe1e1e26a88a33d679862e643e67_amber_pour_homme_eau_de_toilette_150.webp"
+                              src={`https://parfumetrika.ru/${similar.main_image}`}
                               alt={similar.name}
                               className={styles.roundImage}
                             />

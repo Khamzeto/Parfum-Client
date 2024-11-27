@@ -133,7 +133,7 @@ const PerfumeDetailsPage = () => {
   useEffect(() => {
     const checkUserCollections = async () => {
       const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-      const userId = storedUser.id;
+      const userId = storedUser._id;
 
       try {
         const response = await $api.get(`/users/${userId}/collections`);
@@ -537,7 +537,7 @@ const PerfumeDetailsPage = () => {
                 onClick={() => handleNoteClick(note)} // Передаем имя ноты
               >
                 <Avatar
-                  src="https://img.parfumo.de/notes/6e/6e_ea3972f0972c9d58b2661c05224d457fcd95aebc_320.jpg"
+                  src={`https://parfumetrika.ru/note_images/${note}.jpg`}
                   radius="xl"
                   size="24px"
                 />
@@ -784,26 +784,34 @@ const PerfumeDetailsPage = () => {
                   className="popular-perfumes-desktop"
                 >
                   {popularPerfumes.slice(0, 8).map((perfumeItem) => (
-                    <div
+                    <Link
+                      href={`/perfumes/${perfumeItem.perfume_id}`} // Динамический путь для перехода
                       key={perfumeItem.id}
                       style={{
-                        width: '90px',
-                        display: 'flex',
-                        justifyContent: 'start',
-                        alignItems: 'center',
-                        backgroundColor: 'white',
-                        padding: '10px',
-                        borderRadius: '12px',
+                        textDecoration: 'none', // Убираем стандартное подчеркивание ссылки
+                        color: 'inherit', // Унаследовать цвет от родителя
                       }}
                     >
-                      <Image
-                        src={`https://parfumetrika.ru/${perfumeItem.main_image}`}
-                        radius="md"
-                        height={80}
-                        alt={`Similar perfume ${perfumeItem.name}`}
-                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                      />
-                    </div>
+                      <div
+                        style={{
+                          width: '90px',
+                          display: 'flex',
+                          justifyContent: 'start',
+                          alignItems: 'center',
+                          backgroundColor: 'white',
+                          padding: '10px',
+                          borderRadius: '12px',
+                        }}
+                      >
+                        <Image
+                          src={`https://parfumetrika.ru/${perfumeItem.main_image}`}
+                          radius="md"
+                          height={80}
+                          alt={`Similar perfume ${perfumeItem.name}`}
+                          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                        />
+                      </div>
+                    </Link>
                   ))}
                 </Flex>
                 <Flex align="center" gap="sm" mb="sm" className="popular-perfumes-desktop">
@@ -823,28 +831,36 @@ const PerfumeDetailsPage = () => {
                 >
                   {perfume?.similar_perfumes?.length > 0 ? (
                     perfume.similar_perfumes.slice(0, 8).map((perfumeId, index) => (
-                      <div
+                      <Link
+                        href={`/perfumes/${perfumeId.perfume_id}`} // Переход на страницу парфюма
                         key={perfumeId.perfume_id}
                         style={{
-                          width: '90px',
-                          display: 'flex',
-                          position: 'relative',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundColor: 'white',
-                          padding: '10px',
-                          borderRadius: '12px',
+                          textDecoration: 'none', // Убираем стандартное подчеркивание ссылки
+                          color: 'inherit', // Унаследовать цвет от родителя
                         }}
                       >
-                        {/* Display the perfume image */}
-                        <Image
-                          src={`https://parfumetrika.ru/${perfumeId.main_image}`}
-                          radius="md"
-                          height={80}
-                          alt={`Similar perfume ${perfumeId}`}
-                          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                        />
-                      </div>
+                        <div
+                          style={{
+                            width: '90px',
+                            display: 'flex',
+                            position: 'relative',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: 'white',
+                            padding: '10px',
+                            borderRadius: '12px',
+                          }}
+                        >
+                          {/* Display the perfume image */}
+                          <Image
+                            src={`https://parfumetrika.ru/${perfumeId.main_image}`}
+                            radius="md"
+                            height={80}
+                            alt={`Similar perfume ${perfumeId}`}
+                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                          />
+                        </div>
+                      </Link>
                     ))
                   ) : (
                     <Text size="sm" color="dimmed">

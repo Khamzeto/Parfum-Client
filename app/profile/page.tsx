@@ -376,7 +376,7 @@ const ProfileCard = () => {
                       style={{ cursor: 'pointer' }}
                     >
                       <img
-                        src="https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg"
+                        src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
                         style={{
                           width: '60%',

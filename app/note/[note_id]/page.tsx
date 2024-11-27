@@ -19,6 +19,7 @@ import {
   Divider,
   Anchor,
   Breadcrumbs,
+  Avatar,
 } from '@mantine/core';
 import {
   IconMars,
@@ -487,12 +488,13 @@ const PerfumesByNote = () => {
             className="right-notes"
             style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}
           >
-            <Image
-              src="https://img.parfumo.de/notes/20/20_1aa4227aff178efcd2fba2e583338c548c631814_320.jpg" // Замените на нужный путь к изображению
-              alt="Африканский амбра"
+            <Avatar
+              src={`https://parfumetrika.ru/note_images/${noteName}.jpg`} // Замените на нужный путь к изображению
+              alt={noteName}
               style={{
                 marginBottom: '20px',
                 width: '140px',
+                height: '140px',
                 margin: '0 auto 40px auto',
                 borderRadius: '100%',
               }}
