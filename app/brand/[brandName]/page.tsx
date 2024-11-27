@@ -287,7 +287,7 @@ const PerfumesByBrand = () => {
                             }}
                           >
                             <Image
-                              src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
+                              src={perfume.main_image}
                               alt={perfume.name}
                               width={50}
                               height={50}
@@ -388,7 +388,7 @@ const PerfumesByBrand = () => {
                               }}
                             >
                               <Image
-                                src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
+                                src={perfume.main_image}
                                 alt={perfume.name}
                                 fit="contain"
                                 width="60px"

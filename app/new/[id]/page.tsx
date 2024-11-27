@@ -20,6 +20,7 @@ import {
 import {
   IconBrandFacebook,
   IconBrandOkRu,
+  IconBrandPinterest,
   IconBrandTelegram,
   IconBrandTwitter,
   IconBrandVk,
@@ -314,6 +315,17 @@ export default function ArticlePage() {
                 color="orange"
               >
                 <IconBrandOkRu size={24} strokeWidth={1.6} />
+              </ActionIcon>
+
+              <ActionIcon
+                size="lg"
+                component="a"
+                href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(article?.coverImage || '')}&description=${encodeURIComponent(article?.title)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                color="red"
+              >
+                <IconBrandPinterest size={24} strokeWidth={1.6} />
               </ActionIcon>
             </Group>
           </Box>
@@ -638,6 +650,17 @@ export default function ArticlePage() {
               color="orange"
             >
               <IconBrandOkRu size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(article?.coverImage || '')}&description=${encodeURIComponent(article?.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="red"
+            >
+              <IconBrandPinterest size={24} strokeWidth={1.6} />
             </ActionIcon>
           </Group>
         </Box>

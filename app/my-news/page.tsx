@@ -30,9 +30,10 @@ export default function Home() {
     const fetchUserArticles = async () => {
       try {
         const storedUser = localStorage.getItem('user');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        if (user && user.id) {
-          const response = await $api.get(`/news/requests/user/${user.id}`);
+
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          const response = await $api.get(`/news/requests/user/${user._id}`);
           setArticles(response.data.requests);
         }
       } catch (error) {

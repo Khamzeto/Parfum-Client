@@ -40,6 +40,7 @@ import {
   IconBrandFacebook,
   IconBrandVk,
   IconBrandOkRu,
+  IconBrandPinterest,
 } from '@tabler/icons-react';
 import InputSimiliar from '@/components/ui/inputSimiliar/inputSimiliar';
 
@@ -54,6 +55,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha';
 import debounce from 'lodash.debounce';
 import { FooterLinks } from '@/components/ui/Footer/Footer';
 import Link from 'next/link';
+import ImageMainUploadModal from '@/components/ui/ImageMainUpload/ImageMainUpload';
 
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
@@ -103,6 +105,7 @@ const PerfumeDetailsPage = () => {
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
   const [uploadModalOpened, setUploadModalOpened] = useState(false);
+  const [uploadMainModalOpened, setMainUploadModalOpened] = useState(false);
   const handleImageUpload = (base64Image: string) => {
     console.log('Загруженное изображение в формате base64:', base64Image);
     // Здесь можно выполнить обработку загруженного изображения
@@ -675,7 +678,7 @@ const PerfumeDetailsPage = () => {
               </AspectRatio>
             ) : (
               <Image
-                src="https://pimages.parfumo.de/720/74_img-1003-gucci-gucci_pour_homme_ii_eau_de_toilette_720.webp"
+                src={perfume.main_image}
                 alt={perfume?.name}
                 radius="md"
                 style={{ width: '100%', marginBottom: '10px' }}
@@ -794,7 +797,7 @@ const PerfumeDetailsPage = () => {
                       }}
                     >
                       <Image
-                        src="https://pimages.parfumo.de/13889_img-2650-dior-christian-dior-dior-homme-intense-2011.webp"
+                        src={perfumeItem.main_image}
                         radius="md"
                         height={80}
                         alt={`Similar perfume ${perfumeItem.name}`}
@@ -1139,6 +1142,18 @@ const PerfumeDetailsPage = () => {
                     radius="8"
                     onClick={() => {
                       if (localStorage.getItem('token')) {
+                        setMainUploadModalOpened(true);
+                      } else {
+                        window.location.href = '/register';
+                      }
+                    }}
+                  >
+                    Загрузить главное фото
+                  </Button>
+                  <Button
+                    radius="8"
+                    onClick={() => {
+                      if (localStorage.getItem('token')) {
                         setUploadModalOpened(true);
                       } else {
                         window.location.href = '/register';
@@ -1417,6 +1432,12 @@ const PerfumeDetailsPage = () => {
             onUpload={handleImageUpload}
             perfumeId={perfume ? perfume._id : ''} // Передаем perfume_id
           />
+          <ImageMainUploadModal
+            opened={uploadMainModalOpened}
+            onClose={() => setMainUploadModalOpened(false)}
+            onUpload={handleImageUpload}
+            perfumeId={perfume ? perfume._id : ''} // Передаем perfume_id
+          />
 
           <RatingModal
             opened={ratingModalOpened}
@@ -1472,6 +1493,17 @@ const PerfumeDetailsPage = () => {
               color="orange"
             >
               <IconBrandOkRu size={24} strokeWidth={1.6} />
+            </ActionIcon>
+
+            <ActionIcon
+              size="lg"
+              component="a"
+              href={`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(perfume?.image || '')}&description=${encodeURIComponent(perfume?.name)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="red"
+            >
+              <IconBrandPinterest size={24} strokeWidth={1.6} />
             </ActionIcon>
           </Group>
         </Box>

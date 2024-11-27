@@ -82,13 +82,6 @@ const SearchPage = () => {
     }
   };
 
-  useEffect(() => {
-    const queryBrandParam = searchParams.get('queryBrand');
-    if (queryBrandParam) {
-      setSelectedBrands([queryBrandParam]);
-    }
-  }, [searchParams]);
-
   const updateUrlParams = (paramKey: string, paramValue: string | null) => {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
@@ -288,6 +281,18 @@ const SearchPage = () => {
     // Сохраняем `activePage` в `localStorage`, когда оно меняется
     localStorage.setItem('activePage', activePage.toString());
   }, [activePage]);
+  useEffect(() => {
+    const queryBrandParam = searchParams.get('queryBrand');
+
+    console.log(queryBrandParam);
+
+    if (queryBrandParam) {
+      setSelectedBrands([queryBrandParam]);
+
+      // Выполняем запрос для получения брендов, если параметр присутствует
+      fetchBrands(queryBrandParam);
+    }
+  }, [searchParams]);
 
   // useEffect для установки сохраненного `activePage` при первой загрузке
   useEffect(() => {
@@ -329,6 +334,7 @@ const SearchPage = () => {
   const fetchData = async (page: number) => {
     setLoading(true); // Установить загрузку перед началом запроса
     try {
+      let endpoint = '/perfumes/search'; // По умолчанию
       const params: any = {
         page: page,
         limit: itemsPerPage,
@@ -337,21 +343,27 @@ const SearchPage = () => {
         year: releaseYear,
       };
 
-      // Добавляем оба параметра query и queryBrand, если они существуют
+      // Если есть выбранные бренды, переключаемся на другой endpoint
       if (selectedBrands.length > 0) {
+        endpoint = '/perfumes/searchBrands'; // Изменяем конечную точку
         params.queryBrand = selectedBrands.join(',');
       }
-      if (nameFilter) {
+
+      if (nameFilter && endpoint !== '/perfumes/searchBrands') {
         params.query = nameFilter;
       }
 
-      if (selectedNotes.length > 0) params.notes = selectedNotes.join(',');
+      if (selectedNotes.length > 0) {
+        params.notes = selectedNotes.join(',');
+      }
 
-      const response = await $api.get('/perfumes/search', { params });
-      setPerfumes(response.data.results || response.data.results);
+      const response = await $api.get(endpoint, { params });
+      setPerfumes(response.data.results || []); // Заполняем массив результатов
 
-      // Устанавливаем параметры пагинации на основе ответа
-      setTotalPages(response.data.totalPages);
+      // Устанавливаем параметры пагинации, если они есть
+      if (response.data.totalPages) {
+        setTotalPages(response.data.totalPages);
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Не удалось получить данные');
     } finally {

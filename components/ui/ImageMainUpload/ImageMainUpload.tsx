@@ -10,7 +10,7 @@ interface UploadPhotoModalProps {
   perfumeId: string; // Добавим поле для передачи ID парфюма
 }
 
-const ImageUploadModal: React.FC<UploadPhotoModalProps> = ({
+const ImageMainUploadModal: React.FC<UploadPhotoModalProps> = ({
   opened,
   onClose,
   onUpload,
@@ -49,10 +49,10 @@ const ImageUploadModal: React.FC<UploadPhotoModalProps> = ({
 
       try {
         // Отправляем POST-запрос на сервер с изображением, ID парфюма, userId и токеном капчи
-        await $api.post('gallery/gallery-requests', {
+        await $api.post('main-image/requests', {
           perfumeId,
           userId, // Передаем ID пользователя
-          images: [selectedImage], // Массив base64 изображений
+          image: selectedImage, // Массив base64 изображений
           captchaToken, // Добавляем токен капчи
         });
 
@@ -121,4 +121,4 @@ const ImageUploadModal: React.FC<UploadPhotoModalProps> = ({
   );
 };
 
-export default ImageUploadModal;
+export default ImageMainUploadModal;
