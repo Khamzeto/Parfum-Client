@@ -51,7 +51,7 @@ const ProfileCard = () => {
       setVerified(parsedUser?.isVerified);
       setUsername(parsedUser?.username || 'Пользователь');
       setDescription(parsedUser?.description);
-      setId(parsedUser?.id);
+      setId(parsedUser?.id || parsedUser?._id);
       setSocialLinks({
         vkUrl: parsedUser?.vkUrl || null,
         instagramUrl: parsedUser?.instagramUrl || null,
@@ -330,7 +330,7 @@ const ProfileCard = () => {
                       style={{ cursor: 'pointer' }}
                     >
                       <img
-                        src="https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg"
+                        src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
                         style={{
                           width: '60%',

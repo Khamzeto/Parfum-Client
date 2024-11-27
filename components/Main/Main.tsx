@@ -374,7 +374,7 @@ export default function Main() {
                       }}
                     >
                       <Image
-                        src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
+                        src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
                         fit="contain"
                         width="30px"

@@ -97,7 +97,7 @@ const SpotlightDemo = () => {
       <Group noWrap style={{ minWidth: '100%' }} w="100%">
         {searchType === 'perfumes' && (
           <Image
-            src="https://pimages.parfumo.de/23124_img-2628-d-s-durga-bowmakers-eau-de-parfum.webp"
+            src={`https://parfumetrika.ru/${item.main_image}`}
             alt={item.name}
             width={50}
             height={50}

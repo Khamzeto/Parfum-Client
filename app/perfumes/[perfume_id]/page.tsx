@@ -797,7 +797,7 @@ const PerfumeDetailsPage = () => {
                       }}
                     >
                       <Image
-                        src={perfumeItem.main_image}
+                        src={`https://parfumetrika.ru/${perfumeItem.main_image}`}
                         radius="md"
                         height={80}
                         alt={`Similar perfume ${perfumeItem.name}`}
