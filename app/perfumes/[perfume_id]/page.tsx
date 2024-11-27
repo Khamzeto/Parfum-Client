@@ -824,7 +824,7 @@ const PerfumeDetailsPage = () => {
                   {perfume?.similar_perfumes?.length > 0 ? (
                     perfume.similar_perfumes.slice(0, 8).map((perfumeId, index) => (
                       <div
-                        key={perfumeId}
+                        key={perfumeId.perfume_id}
                         style={{
                           width: '90px',
                           display: 'flex',
@@ -838,7 +838,7 @@ const PerfumeDetailsPage = () => {
                       >
                         {/* Display the perfume image */}
                         <Image
-                          src="https://pimages.parfumo.de/13889_img-2650-dior-christian-dior-dior-homme-intense-2011.webp"
+                          src={`https://parfumetrika.ru/${perfumeId.main_image}`}
                           radius="md"
                           height={80}
                           alt={`Similar perfume ${perfumeId}`}
