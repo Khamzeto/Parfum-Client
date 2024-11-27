@@ -287,7 +287,8 @@ const PerfumesByBrand = () => {
                             }}
                           >
                             <Image
-                              src={perfume.main_image}
+                              src={`https://parfumetrika.ru/${perfume.main_image}`}
+                              alt={perfume.name}
                               alt={perfume.name}
                               width={50}
                               height={50}
@@ -388,7 +389,8 @@ const PerfumesByBrand = () => {
                               }}
                             >
                               <Image
-                                src={perfume.main_image}
+                                src={`https://parfumetrika.ru/${perfume.main_image}`}
+                                alt={perfume.name}
                                 alt={perfume.name}
                                 fit="contain"
                                 width="60px"

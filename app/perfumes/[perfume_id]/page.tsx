@@ -678,7 +678,7 @@ const PerfumeDetailsPage = () => {
               </AspectRatio>
             ) : (
               <Image
-                src={perfume.main_image}
+                src={`https://parfumetrika.ru/${perfume.main_image}`}
                 alt={perfume?.name}
                 radius="md"
                 style={{ width: '100%', marginBottom: '10px' }}
