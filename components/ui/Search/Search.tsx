@@ -178,7 +178,7 @@ const SearchPage = () => {
 
   useEffect(() => {
     fetchData(activePage);
-  }, [activePage, sortBy, gender, releaseYear, selectedNotes]);
+  }, [activePage, sortBy, gender, releaseYear, selectedNotes, selectedBrands]);
 
   // Read filters from localStorage after component mounts
   useEffect(() => {
@@ -346,7 +346,7 @@ const SearchPage = () => {
       // Если есть выбранные бренды, переключаемся на другой endpoint
       if (selectedBrands.length > 0) {
         endpoint = '/perfumes/searchBrands'; // Изменяем конечную точку
-        params.queryBrand = selectedBrands.join(',');
+        params.query = selectedBrands.join(',');
       }
 
       if (nameFilter && endpoint !== '/perfumes/searchBrands') {
@@ -358,7 +358,7 @@ const SearchPage = () => {
       }
 
       const response = await $api.get(endpoint, { params });
-      setPerfumes(response.data.results || []); // Заполняем массив результатов
+      setPerfumes(response.data.brands || response.data.results); // Заполняем массив результатов
 
       // Устанавливаем параметры пагинации, если они есть
       if (response.data.totalPages) {

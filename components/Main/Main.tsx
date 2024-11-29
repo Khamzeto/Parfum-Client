@@ -142,7 +142,7 @@ const posts = [
 const perfume = [
   {
     _id: 1,
-    perfume_id: 'bleu-de-chanel',
+    perfume_id: '47577',
     name: 'Bleu de Chanel',
     image: 'https://parfumetrika.ru/images/Bleu%20de%20Chanel_main_1725370434426.jpg',
     type: 'Eau de Parfum',
