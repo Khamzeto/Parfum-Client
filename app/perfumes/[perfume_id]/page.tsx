@@ -23,6 +23,8 @@ import {
   TagsInput,
   ActionIcon,
   Tooltip,
+  Breadcrumbs,
+  Anchor,
 } from '@mantine/core';
 import { slugify } from '@/utils/slugify';
 import axios from 'axios'; // используем axios для запросов
@@ -175,7 +177,12 @@ const PerfumeDetailsPage = () => {
   useEffect(() => {
     if (perfume) {
       const viewedPerfumesKey = 'viewedPerfumes'; // ключ для хранения в localStorage
-      const newPerfume = { id: perfume.perfume_id, brand: perfume.brand, name: perfume.name };
+      const newPerfume = {
+        id: perfume.perfume_id,
+        brand: perfume.brand,
+        name: perfume.name,
+        image: perfume.main_image,
+      };
 
       // Получаем уже просмотренные духи из localStorage или пустой массив
       const existingPerfumes = JSON.parse(localStorage.getItem(viewedPerfumesKey) || '[]');
@@ -602,6 +609,38 @@ const PerfumeDetailsPage = () => {
       </head>
 
       <Header />
+
+      <div
+        style={{
+          maxWidth: '1440px',
+          margin: '30px auto 0 auto',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+        }}
+      >
+        <Breadcrumbs
+          separator=">"
+          style={{
+            fontSize: '14px',
+            color: '#555',
+          }}
+        >
+          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
+            Главная
+          </Anchor>
+          <Anchor href="/brands" style={{ textDecoration: 'none', color: '#007bff' }}>
+            Бренды
+          </Anchor>
+          <Anchor
+            href={`/brand/${slugify(perfume?.brand || '', { lower: true })}`}
+            style={{ textDecoration: 'none', color: '#007bff' }}
+          >
+            {perfume?.brand}
+          </Anchor>
+          <span style={{ color: '#6c757d' }}>{perfume?.name}</span>
+        </Breadcrumbs>
+      </div>
+
       <Container style={{ marginTop: '40px', width: '100%', maxWidth: '1120px' }}>
         <Flex direction={{ customBreakpoint: 'row', base: 'column' }} gap="40" align="flex-start">
           <Stack style={{ flex: 1 }}>
@@ -678,9 +717,13 @@ const PerfumeDetailsPage = () => {
               </AspectRatio>
             ) : (
               <Image
-                src={`https://parfumetrika.ru/${perfume.main_image}`}
+                src={`https://parfumetrika.ru/${perfume.main_image}` || '/roman.jpg'}
                 alt={perfume?.name}
                 radius="md"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                  target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                }}
                 style={{ width: '100%', marginBottom: '10px' }}
               />
             )}
@@ -805,9 +848,13 @@ const PerfumeDetailsPage = () => {
                       >
                         <Image
                           src={`https://parfumetrika.ru/${perfumeItem.main_image}`}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                            target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                          }}
                           radius="md"
                           height={80}
-                          alt={`Similar perfume ${perfumeItem.name}`}
+                          alt={`Similar perfume ${perfumeId}`}
                           style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                         />
                       </div>
@@ -854,6 +901,10 @@ const PerfumeDetailsPage = () => {
                           {/* Display the perfume image */}
                           <Image
                             src={`https://parfumetrika.ru/${perfumeId.main_image}`}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                              target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                            }}
                             radius="md"
                             height={80}
                             alt={`Similar perfume ${perfumeId}`}

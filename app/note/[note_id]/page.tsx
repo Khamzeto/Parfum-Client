@@ -305,7 +305,10 @@ const PerfumesByNote = () => {
                             <Image
                               src={`https://parfumetrika.ru/${perfume.main_image}`}
                               alt={perfume.name}
-                              alt={perfume.name}
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                                target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                              }}
                               width={50}
                               height={50}
                               fit="contain"

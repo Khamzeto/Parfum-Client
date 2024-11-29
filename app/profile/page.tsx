@@ -332,6 +332,10 @@ const ProfileCard = () => {
                       <img
                         src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                        }}
                         style={{
                           width: '60%',
                           borderRadius: '12px',
@@ -378,6 +382,10 @@ const ProfileCard = () => {
                       <img
                         src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                        }}
                         style={{
                           width: '60%',
                           borderRadius: '12px',
@@ -518,10 +526,11 @@ const ProfileCard = () => {
                       style={{ cursor: 'pointer' }}
                     >
                       <img
-                        src={
-                          request.main_image ||
-                          'https://pimages.parfumo.de/720/266320_img-8741-louis-vuitton-lv-lovers_720.jpg'
-                        }
+                        src={`https://parfumetrika.ru/${request.image}`}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                        }}
                         alt={request.perfumeName}
                         style={{
                           width: '60%',

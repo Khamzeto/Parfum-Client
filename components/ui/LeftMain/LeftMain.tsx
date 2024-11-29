@@ -44,6 +44,26 @@ export function LeftMain({ stores, perfume }) {
 
   const [shops, setShops] = useState([]);
   const router = useRouter();
+  const [selectedPerfume, setSelectedPerfume] = useState(null);
+  useEffect(() => {
+    const savedPerfume = localStorage.getItem('perfumeOfTheDay');
+    const savedDate = localStorage.getItem('perfumeOfTheDayDate');
+
+    const now = dayjs();
+
+    if (savedPerfume && savedDate && now.isBefore(dayjs(savedDate).add(1, 'day'))) {
+      // Если прошло меньше 24 часов, используем сохранённый парфюм
+      setSelectedPerfume(JSON.parse(savedPerfume));
+    } else {
+      // Если прошло больше 24 часов, выбираем новый случайный парфюм
+      const randomPerfume = perfume[Math.floor(Math.random() * perfume.length)];
+      setSelectedPerfume(randomPerfume);
+
+      // Сохраняем выбранный парфюм и текущую дату в localStorage
+      localStorage.setItem('perfumeOfTheDay', JSON.stringify(randomPerfume));
+      localStorage.setItem('perfumeOfTheDayDate', now.toISOString());
+    }
+  }, []);
 
   useEffect(() => {
     const fetchShops = async () => {
@@ -85,68 +105,66 @@ export function LeftMain({ stores, perfume }) {
         </Title>
       </Group>
 
-      {perfume.map((perfume) => (
-        <Card
-          key={perfume._id}
-          className="card-perfume"
-          shadow="2"
-          h="280px"
-          padding="15.8px"
-          radius="18"
-          bg={theme.colors.gray[0]}
-          style={{ marginBottom: '20px', cursor: 'pointer' }}
-          onClick={() => router.push(`/perfumes/47577`)}
+      <Card
+        key={selectedPerfume?._id}
+        className="card-perfume"
+        shadow="2"
+        h="280px"
+        padding="15.8px"
+        radius="18"
+        bg={theme.colors.gray[0]}
+        style={{ marginBottom: '20px', cursor: 'pointer' }}
+        onClick={() => router.push(`/perfumes/${selectedPerfume.perfume_id}`)}
+      >
+        <Group
+          style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
         >
-          <Group
-            style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
+          <div
+            style={{
+              height: 80,
+              width: 80,
+              borderRadius: '22px',
+              backgroundColor: theme.colors.gray[0],
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
           >
-            <div
-              style={{
-                height: 80,
-                width: 80,
-                borderRadius: '22px',
-                backgroundColor: theme.colors.gray[0],
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Image
-                src={perfume.image}
-                alt={perfume.name}
-                fit="contain"
-                width="100%"
-                radius="12"
-                height="100%"
-              />
-            </div>
-
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <Text size="lg" style={{ color: theme.colors.default }}>
-                {perfume.name}
-              </Text>
-              <Text size="sm" style={{ color: theme.colors.gray[6] }}>
-                {perfume.brand}
-              </Text>
-
-              <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}>
-                <IconCalendar size={16} color={theme.colors.blue[6]} />
-                <Text size="xs" style={{ color: theme.colors.gray[6] }}>
-                  Год выпуска: {perfume.release_year}
-                </Text>
-              </Group>
-            </div>
-            <Button
-              onClick={() => router.push(`/perfumes/47577`)}
-              variant="outline"
+            <Image
+              src={selectedPerfume?.image}
+              alt={selectedPerfume?.name}
+              fit="contain"
+              width="100%"
               radius="12"
-              style={{ borderColor: theme.colors.gray[4] }}
-            >
-              Читать полностью
-            </Button>
-          </Group>
-        </Card>
-      ))}
+              height="100%"
+            />
+          </div>
+
+          <div style={{ flex: 1, textAlign: 'center' }}>
+            <Text size="lg" style={{ color: theme.colors.default }}>
+              {selectedPerfume?.name}
+            </Text>
+            <Text size="sm" style={{ color: theme.colors.gray[6] }}>
+              {selectedPerfume?.brand}
+            </Text>
+
+            <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}>
+              <IconCalendar size={16} color={theme.colors.blue[6]} />
+              <Text size="xs" style={{ color: theme.colors.gray[6] }}>
+                Год выпуска: {selectedPerfume?.release_year}
+              </Text>
+            </Group>
+          </div>
+          <Button
+            onClick={() => router.push(`/perfumes/${selectedPerfume?.perfume_id}`)}
+            variant="outline"
+            radius="12"
+            style={{ borderColor: theme.colors.gray[4] }}
+          >
+            Читать полностью
+          </Button>
+        </Group>
+      </Card>
 
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
         <ActionIcon color="yellow" radius="xl" size="lg">

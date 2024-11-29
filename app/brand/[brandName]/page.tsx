@@ -287,8 +287,7 @@ const PerfumesByBrand = () => {
                             }}
                           >
                             <Image
-                              src={`https://parfumetrika.ru/${perfume.main_image}`}
-                              alt={perfume.name}
+                              src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
                               alt={perfume.name}
                               width={50}
                               height={50}
@@ -391,7 +390,10 @@ const PerfumesByBrand = () => {
                               <Image
                                 src={`https://parfumetrika.ru/${perfume.main_image}`}
                                 alt={perfume.name}
-                                alt={perfume.name}
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                                  target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                                }}
                                 fit="contain"
                                 width="60px"
                               />

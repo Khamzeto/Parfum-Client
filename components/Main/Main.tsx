@@ -80,13 +80,6 @@ const stores = [
   },
 ];
 
-const notes = [
-  {
-    id: 1,
-    title: 'Яблоко',
-  },
-];
-
 const posts = [
   {
     id: 1,
@@ -159,27 +152,76 @@ const perfume = [
     gender: 'male',
     brand: 'Chanel',
   },
+  {
+    _id: '672e88b03599aafaa185e01b',
+    perfume_id: '2852',
+    name: 'Lalique',
+    image: 'https://parfumetrika.ru/images/Lalique_main_1731102894896.jpg',
+    type: 'Парфюмированная вода',
+    rating_value: 7.5,
+    rating_count: 212,
+    release_year: 1992,
+    gender: 'female',
+    brand: 'Lalique',
+  },
+  {
+    _id: '673d536d3599aafaa1911114',
+    perfume_id: '13140',
+    name: 'Godolphin',
+    image: 'https://parfumetrika.ru/images/Godolphin_main_1732072294838.jpg',
+    type: 'Парфюмированная вода',
+    rating_value: 7.9,
+    rating_count: 832,
+    release_year: 2011,
+    gender: 'male',
+    brand: 'Parfums de Marly',
+  },
+  {
+    _id: '66e5d6e3a0ed7975759adde0',
+    perfume_id: '91824',
+    name: 'Psychedelic Love',
+    image: 'https://parfumetrika.ru/images/Psychedelic Love_main_1726338784823.jpg',
+    type: 'Парфюмированная вода',
+    rating_value: 8.1,
+    rating_count: 598,
+    release_year: 2017,
+    gender: 'unisex',
+    brand: 'Initio',
+  },
+  {
+    _id: '672e8c153599aafaa185e4e2',
+    perfume_id: '52451',
+    name: 'Noir Premier - Élégance Animale 1989',
+    image:
+      'https://parfumetrika.ru/images/Noir Premier - Élégance Animale 1989_main_1731103764970.jpg',
+    type: 'Парфюмированная вода',
+    rating_value: 7.1,
+    rating_count: 95,
+    release_year: 2014,
+    gender: 'unisex',
+    brand: 'Lalique',
+  },
 ];
 const perfumes = [
   {
     _id: 1,
-    perfume_id: '74',
-    name: 'Gucci pour Homme II',
-    image: 'https://parfumetrika.ru/images/Gucci%20pour%20Homme%20II_main_1726178165630.jpg',
+    perfume_id: '13889',
+    name: 'Dior Homme Intense',
+    image: 'https://parfumetrika.ru/images/Dior%20Homme%20Intense_main_1725285062742.jpg',
     type: 'Парфюмированная вода',
   },
   {
     _id: 2,
-    perfume_id: '638',
-    name: 'Gucci pour Homme',
-    image: 'https://parfumetrika.ru/images/Gucci%20pour%20Homme_main_1726178148312.jpg',
+    perfume_id: '174',
+    name: 'Fahrenheit',
+    image: 'https://parfumetrika.ru/images/Fahrenheit_main_1725285872040.jpg',
     type: 'Туалетная вода',
   },
   {
     _id: 3,
-    perfume_id: '88776',
+    perfume_id: '4564',
     name: 'Bloom',
-    image: 'https://parfumetrika.ru/images/Bloom_main_1726177644545.jpg',
+    image: 'https://parfumetrika.ru/images/Ambre%20Nuit_main_1725229186723.jpg',
     type: 'Парфюмированная вода',
   },
 
@@ -209,49 +251,66 @@ const popularBrands = [
     ),
   },
   {
-    name: 'Gucci',
-    logo: (isDark) => (
-      <svg
-        viewBox="0 0 40 40"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100" // Adjust width as needed
-        height="auto"
-      >
-        <defs>
-          <style>{'.cls-1{fill-rule:evenodd;}'}</style>
-        </defs>
-        <g id="Logos">
-          <path
-            className="cls-1"
-            fill={isDark ? '#FFFFFF' : '#000000'} // Dynamically setting fill color based on theme
-            d="M35,20a10.4,10.4,0,0,1-15,9.31,10.38,10.38,0,1,1,0-18.64A10.43,10.43,0,0,1,35,20Zm-2,0a8.35,8.35,0,0,0-8.34-8.34A8.24,8.24,0,0,0,22.1,12a10.26,10.26,0,0,1,3.32,5.17H23.28A8.31,8.31,0,0,0,20,13a8.29,8.29,0,0,0-3.25,4.18H14.61A10.48,10.48,0,0,1,17.94,12a8.67,8.67,0,0,0-2.53-.38,8.34,8.34,0,0,0,0,16.68,8.11,8.11,0,0,0,2.49-.38,10.23,10.23,0,0,1-3.63-7.12h4.94v2l-2.41,0a8.34,8.34,0,0,0,3.21,4,8.34,8.34,0,0,0,3.21-4l-2.41,0v-2h4.94a10.31,10.31,0,0,1-3.67,7.1,8.48,8.48,0,0,0,2.53.4A8.3,8.3,0,0,0,33,20Z"
-          />
-        </g>
-      </svg>
+    name: 'Gucci3',
+    logo: (isDark: boolean) => (
+      <Image
+        src="/acqua-di.svg"
+        alt="Gucci3 Logo"
+        miw={65}
+        width={80} // Укажите необходимые размеры
+        height={80} // Обязательно укажите высоту
+      />
     ),
   },
   {
-    name: 'Gucci',
-    logo: (isDark) => (
-      <svg
-        viewBox="0 0 40 40"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100" // Adjust width as needed
-        height="auto"
-      >
-        <defs>
-          <style>{'.cls-1{fill-rule:evenodd;}'}</style>
-        </defs>
-        <g id="Logos">
-          <path
-            className="cls-1"
-            fill={isDark ? '#FFFFFF' : '#000000'} // Dynamically setting fill color based on theme
-            d="M35,20a10.4,10.4,0,0,1-15,9.31,10.38,10.38,0,1,1,0-18.64A10.43,10.43,0,0,1,35,20Zm-2,0a8.35,8.35,0,0,0-8.34-8.34A8.24,8.24,0,0,0,22.1,12a10.26,10.26,0,0,1,3.32,5.17H23.28A8.31,8.31,0,0,0,20,13a8.29,8.29,0,0,0-3.25,4.18H14.61A10.48,10.48,0,0,1,17.94,12a8.67,8.67,0,0,0-2.53-.38,8.34,8.34,0,0,0,0,16.68,8.11,8.11,0,0,0,2.49-.38,10.23,10.23,0,0,1-3.63-7.12h4.94v2l-2.41,0a8.34,8.34,0,0,0,3.21,4,8.34,8.34,0,0,0,3.21-4l-2.41,0v-2h4.94a10.31,10.31,0,0,1-3.67,7.1,8.48,8.48,0,0,0,2.53.4A8.3,8.3,0,0,0,33,20Z"
-          />
-        </g>
-      </svg>
+    name: 'Gucci5',
+    logo: (isDark: boolean) => (
+      <Image
+        src="/cdi.svg"
+        alt="Gucci4 Logo"
+        miw={100}
+        width={30} // Укажите необходимые размеры
+        height={30} // Обязательно укажите высоту
+      />
     ),
   },
+  {
+    name: 'Gucci6',
+    logo: (isDark: boolean) => (
+      <Image
+        src="/guerlain.svg"
+        alt="Gucci4 Logo"
+        miw={100}
+        width={100} // Укажите необходимые размеры
+        height={100} // Обязательно укажите высоту
+      />
+    ),
+  },
+  {
+    name: 'Gucci7',
+    logo: (isDark: boolean) => (
+      <Image
+        src="/logo-4.svg"
+        alt="Gucci4 Logo"
+        miw={100}
+        width={30} // Укажите необходимые размеры
+        height={30} // Обязательно укажите высоту
+      />
+    ),
+  },
+  {
+    name: 'Gucci47',
+    logo: (isDark: boolean) => (
+      <Image
+        src="/chanel.svg"
+        alt="Gucci4 Logo"
+        miw={100}
+        width={16} // Укажите необходимые размеры
+        height={16} // Обязательно укажите высоту
+      />
+    ),
+  },
+
   // Add more brands here...
 ];
 const firstBrand = popularBrands[0];
@@ -269,6 +328,7 @@ export default function Main() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [recentlyViewedPerfumes, setRecentlyViewedPerfumes] = useState([]);
+  console.log(recentlyViewedPerfumes);
   console.log(recentlyViewedPerfumes);
   // Функция для загрузки просмотренных духов из localStorage
   useEffect(() => {
@@ -376,6 +436,10 @@ export default function Main() {
                       <Image
                         src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                        }}
                         fit="contain"
                         width="30px"
                       />
@@ -478,18 +542,7 @@ export default function Main() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                        }}
-                      >
-                        {brand.logo(isDark)}
-                      </div>
-                    ))}
-                    {popularBrands.map((brand, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                          paddingLeft: '6px',
                         }}
                       >
                         {brand.logo(isDark)}
@@ -500,12 +553,7 @@ export default function Main() {
               </Card>
 
               <div className="reviews-container-mobile">
-                <RightMain
-                  notes={notes}
-                  posts={posts}
-                  firstBrand={firstBrand}
-                  perfumes={perfumes}
-                />
+                <RightMain posts={posts} firstBrand={firstBrand} perfumes={perfumes} />
               </div>
               <div className="posts-container-mobile">
                 <LeftMain perfume={perfume} posts={posts} stores={stores} />
@@ -673,7 +721,7 @@ export default function Main() {
               </div>
             </div>
             <div className="reviews-container">
-              <RightMain notes={notes} posts={posts} firstBrand={firstBrand} perfumes={perfumes} />
+              <RightMain posts={posts} firstBrand={firstBrand} perfumes={perfumes} />
             </div>
           </div>
 
@@ -717,10 +765,7 @@ export default function Main() {
                       }}
                     >
                       <Image
-                        src={
-                          perfume.image ||
-                          'https://pimages.parfumo.de/720/1_img-3571-prada-amber_pour_homme_eau_de_toilette_720.webp'
-                        }
+                        src={`https://parfumetrika.ru/${perfume.image}`}
                         alt={perfume.name}
                         width={50}
                         style={{ maxWidth: '60px' }}

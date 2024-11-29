@@ -150,28 +150,9 @@ export function RegistrationForm() {
         </div>
       ) : (
         <>
-          <Text size="lg" fw={500}>
-            Зарегистрируйтесь с помощью:
+          <Text size="lg" mb="20" fw={500}>
+            Зарегистрироваться
           </Text>
-
-          <Group grow mb="md" mt="md">
-            <GoogleButton
-              radius="xl"
-              onClick={() => (window.location.href = 'https://hltback.parfumetrika.ru/auth/google')}
-            >
-              Google
-            </GoogleButton>
-            <VkButton
-              radius="xl"
-              onClick={() =>
-                (window.location.href = 'https://hltback.parfumetrika.ru/auth/vkontakte')
-              }
-            >
-              ВКонтакте
-            </VkButton>
-          </Group>
-
-          <Divider label="Или зарегистрируйтесь с email" labelPosition="center" my="lg" />
 
           {error && <Text color="red">{error}</Text>}
           <form onSubmit={form.onSubmit(handleSubmit)}>

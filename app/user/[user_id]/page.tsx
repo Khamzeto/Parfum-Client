@@ -385,6 +385,10 @@ const ProfileCard = () => {
                       <img
                         src={`https://parfumetrika.ru/${perfume.main_image}`}
                         alt={perfume.name}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                        }}
                         style={{
                           width: '60%',
                           borderRadius: '12px',

@@ -54,26 +54,9 @@ export function LoginForm() {
 
   return (
     <Paper radius="md" p="xl" withBorder style={{ maxWidth: 600, margin: '50px auto' }}>
-      <Text size="lg" fw={500}>
-        Войдите с помощью:
+      <Text size="lg" mb="20" fw={500}>
+        Войти
       </Text>
-
-      <Group grow mb="md" mt="md">
-        <GoogleButton
-          radius="xl"
-          onClick={() => (window.location.href = 'https://hltback.parfumetrika.ru/auth/google')}
-        >
-          Google
-        </GoogleButton>
-        <VkButton
-          radius="xl"
-          onClick={() => (window.location.href = 'https://hltback.parfumetrika.ru/auth/vkontakte')}
-        >
-          ВКонтакте
-        </VkButton>
-      </Group>
-
-      <Divider label="Или войдите с email" labelPosition="center" my="lg" />
 
       {error && <Text color="red">{error}</Text>}
       <form onSubmit={form.onSubmit(handleSubmit)}>

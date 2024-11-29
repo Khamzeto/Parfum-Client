@@ -31,13 +31,79 @@ dayjs.extend(relativeTime);
 import $api from '@/components/api/axiosInstance'; // Импортируем axios экземпляр
 import { useRouter } from 'next/navigation';
 
-export function RightMain({ firstBrand, posts, notes, perfumes }) {
+export function RightMain({ firstBrand, posts, perfumes }) {
   const [recentReviews, setRecentReviews] = useState([]);
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
   const router = useRouter();
+
+  // Данные о нотах
+  const notesData = [
+    {
+      id: '66e84e5ba0ed7975759f1b1d',
+      title: 'Яблоко',
+      imageUrl: 'https://parfumetrika.ru/note_images/Яблоко.jpg',
+      description: 'Parfumetrika знает 1234 парфюмов, содержащих ноту Яблоко.',
+    },
+    {
+      id: '66e84e5ba0ed7975759f1bab',
+      title: 'Базилик',
+      imageUrl: 'https://parfumetrika.ru/note_images/Базилик.jpg',
+      description: 'Parfumetrika знает 2196 парфюм, содержащий ноту Базилик.',
+    },
+    {
+      id: '66e84e5ba0ed7975759f1e29',
+      title: 'Гедиона',
+      imageUrl: 'https://parfumetrika.ru/note_images/Гедиона.jpg',
+      description: 'Parfumetrika знает 346 парфюм, содержащий ноту Гедиона.',
+    },
+    {
+      id: '66e84e5ca0ed7975759f2434',
+      title: 'Ель',
+      imageUrl: 'https://parfumetrika.ru/note_images/Ель.jpg',
+      description: 'Parfumetrika знает 126 парфюм, содержащий ноту Ель.',
+    },
+    {
+      id: '66e84e5ba0ed7975759f1c8b',
+      title: 'Магнолия',
+      imageUrl: 'https://parfumetrika.ru/note_images/Магнолия.jpg',
+      description: 'Parfumetrika знает 3073 парфюм, содержащий ноту Магнолия.',
+    },
+    // Добавьте другие ноты по аналогии
+  ];
+
+  // Состояние для выбранной ноты дня
+  const [noteOfTheDay, setNoteOfTheDay] = useState(null);
+
+  useEffect(() => {
+    // Логика для выбора ноты дня
+    if (typeof window !== 'undefined') {
+      const savedNote = localStorage.getItem('noteOfTheDay');
+      const savedDate = localStorage.getItem('noteOfTheDayDate');
+
+      const now = dayjs();
+
+      if (savedNote && savedDate && now.isBefore(dayjs(savedDate).add(1, 'day'))) {
+        // Если прошло меньше 24 часов, используем сохранённую ноту
+        setNoteOfTheDay(JSON.parse(savedNote));
+      } else {
+        // Если прошло больше 24 часов, выбираем новую случайную ноту
+        if (notesData.length > 0) {
+          const randomIndex = Math.floor(Math.random() * notesData.length);
+          const randomNote = notesData[randomIndex];
+          setNoteOfTheDay(randomNote);
+
+          // Сохраняем выбранную ноту и текущую дату в localStorage
+          localStorage.setItem('noteOfTheDay', JSON.stringify(randomNote));
+          localStorage.setItem('noteOfTheDayDate', now.toISOString());
+        } else {
+          console.warn('Массив нот пуст');
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     // Получаем последние отзывы из API
@@ -64,24 +130,24 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
         </Title>
       </Group>
 
-      {/* Отображение парфюмов для нот дня */}
-      {notes.map((perfume) => (
+      {/* Отображение ноты дня */}
+      {noteOfTheDay ? (
         <Card
-          key={perfume._id}
+          key={noteOfTheDay.id}
           bg={isDark ? theme.colors.dark[6] : theme.colors.gray[0]}
           shadow="2"
           h="280px"
           padding="lg"
           radius="18"
           style={{ marginBottom: '20px', cursor: 'pointer' }}
-          onClick={() => router.push(`/note/66e84e5ba0ed7975759f1b1d`)}
+          onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
         >
           <Group
             style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
           >
             <div style={{ flex: 1, textAlign: 'center' }}>
               <Text size="lg" style={{ color: theme.colors.default }}>
-                {perfume.title}
+                {noteOfTheDay.title}
               </Text>
             </div>
             <div
@@ -96,35 +162,40 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
               }}
             >
               <Image
-                src="https://img.parfumo.de/notes/f1/f1_22c346156a3e3950b3e3b8769ca1877328dbce56_320.jpg" // Placeholder image
-                alt={perfume.name}
+                src={noteOfTheDay.imageUrl}
+                alt={noteOfTheDay.title}
                 fit="contain"
                 width="100%"
                 radius="360"
                 height="100%"
+                onError={(e) => {
+                  e.target.src = '/fallback-note.jpg'; // Путь к изображению-заглушке для нот
+                }}
               />
             </div>
             <Text
               style={{
                 textAlign: 'center',
-                fontSize: '12px',
+                fontSize: '14px',
                 width: '98%',
                 color: theme.colors.gray[6],
               }}
             >
-              Белая амбра лучшая амбра на свете богата аминокислотами{' '}
+              {noteOfTheDay.description}
             </Text>
             <Button
               variant="outline"
               radius="12"
-              onClick={() => router.push(`/note/66e84e5ba0ed7975759f1b1d`)}
+              onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
               style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
             >
               Читать полностью
             </Button>
           </Group>
         </Card>
-      ))}
+      ) : (
+        <Text>Загрузка ноты дня...</Text>
+      )}
 
       {/* Лучшие отзывы из блогов */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
@@ -155,7 +226,7 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
           >
             <div>
               <Avatar
-                src={`https://pimages.parfumo.de/720/2_img-9013-hermes-terre-d-hermes-eau-de-toilette_720.webp`}
+                src={`https://parfumetrika.ru/${review.main_image}`}
                 alt={review.user.username}
                 radius="8"
                 size="lg"
@@ -215,7 +286,7 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
           size="xl"
           style={{ marginBottom: '10px', cursor: 'pointer' }}
         >
-          Gucci
+          Dior
         </Text>
 
         <div
@@ -224,11 +295,11 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
+            marginBottom: '10px',
           }}
-          style={{ cursor: 'pointer' }}
           onClick={() => router.push(`/brand/Gucci`)}
         >
-          {firstBrand.logo(isDark)}
+          <img width="80px" src="/cdi.svg" />
         </div>
 
         <Text
@@ -237,7 +308,7 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
           onClick={() => router.push(`/brand/Gucci`)}
           color="dimmed"
         >
-          Ароматы Gucci
+          Ароматы Dior
         </Text>
         <Carousel
           loop
@@ -276,7 +347,6 @@ export function RightMain({ firstBrand, posts, notes, perfumes }) {
         </Carousel>
 
         <Button
-          style={{ cursor: 'pointer' }}
           onClick={() => router.push(`/brand/Gucci`)}
           variant="outline"
           radius="md"

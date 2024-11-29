@@ -156,14 +156,14 @@ export function UserMenu() {
         />
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Item
+          leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+          onClick={() => router.push('/profile')}
+        >
+          Профиль
+        </Menu.Item>
         {user?.roles?.includes('admin') && (
           <>
-            <Menu.Item
-              leftSection={<IconUser style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-              onClick={() => router.push('/profile')}
-            >
-              Профиль
-            </Menu.Item>
             <Menu.Item
               leftSection={<IconNews style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
               onClick={() => router.push('/my-news')}
