@@ -27,7 +27,7 @@ export async function generateMetadata({ params }) {
 
     const allNotes = [topNotes, heartNotes, baseNotes, additionalNotes].filter(Boolean).join(', ');
 
-    const notesDescription = allNotes ? `Парфюм с нотами: ${allNotes}.` : 'Ноты не указаны';
+    const notesDescription = allNotes ? `Парфюм с нотами: ${allNotes}.` : '';
 
     const fullDescription = `${description} ${notesDescription}`;
 
