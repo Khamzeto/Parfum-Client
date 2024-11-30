@@ -20,16 +20,18 @@ export async function generateMetadata({ params }) {
     }. Оценка ${perfume.rating_value || '0'} из 10.`;
 
     // Формируем список всех нот (top, heart, base) для добавления в описание
-    const topNotes = (perfume.notes?.top_notes || []).join(', ') || 'неизвестны';
-    const heartNotes = (perfume.notes?.heart_notes || []).join(', ') || 'неизвестны';
-    const baseNotes = (perfume.notes?.base_notes || []).join(', ') || 'неизвестны';
+    const topNotes = (perfume.notes?.top_notes || []).join(', ') || '';
+    const heartNotes = (perfume.notes?.heart_notes || []).join(', ') || '';
+    const baseNotes = (perfume.notes?.base_notes || []).join(', ') || '';
     const additionalNotes = (perfume.notes?.additional_notes || []).join(', ') || '';
 
+    // Объединяем все ноты и формируем описание
     const allNotes = [topNotes, heartNotes, baseNotes, additionalNotes].filter(Boolean).join(', ');
 
+    // Если ноты есть, добавляем их в описание
     const notesDescription = allNotes ? `Парфюм с нотами: ${allNotes}.` : '';
 
-    const fullDescription = `${description} ${notesDescription}`;
+    const fullDescription = `${description} ${notesDescription}`.trim();
 
     const mainImage = perfume.main_image
       ? `https://parfumetrika.ru/${perfume.main_image}`
