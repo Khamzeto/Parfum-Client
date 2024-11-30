@@ -125,6 +125,7 @@ const PerfumeDetailsPage = () => {
     top_notes: [],
     heart_notes: [],
     base_notes: [],
+    additional_notes: [],
   });
 
   // Data arrays for TagsInput components
@@ -133,6 +134,7 @@ const PerfumeDetailsPage = () => {
   const [topNotesData, setTopNotesData] = useState(['React', 'Angular', 'Svelte']);
   const [heartNotesData, setHeartNotesData] = useState(['React', 'Angular', 'Svelte']);
   const [baseNotesData, setBaseNotesData] = useState(['React', 'Angular', 'Svelte']);
+  const [addNotesData, setAddNotesData] = useState(['React', 'Angular', 'Svelte']);
 
   const theme = useMantineTheme();
   useEffect(() => {
@@ -165,7 +167,9 @@ const PerfumeDetailsPage = () => {
       setEditYear(perfume.release_year || '');
       setEditAccords(perfume.accords || []);
       setEditPerfumers(perfume.perfumers || []);
-      setEditNotes(perfume.notes || { top_notes: [], heart_notes: [], base_notes: [] });
+      setEditNotes(
+        perfume.notes || { top_notes: [], heart_notes: [], base_notes: [], additional_notes: [] }
+      );
       if (perfume?.tags?.length > 0) {
         setEditTags(perfume.tags);
       }
@@ -175,6 +179,7 @@ const PerfumeDetailsPage = () => {
       setTopNotesData(perfume.notes?.top_notes || []);
       setHeartNotesData(perfume.notes?.heart_notes || []);
       setBaseNotesData(perfume.notes?.base_notes || []);
+      setAddNotesData(perfume.notes?.additional_notes || []);
     }
   }, [perfume, isEditing]);
   useEffect(() => {
@@ -443,6 +448,10 @@ const PerfumeDetailsPage = () => {
             editNotes.heart_notes.length > 0 ? editNotes.heart_notes : perfume.notes.heart_notes,
           base_notes:
             editNotes.base_notes.length > 0 ? editNotes.base_notes : perfume.notes.base_notes,
+          additional_notes:
+            editNotes.additional_notes.length > 0
+              ? editNotes.additional_notes
+              : perfume.notes.additional_notes,
         },
         rating_value: perfume.rating_value, // Retain non-editable fields
         rating_count: perfume.rating_count,
@@ -1097,6 +1106,15 @@ const PerfumeDetailsPage = () => {
                       'base_notes',
                       baseNotesData,
                       setBaseNotesData
+                    )
+                  : null}
+                {isEditing || perfume?.notes?.additional_notes?.length > 0
+                  ? renderNotes(
+                      isEditing ? editNotes.additional_notes : perfume?.notes.additional_notes,
+                      'Ноты парфюма',
+                      'additional_notes',
+                      addNotesData,
+                      setAddNotesData
                     )
                   : null}
 
