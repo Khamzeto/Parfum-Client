@@ -19,9 +19,9 @@ export async function generateMetadata({ params }) {
       perfume.release_year || 'неизвестном году'
     }. Оценка ${perfume.rating_value || '0'} из 10.`;
 
-    const mainImage = `https://hltback.parfumetrika.ru/${perfume.main_image}`;
+    const mainImage = `https://parfumetrika.ru${perfume.main_image}`;
     const additionalImages = (perfume.additional_images || []).map(
-      (img) => `https://hltback.parfumetrika.ru/${img}`
+      (img) => `https://parfumetrika.ru/${img}`
     );
     const topNotes = perfume.notes?.top_notes?.join(', ') || 'неизвестны';
     const heartNotes = perfume.notes?.heart_notes?.join(', ') || 'неизвестны';
