@@ -239,10 +239,11 @@ const PerfumeSearch = () => {
                 <Card key={index} className={styles.perfumeCard}>
                   <Group align="flex-start" spacing="md" className={styles.groupContainer}>
                     <Image
-                      src={
-                        perfume.main_image ||
-                        'https://pimages.parfumo.de/720/1_img-3571-prada-amber_pour_homme_eau_de_toilette_720.webp'
-                      }
+                      src={`https://parfumetrika.ru/${perfume.main_image}`}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                        target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                      }}
                       alt={perfume.name}
                       width={80}
                       height={80}

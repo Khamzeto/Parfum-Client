@@ -231,83 +231,96 @@ const popularBrands = [
   {
     name: 'Gucci',
     logo: (isDark: boolean) => (
-      <svg
-        viewBox="0 0 40 40"
-        xmlns="http://www.w3.org/2000/svg"
-        width="100" // Adjust width as needed
-        height="auto"
-      >
-        <defs>
-          <style>{'.cls-1{fill-rule:evenodd;}'}</style>
-        </defs>
-        <g id="Logos">
-          <path
-            className="cls-1"
-            fill={isDark ? '#FFFFFF' : '#000000'} // Dynamically setting fill color based on theme
-            d="M35,20a10.4,10.4,0,0,1-15,9.31,10.38,10.38,0,1,1,0-18.64A10.43,10.43,0,0,1,35,20Zm-2,0a8.35,8.35,0,0,0-8.34-8.34A8.24,8.24,0,0,0,22.1,12a10.26,10.26,0,0,1,3.32,5.17H23.28A8.31,8.31,0,0,0,20,13a8.29,8.29,0,0,0-3.25,4.18H14.61A10.48,10.48,0,0,1,17.94,12a8.67,8.67,0,0,0-2.53-.38,8.34,8.34,0,0,0,0,16.68,8.11,8.11,0,0,0,2.49-.38,10.23,10.23,0,0,1-3.63-7.12h4.94v2l-2.41,0a8.34,8.34,0,0,0,3.21,4,8.34,8.34,0,0,0,3.21-4l-2.41,0v-2h4.94a10.31,10.31,0,0,1-3.67,7.1,8.48,8.48,0,0,0,2.53.4A8.3,8.3,0,0,0,33,20Z"
-          />
-        </g>
-      </svg>
+      <a href="/brand/Gucci">
+        <svg
+          viewBox="0 0 40 40"
+          xmlns="http://www.w3.org/2000/svg"
+          width="100" // Adjust width as needed
+          height="auto"
+        >
+          <defs>
+            <style>{'.cls-1{fill-rule:evenodd;}'}</style>
+          </defs>
+          <g id="Logos">
+            <path
+              className="cls-1"
+              fill={isDark ? '#FFFFFF' : '#000000'} // Dynamically setting fill color based on theme
+              d="M35,20a10.4,10.4,0,0,1-15,9.31,10.38,10.38,0,1,1,0-18.64A10.43,10.43,0,0,1,35,20Zm-2,0a8.35,8.35,0,0,0-8.34-8.34A8.24,8.24,0,0,0,22.1,12a10.26,10.26,0,0,1,3.32,5.17H23.28A8.31,8.31,0,0,0,20,13a8.29,8.29,0,0,0-3.25,4.18H14.61A10.48,10.48,0,0,1,17.94,12a8.67,8.67,0,0,0-2.53-.38,8.34,8.34,0,0,0,0,16.68,8.11,8.11,0,0,0,2.49-.38,10.23,10.23,0,0,1-3.63-7.12h4.94v2l-2.41,0a8.34,8.34,0,0,0,3.21,4,8.34,8.34,0,0,0,3.21-4l-2.41,0v-2h4.94a10.31,10.31,0,0,1-3.67,7.1,8.48,8.48,0,0,0,2.53.4A8.3,8.3,0,0,0,33,20Z"
+            />
+          </g>
+        </svg>
+      </a>
     ),
   },
   {
     name: 'Gucci3',
     logo: (isDark: boolean) => (
-      <Image
-        src="/acqua-di.svg"
-        alt="Gucci3 Logo"
-        miw={65}
-        width={80} // Укажите необходимые размеры
-        height={80} // Обязательно укажите высоту
-      />
+      <a href="/brand/Acqua_di_Parma">
+        <Image
+          src="/acqua-di.svg"
+          alt="Gucci3 Logo"
+          miw={65}
+          width={80} // Укажите необходимые размеры
+          height={80} // Обязательно укажите высоту
+        />
+      </a>
     ),
   },
   {
     name: 'Gucci5',
     logo: (isDark: boolean) => (
-      <Image
-        src="/cdi.svg"
-        alt="Gucci4 Logo"
-        miw={100}
-        width={30} // Укажите необходимые размеры
-        height={30} // Обязательно укажите высоту
-      />
+      <a href="/brand/Dior">
+        <Image
+          src="/cdi.svg"
+          alt="Gucci4 Logo"
+          miw={100}
+          width={30} // Укажите необходимые размеры
+          height={30} // Обязательно укажите высоту
+        />
+      </a>
     ),
   },
   {
     name: 'Gucci6',
     logo: (isDark: boolean) => (
-      <Image
-        src="/guerlain.svg"
-        alt="Gucci4 Logo"
-        miw={100}
-        width={100} // Укажите необходимые размеры
-        height={100} // Обязательно укажите высоту
-      />
+      <a href="/brand/Guerlain">
+        <Image
+          src="/guerlain.svg"
+          alt="Gucci4 Logo"
+          miw={100}
+          width={100} // Укажите необходимые размеры
+          height={100} // Обязательно укажите высоту
+        />
+      </a>
     ),
   },
   {
     name: 'Gucci7',
     logo: (isDark: boolean) => (
-      <Image
-        src="/logo-4.svg"
-        alt="Gucci4 Logo"
-        miw={100}
-        width={30} // Укажите необходимые размеры
-        height={30} // Обязательно укажите высоту
-      />
+      <a href="/brand/Lancome">
+        <Image
+          src="/logo-4.svg"
+          alt="Gucci4 Logo"
+          miw={104}
+          width={30} // Укажите необходимые размеры
+          height={30} // Обязательно укажите высоту
+          style={{ cursor: 'pointer' }}
+        />
+      </a>
     ),
   },
   {
     name: 'Gucci47',
     logo: (isDark: boolean) => (
-      <Image
-        src="/chanel.svg"
-        alt="Gucci4 Logo"
-        miw={100}
-        width={16} // Укажите необходимые размеры
-        height={16} // Обязательно укажите высоту
-      />
+      <a href="/brand/Chanel">
+        <Image
+          src="/chanel.svg"
+          alt="Gucci4 Logo"
+          miw={100}
+          width={16} // Укажите необходимые размеры
+          height={16} // Обязательно укажите высоту
+        />
+      </a>
     ),
   },
 

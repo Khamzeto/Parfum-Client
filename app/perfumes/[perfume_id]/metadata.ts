@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
     const perfume = response.data;
 
     return {
-      title: `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'}`,
+      title: `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюм`,
       description: `${perfume.name || 'Название парфюма'} - аромат для ${
         perfume.gender === 'male'
           ? 'Мужчин'

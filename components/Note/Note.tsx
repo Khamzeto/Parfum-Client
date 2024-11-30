@@ -1,5 +1,5 @@
 'use client';
-// @ts-ignore: Temporary ignore TypeScript error
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import {
@@ -19,13 +19,16 @@ import {
   Divider,
   Anchor,
   Breadcrumbs,
+  Avatar,
 } from '@mantine/core';
+
 import {
   IconMars,
   IconVenus,
   IconGenderBigender,
   IconStar,
   IconCalendar,
+  IconSearch,
   IconZoomReset,
   IconGridDots,
   IconList,
@@ -34,6 +37,7 @@ import $api from '@/components/api/axiosInstance';
 import { Header } from '@/components/Header/Header';
 import Link from 'next/link';
 import SearchInput from '../../../components/ui/InputSearch/InputSearch';
+import { NavigationButtons } from '@/components/ui/NavigationButtons/NavigationButtons';
 import { FooterLinks } from '@/components/ui/Footer/Footer';
 
 interface Perfume {
@@ -51,13 +55,14 @@ interface Perfume {
   accords: string[];
 }
 
-const PerfumesByBrand = () => {
+const PerfumesByNote = () => {
   const theme = useMantineTheme();
+  const params = useParams();
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === 'dark';
-  const [isListView, setIsListView] = useState(false);
-  const params = useParams();
-  const brandSlug = Array.isArray(params.brandName) ? params.brandName[0] : params.brandName;
+  const [isListView, setIsListView] = useState(false); // State for list/grid view
+
+  const noteId = params.note_id;
 
   const [perfumes, setPerfumes] = useState<Perfume[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -65,34 +70,40 @@ const PerfumesByBrand = () => {
   const [activePage, setActivePage] = useState<number>(1);
   const itemsPerPage = 20;
   const [totalItems, setTotalItems] = useState<number>(0);
-  const [brandName, setBrandName] = useState<string>(''); // Название бренда
-  const [total, setTotal] = useState<number>(0); // Общее количество духов
-  console.log(brandName);
-  const [sortBy, setSortBy] = useState<string>('popular');
-  const [genderFilter, setGenderFilter] = useState<string | null>(null);
+  const [noteName, setNoteName] = useState<string>('');
+  const [total, setTotal] = useState<number>(0); // State for note name
+
+  const [sortBy, setSortBy] = useState<string>('popular'); // Default sorting
+  const [genderFilter, setGenderFilter] = useState<string | null>(null); // Gender filter
 
   useEffect(() => {
-    if (brandSlug) {
-      fetchPerfumesByBrand(brandSlug, activePage, sortBy, genderFilter);
+    if (noteId) {
+      fetchPerfumesByNote(noteId, activePage, sortBy, genderFilter);
     }
-  }, [brandSlug, activePage, sortBy, genderFilter]);
+  }, [noteId, activePage, sortBy, genderFilter]);
 
-  const fetchPerfumesByBrand = async (
-    slug: string,
+  const fetchPerfumesByNote = async (
+    noteId: string,
     page: number,
     sortBy: string,
     gender: string | null
   ) => {
     setLoading(true);
     try {
-      const response = await $api.get(`/brands/perfumes`, {
-        params: { slug: slug, page: page, limit: itemsPerPage, sortBy: sortBy, gender: gender },
+      const response = await $api.get(`/notes/perfumes`, {
+        params: {
+          noteId: noteId,
+          page: page,
+          limit: itemsPerPage,
+          sortBy: sortBy,
+          gender: gender, // Pass gender filter to the backend
+        },
       });
 
       setPerfumes(response.data.perfumes);
       setTotalItems(response.data.total);
-      setBrandName(response.data.brandName);
-      setTotal(response.data.total); // Устанавливаем общее количество духов
+      setNoteName(response.data.noteName);
+      setTotal(response.data.total); // Set the note name
     } catch (err: any) {
       setError(err.response?.data?.message || 'Не удалось получить парфюмы');
     } finally {
@@ -136,22 +147,16 @@ const PerfumesByBrand = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Function to clear all filters
   const clearFilters = () => {
-    setSortBy('A-Z');
-    setGenderFilter(null);
-    setActivePage(1);
+    setSortBy('A-Z'); // Reset sorting to default
+    setGenderFilter(null); // Reset gender filter
+    setActivePage(1); // Reset to first page
   };
 
-  const title = `${brandName} – Все Ароматы бренда с отзывами в одном месте – Parfumetrika`;
+  const title = `${noteName} – Все Ароматы с нотой ${noteName} в одном месте – Parfumetrika`;
   return (
     <>
-      <head>
-        <title>{title}</title>
-        <meta
-          name="description"
-          content={`Узнайте больше о парфюмах ${brandName}: подробные обзоры, реальные отзывы и рекомендации по выбору ароматов. Следите за новинками и актуальными новостями бренда.`}
-        />
-      </head>
       <Header />
 
       <div
@@ -162,14 +167,15 @@ const PerfumesByBrand = () => {
           paddingRight: '20px',
         }}
       >
-        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '0px' }}>
+        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '20px' }}>
           <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
             Главная
           </Anchor>
-          <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
-            Бренды
+          <Anchor href="/notes" style={{ textDecoration: 'none', color: '#007bff' }}>
+            Ноты
           </Anchor>
-          <span style={{ color: '#6c757d' }}>{brandName}</span>
+
+          <span style={{ color: '#6c757d' }}>{noteName}</span>
         </Breadcrumbs>
 
         <div
@@ -181,12 +187,15 @@ const PerfumesByBrand = () => {
             margin: '50px auto',
           }}
         >
+          {/* Left Side - Perfumes List */}
           <div style={{ flex: 1, maxWidth: '1000px' }}>
-            <Title order={2} style={{ textAlign: 'left' }}>
-              {brandName}
+            <Title order={1} align="left">
+              {noteName}
             </Title>
 
+            {/* Filter Section */}
             <Group mb="40" mt="30" position="center">
+              {/* Sorting Filter */}
               <Select
                 label="Сортировка"
                 placeholder="Выберите сортировку"
@@ -200,6 +209,7 @@ const PerfumesByBrand = () => {
                 ]}
               />
 
+              {/* Gender Filter */}
               <Select
                 label="Пол"
                 placeholder="Выберите гендер"
@@ -224,7 +234,7 @@ const PerfumesByBrand = () => {
                 leftSection={<IconZoomReset size={18} />}
                 variant="light"
                 color="gray"
-                onClick={clearFilters}
+                onClick={clearFilters} // Clear filters on button click
               >
                 Очистить
               </Button>
@@ -286,8 +296,12 @@ const PerfumesByBrand = () => {
                             }}
                           >
                             <Image
-                              src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
+                              src={`https://parfumetrika.ru/${perfume.main_image}`}
                               alt={perfume.name}
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
+                                target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
+                              }}
                               width={50}
                               height={50}
                               fit="contain"
@@ -467,30 +481,37 @@ const PerfumesByBrand = () => {
               />
             </Group>
           </div>
-          <Divider orientation="vertical" className="right-notes" />
+          <Divider className="right-notes" orientation="vertical" />
 
-          {/* Описание бренда на правой стороне */}
+          {/* Right Side - Image and Description */}
           <div
             className="right-notes"
             style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}
           >
-            <Image
-              src="https://pimages.parfumo.de/240/28793_vmydj8q4ca_240.webp"
-              alt={brandName}
-              style={{ borderRadius: '50%' }}
+            <Avatar
+              src={`https://parfumetrika.ru/note_images/${noteName}.jpg`} // Замените на нужный путь к изображению
+              alt={noteName}
+              style={{
+                marginBottom: '20px',
+                width: '140px',
+                height: '140px',
+                margin: '0 auto 40px auto',
+                borderRadius: '100%',
+              }}
             />
             <Title mb="14" order={4}>
-              {brandName}
+              {noteName}
             </Title>
-            <Text mb="14">
-              В коллекции {brandName} есть {total} парфюмов.
-            </Text>
+            <Title mb="14" style={{ fontSize: '14px', fontWeight: 400 }}>
+              Parfumetrika знает {total} парфюм, содержащий ноту {noteName}.
+            </Title>
           </div>
         </div>
       </div>
+
       <FooterLinks />
     </>
   );
 };
 
-export default PerfumesByBrand;
+export default PerfumesByNote;

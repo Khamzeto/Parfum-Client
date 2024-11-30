@@ -159,7 +159,6 @@ const PerfumesByParfumer = () => {
     setActivePage(1);
   };
 
-  if (error) return <Text color="red">{error}</Text>;
   const title = `${parfumerRu}`;
   console.log(title);
 

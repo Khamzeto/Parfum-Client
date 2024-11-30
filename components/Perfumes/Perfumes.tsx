@@ -640,7 +640,7 @@ const PerfumeDetailsPage = () => {
                   />
                 ) : (
                   <>
-                    <Title size="30px" pr="6">
+                    <Title order={2} size="30px" pr="6">
                       {perfume?.name}
                     </Title>
                     {getGenderIcon(perfume?.gender)}
@@ -774,9 +774,42 @@ const PerfumeDetailsPage = () => {
                 style={{
                   fontSize: '14px',
                   lineHeight: '1.4',
+                  fontWeight: 400,
                 }}
               >
-                {perfume?.description}
+                {(() => {
+                  const description = perfume?.description || '';
+                  const firstSentenceEnd = description.indexOf('.');
+                  const secondSentenceStart = description.indexOf('.', firstSentenceEnd + 1);
+
+                  if (firstSentenceEnd !== -1) {
+                    const title =
+                      secondSentenceStart !== -1
+                        ? description.substring(0, secondSentenceStart + 1) // До второй точки
+                        : description.substring(0, firstSentenceEnd + 1); // Если второй точки нет, до первой точки
+                    const text =
+                      secondSentenceStart !== -1
+                        ? description.substring(secondSentenceStart + 1).trim() // После второй точки
+                        : description.substring(firstSentenceEnd + 1).trim(); // После первой точки
+
+                    return (
+                      <>
+                        <Title
+                          className="description-title"
+                          style={{
+                            fontWeight: 400,
+                            fontSize: '14px',
+                            display: 'inline',
+                          }}
+                        >
+                          {title}
+                        </Title>
+                        {text}
+                      </>
+                    );
+                  }
+                  return description; // Если точек нет, возвращаем весь текст.
+                })()}
               </Text>
             )}
 
@@ -1489,7 +1522,7 @@ const PerfumeDetailsPage = () => {
           />
         </Flex>
         <Box mt="10" mb="20">
-          <Title size="lg" mb="sm">
+          <Title order={2} size="lg" mb="sm">
             Поделиться:
           </Title>
           <Group spacing="sm">

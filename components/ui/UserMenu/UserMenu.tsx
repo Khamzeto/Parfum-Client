@@ -149,7 +149,7 @@ export function UserMenu() {
     <Menu withArrow zIndex="9999999" position="bottom-end" transition="pop" withinPortal>
       <Menu.Target>
         <UserButton
-          image={user?.avatar || 'Unknown User'}
+          image={`https://hltback.parfumetrika.ru${user?.avatar}` || 'Unknown User'}
           name={user?.username || 'Unknown User'}
           email={user?.email || 'unknown@mail.com'}
           isVerified={user?.isVerified} // Передаем isVerified в UserButton

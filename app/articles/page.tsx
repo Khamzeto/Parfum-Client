@@ -25,8 +25,8 @@ export default function Home() {
   useEffect(() => {
     const fetchUserArticles = async () => {
       try {
-        const response = await $api.get('/article/requests/');
-        setArticles(response.data.requests);
+        const response = await $api.get('/article/latest');
+        setArticles(response.data);
       } catch (error) {
         console.error('Ошибка при получении статей пользователя:', error);
       } finally {

@@ -52,7 +52,7 @@ const GallerySection: React.FC<GallerySectionProps> = ({ perfume }) => {
 
   return (
     <>
-      <Title size="24" mt="20" mb="10">
+      <Title order={2} size="24" mt="20" mb="10">
         Фотографии
       </Title>
 

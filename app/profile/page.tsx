@@ -182,7 +182,7 @@ const ProfileCard = () => {
             padding: '40px 0',
           }}
         >
-          <Avatar size="250px" src={avatar} radius="xl" />
+          <Avatar size="250px" src={`https://hltback.parfumetrika.ru/${avatar}`} radius="xl" />
 
           <div
             style={{

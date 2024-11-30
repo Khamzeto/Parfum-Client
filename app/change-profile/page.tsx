@@ -54,6 +54,7 @@ const UserProfile = () => {
     telegramUrl: '',
     website: '',
   });
+  console.log(editingData);
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -163,7 +164,11 @@ const UserProfile = () => {
                 <Avatar
                   size={120}
                   radius="260"
-                  src={editingData.avatar}
+                  src={
+                    editingData.avatar.startsWith('data:image/')
+                      ? editingData.avatar // Если это Base64 строка
+                      : `https://hltback.parfumetrika.ru${editingData.avatar}` // Если это URL с сервера
+                  }
                   alt="User Avatar"
                   style={{ cursor: 'pointer' }}
                   onClick={() => setAvatarModal(true)}

@@ -141,16 +141,20 @@ export function LeftMain({ stores, perfume }) {
           </div>
 
           <div style={{ flex: 1, textAlign: 'center' }}>
-            <Text size="lg" style={{ color: theme.colors.default }}>
+            <Text size="lg" style={{ color: theme.colors.default, fontSize: '14px' }}>
               {selectedPerfume?.name}
             </Text>
             <Text size="sm" style={{ color: theme.colors.gray[6] }}>
               {selectedPerfume?.brand}
             </Text>
 
-            <Group spacing="sm" style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}>
+            <Group
+              spacing="sm"
+              justify="center"
+              style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}
+            >
               <IconCalendar size={16} color={theme.colors.blue[6]} />
-              <Text size="xs" style={{ color: theme.colors.gray[6] }}>
+              <Text size="xs" style={{ color: theme.colors.gray[6], textAlign: 'center' }}>
                 Год выпуска: {selectedPerfume?.release_year}
               </Text>
             </Group>
@@ -159,6 +163,7 @@ export function LeftMain({ stores, perfume }) {
             onClick={() => router.push(`/perfumes/${selectedPerfume?.perfume_id}`)}
             variant="outline"
             radius="12"
+            mb="14"
             style={{ borderColor: theme.colors.gray[4] }}
           >
             Читать полностью
@@ -197,7 +202,12 @@ export function LeftMain({ stores, perfume }) {
             }}
           >
             <div>
-              <Avatar src={post?.userId?.avatar} alt={post.author} radius="xl" size="lg" />
+              <Avatar
+                src={`https://hltback.parfumetrika.ru/${post?.userId?.avatar}`}
+                alt={post.author}
+                radius="xl"
+                size="lg"
+              />
             </div>
             <div
               style={{

@@ -55,6 +55,7 @@ export default function ArticlePage() {
   const [submitting, setSubmitting] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const [replyLimit, setReplyLimit] = useState(3);
   const [reloadCommentsTrigger, setReloadCommentsTrigger] = useState(false);
   const router = useRouter();
@@ -70,15 +71,18 @@ export default function ArticlePage() {
     // Переход к профилю пользователя по userId
     router.push(`/user/${article.userId}`);
   };
+
   const handleUserClick = (userId) => {
     router.push(`/user/${userId}`);
   };
+
   // Загрузка статьи, комментариев и популярных статей
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
-    setUserId(user?.id);
+    setUserId(user?._id);
     setUsername(user?.username);
+    setAvatar(user?.avatar);
 
     if (id) {
       const fetchArticle = async () => {
@@ -124,6 +128,7 @@ export default function ArticlePage() {
         userId,
         content: newComment,
         username,
+        avatar,
       });
 
       // После успешной отправки делаем новый запрос, чтобы обновить комментарии
@@ -142,12 +147,18 @@ export default function ArticlePage() {
   const handleReplySubmit = async (commentId: string) => {
     if (!newReply.trim()) return;
 
+    if (!userId) {
+      console.error('Пользователь не найден в локальном хранилище');
+      return;
+    }
+
     setSubmitting(true);
     try {
       await $api.post(`/article/requests/${id}/comments/${commentId}/replies`, {
         userId,
         content: newReply,
         username,
+        avatar,
       });
 
       setNewReply('');
@@ -223,7 +234,7 @@ export default function ArticlePage() {
               <Skeleton height={48} circle mb="sm" />
             ) : (
               <Avatar
-                src={article.user?.avatar || undefined}
+                src={`https://hltback.parfumetrika.ru${article.user?.avatar}` || undefined}
                 alt={article.user?.username || 'Анонимно'}
                 size="lg"
                 onClick={handleAvatarClick}
@@ -457,12 +468,17 @@ export default function ArticlePage() {
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <div style={{ display: 'flex', gap: '20px' }}>
                             <Avatar
-                              src={comment.avatar || undefined}
+                              src={
+                                comment.avatar?.startsWith('data:image/')
+                                  ? comment.avatar // Если это Base64 строка
+                                  : `https://hltback.parfumetrika.ru${comment.avatar}` // Если это URL с сервера
+                              }
                               alt={comment.username || 'Анонимно'}
                               size="md"
                               style={{ cursor: 'pointer' }}
                               onClick={() => handleUserClick(comment.userId)} // Переход по userId
                             />
+
                             <div>
                               <Text
                                 size="xs"
@@ -478,6 +494,7 @@ export default function ArticlePage() {
                                       color: 'white',
                                       padding: '2px 5px',
                                       borderRadius: '5px',
+                                      backgroundColor: '#28a745', // Зеленый фон для автора
                                     }}
                                   >
                                     Автор
@@ -529,12 +546,17 @@ export default function ArticlePage() {
                                     >
                                       <div style={{ display: 'flex', gap: '20px' }}>
                                         <Avatar
-                                          src={reply.avatar || undefined}
-                                          alt={reply.username}
+                                          src={
+                                            reply.avatar?.startsWith('data:image/')
+                                              ? reply.avatar // Если это Base64 строка
+                                              : `https://hltback.parfumetrika.ru${reply.avatar}` // Если это URL с сервера
+                                          }
+                                          alt={reply.username || 'Анонимно'}
                                           size="sm"
                                           style={{ cursor: 'pointer' }}
                                           onClick={() => handleUserClick(reply.userId)} // Переход по userId
                                         />
+
                                         <div>
                                           <Text
                                             size="xs"
@@ -551,6 +573,7 @@ export default function ArticlePage() {
                                                   color: 'white',
                                                   padding: '2px 5px',
                                                   borderRadius: '5px',
+                                                  backgroundColor: '#28a745', // Зеленый фон для автора
                                                 }}
                                               >
                                                 Автор
@@ -584,8 +607,53 @@ export default function ArticlePage() {
                               </Card>
                             </Box>
                           ))}
+                        {/* Кнопка для отображения большего количества ответов */}
+                        {comment.replies?.length > replyLimit && (
+                          <Button
+                            variant="subtle"
+                            size="xs"
+                            onClick={handleShowMoreReplies}
+                            style={{ marginTop: '8px', marginLeft: '20px' }}
+                          >
+                            Показать больше ответов
+                          </Button>
+                        )}
                       </div>
                     </Group>
+
+                    {/* Форма для ответа на комментарий */}
+                    {replyingTo === comment._id && (
+                      <Box mt="sm" ml="md">
+                        <Textarea
+                          radius="12"
+                          placeholder="Ваш ответ..."
+                          minRows={2}
+                          value={newReply}
+                          onChange={(e) => setNewReply(e.currentTarget.value)}
+                          mb="sm"
+                        />
+                        <Group position="apart">
+                          <Button
+                            radius="12"
+                            onClick={() => handleReplySubmit(comment._id)}
+                            loading={submitting}
+                            disabled={submitting}
+                          >
+                            Отправить ответ
+                          </Button>
+                          <Button
+                            radius="12"
+                            variant="subtle"
+                            onClick={() => {
+                              setReplyingTo(null);
+                              setNewReply('');
+                            }}
+                          >
+                            Отмена
+                          </Button>
+                        </Group>
+                      </Box>
+                    )}
                   </Card>
                 </Box>
               ))
