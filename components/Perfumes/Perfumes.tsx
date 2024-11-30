@@ -1551,7 +1551,7 @@ const PerfumeDetailsPage = () => {
             <ActionIcon
               size="lg"
               component="a"
-              href={`https://vk.com/share.php?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(perfume?.name)}`}
+              href={`https://vk.com/share.php?url=${encodeURIComponent(currentUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               color="blue"

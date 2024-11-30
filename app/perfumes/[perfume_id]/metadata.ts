@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
     const perfume = response.data;
 
     // Формируем основные метаданные с проверками
-    const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюм`;
+    const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюма`;
     const description = `${perfume.name || 'Название парфюма'} - аромат для ${
       perfume.gender === 'male'
         ? 'Мужчин'
@@ -19,22 +19,31 @@ export async function generateMetadata({ params }) {
       perfume.release_year || 'неизвестном году'
     }. Оценка ${perfume.rating_value || '0'} из 10.`;
 
+    // Формируем список всех нот (top, heart, base) для добавления в описание
+    const topNotes = (perfume.notes?.top_notes || []).join(', ') || 'неизвестны';
+    const heartNotes = (perfume.notes?.heart_notes || []).join(', ') || 'неизвестны';
+    const baseNotes = (perfume.notes?.base_notes || []).join(', ') || 'неизвестны';
+    const additionalNotes = (perfume.notes?.additional_notes || []).join(', ') || '';
+
+    const allNotes = [topNotes, heartNotes, baseNotes, additionalNotes].filter(Boolean).join(', ');
+
+    const notesDescription = allNotes ? `Парфюм с нотами: ${allNotes}.` : 'Ноты не указаны';
+
+    const fullDescription = `${description} ${notesDescription}`;
+
     const mainImage = perfume.main_image
       ? `https://parfumetrika.ru/${perfume.main_image}`
       : 'https://parfumetrika.ru/default-image.jpg';
     const additionalImages = (perfume.additional_images || []).map(
       (img) => `https://parfumetrika.ru/${img}`
     );
-    const topNotes = perfume.notes?.top_notes?.join(', ') || 'неизвестны';
-    const heartNotes = perfume.notes?.heart_notes?.join(', ') || 'неизвестны';
-    const baseNotes = perfume.notes?.base_notes?.join(', ') || 'неизвестны';
 
     return {
       title,
-      description,
+      description: fullDescription, // Обновленное описание
       openGraph: {
         title,
-        description,
+        description: fullDescription, // Описание для Open Graph
         url: `https://parfumetrika.ru/perfumes/${perfume_id}`,
         type: 'website', // Используем 'website' вместо 'product'
         locale: 'ru_RU',
@@ -57,7 +66,7 @@ export async function generateMetadata({ params }) {
       twitter: {
         card: 'summary_large_image',
         title,
-        description,
+        description: fullDescription, // Обновленное описание
         images: [mainImage],
       },
       facebook: {

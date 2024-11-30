@@ -286,7 +286,7 @@ const PerfumesByBrand = () => {
                             }}
                           >
                             <Image
-                              src="https://pimages.parfumo.de/240/196014_img-1075-mellifluence-perfume-ericius_240.webp"
+                              src="https://parfumetrika.ru/images/Mokseo_main_1732364328809.jpg"
                               alt={perfume.name}
                               width={50}
                               height={50}
@@ -299,6 +299,7 @@ const PerfumesByBrand = () => {
                                 flexDirection: 'column',
                                 justifyContent: 'center',
                                 flex: 1,
+                                marginTop: '10px',
                               }}
                             >
                               <Text size="sm" w="300px" weight={500}>
@@ -475,7 +476,7 @@ const PerfumesByBrand = () => {
             style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}
           >
             <Image
-              src="https://pimages.parfumo.de/240/28793_vmydj8q4ca_240.webp"
+              src="https://parfumetrika.ru/images/Mokseo_main_1732364328809.jpg"
               alt={brandName}
               style={{ borderRadius: '50%' }}
             />
