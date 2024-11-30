@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
     const response = await axios.get(`https://hltback.parfumetrika.ru/perfumes/${perfume_id}`);
     const perfume = response.data;
 
-    // Формируем Open Graph теги и метаданные
+    // Формируем основные метаданные
     const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюм`;
     const description = `${perfume.name || 'Название парфюма'} - аромат для ${
       perfume.gender === 'male'
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
       perfume.release_year || 'неизвестном году'
     }. Оценка ${perfume.rating_value || '0'} из 10.`;
 
-    const mainImage = `https://parfumetrika.ru${perfume.main_image}`;
+    const mainImage = `https://parfumetrika.ru/${perfume.main_image}`;
     const additionalImages = (perfume.additional_images || []).map(
       (img) => `https://parfumetrika.ru/${img}`
     );
@@ -30,19 +30,60 @@ export async function generateMetadata({ params }) {
     return {
       title,
       description,
-      image: mainImage,
       openGraph: {
         title,
         description,
         url: `https://parfumetrika.ru/perfumes/${perfume_id}`,
-        type: 'article',
-        images: [mainImage, ...additionalImages],
+        type: 'product',
+        locale: 'ru_RU',
+        site_name: 'Parfumetrika',
+        images: [
+          {
+            url: mainImage,
+            width: 800,
+            height: 600,
+            alt: perfume.name || 'Изображение парфюма',
+          },
+          ...additionalImages.map((img) => ({
+            url: img,
+            width: 800,
+            height: 600,
+            alt: perfume.name || 'Изображение парфюма',
+          })),
+        ],
+        product: {
+          brand: perfume.brand || 'Бренд',
+          releaseDate: perfume.release_year || 'unknown',
+          review: {
+            rating: {
+              ratingValue: perfume.rating_value || '0',
+              bestRating: '10',
+            },
+            reviewCount: perfume.rating_count || '0',
+          },
+          additionalProperty: [
+            { name: 'Топ ноты', value: topNotes },
+            { name: 'Средние ноты', value: heartNotes },
+            { name: 'Базовые ноты', value: baseNotes },
+            { name: 'Акорды', value: (perfume.accords || []).join(', ') },
+            { name: 'Тип', value: perfume.type || 'Неизвестно' },
+          ],
+        },
       },
       twitter: {
         card: 'summary_large_image',
         title,
         description,
-        image: mainImage,
+        images: [mainImage],
+      },
+      facebook: {
+        app_id: 'YOUR_FACEBOOK_APP_ID', // Замените на ваш Facebook App ID, если есть
+      },
+      vk: {
+        // VK обычно распознает Open Graph, но можно добавить специфические метатеги при необходимости
+      },
+      pinterest: {
+        // Pinterest также использует Open Graph, но убедитесь, что изображения соответствуют требованиям
       },
       structuredData: {
         '@context': 'https://schema.org',
@@ -54,6 +95,7 @@ export async function generateMetadata({ params }) {
         },
         description: perfume.description || description,
         image: mainImage,
+        sku: perfume.perfume_id || 'Неизвестный SKU',
         releaseDate: perfume.release_year || 'unknown',
         aggregateRating: {
           '@type': 'AggregateRating',
@@ -67,19 +109,47 @@ export async function generateMetadata({ params }) {
             name: review.username || 'Неизвестный пользователь',
           },
           reviewBody: review.comment || 'Отзыв отсутствует',
+          reviewRating: {
+            '@type': 'Rating',
+            ratingValue: review.rating_value || '0',
+            bestRating: '10',
+          },
         })),
         additionalProperty: [
           { '@type': 'PropertyValue', name: 'Топ ноты', value: topNotes },
           { '@type': 'PropertyValue', name: 'Средние ноты', value: heartNotes },
           { '@type': 'PropertyValue', name: 'Базовые ноты', value: baseNotes },
+          { '@type': 'PropertyValue', name: 'Акорды', value: (perfume.accords || []).join(', ') },
+          { '@type': 'PropertyValue', name: 'Тип', value: perfume.type || 'Неизвестно' },
         ],
       },
+      // Дополнительные метатеги для других социальных сетей можно добавить здесь
     };
   } catch (error) {
     console.error('Ошибка при загрузке метаданных:', error);
     return {
       title: 'Парфюм - ошибка загрузки',
       description: 'Не удалось загрузить данные о парфюме.',
+      openGraph: {
+        title: 'Парфюм - ошибка загрузки',
+        description: 'Не удалось загрузить данные о парфюме.',
+        url: `https://parfumetrika.ru/perfumes/${perfume_id}`,
+        type: 'website',
+        images: [
+          {
+            url: 'https://parfumetrika.ru/default-image.jpg', // Путь к дефолтному изображению
+            width: 800,
+            height: 600,
+            alt: 'Ошибка загрузки изображения',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: 'Парфюм - ошибка загрузки',
+        description: 'Не удалось загрузить данные о парфюме.',
+        images: ['https://parfumetrika.ru/default-image.jpg'],
+      },
     };
   }
 }
