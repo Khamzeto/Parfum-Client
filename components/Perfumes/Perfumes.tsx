@@ -1111,7 +1111,7 @@ const PerfumeDetailsPage = () => {
                 {isEditing || perfume?.notes?.additional_notes?.length > 0
                   ? renderNotes(
                       isEditing ? editNotes.additional_notes : perfume?.notes.additional_notes,
-                      'Ноты парфюма',
+                      'Ноты аромата',
                       'additional_notes',
                       addNotesData,
                       setAddNotesData
