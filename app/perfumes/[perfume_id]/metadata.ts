@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
     const response = await axios.get(`https://hltback.parfumetrika.ru/perfumes/${perfume_id}`);
     const perfume = response.data;
 
-    // Формируем основные метаданные
+    // Формируем основные метаданные с проверками
     const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюм`;
     const description = `${perfume.name || 'Название парфюма'} - аромат для ${
       perfume.gender === 'male'
@@ -19,7 +19,9 @@ export async function generateMetadata({ params }) {
       perfume.release_year || 'неизвестном году'
     }. Оценка ${perfume.rating_value || '0'} из 10.`;
 
-    const mainImage = `https://parfumetrika.ru/${perfume.main_image}`;
+    const mainImage = perfume.main_image
+      ? `https://parfumetrika.ru/${perfume.main_image}`
+      : 'https://parfumetrika.ru/default-image.jpg';
     const additionalImages = (perfume.additional_images || []).map(
       (img) => `https://parfumetrika.ru/${img}`
     );
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }) {
         title,
         description,
         url: `https://parfumetrika.ru/perfumes/${perfume_id}`,
-        type: 'product',
+        type: 'website', // Используем 'website' вместо 'product'
         locale: 'ru_RU',
         site_name: 'Parfumetrika',
         images: [
@@ -51,24 +53,6 @@ export async function generateMetadata({ params }) {
             alt: perfume.name || 'Изображение парфюма',
           })),
         ],
-        product: {
-          brand: perfume.brand || 'Бренд',
-          releaseDate: perfume.release_year || 'unknown',
-          review: {
-            rating: {
-              ratingValue: perfume.rating_value || '0',
-              bestRating: '10',
-            },
-            reviewCount: perfume.rating_count || '0',
-          },
-          additionalProperty: [
-            { name: 'Топ ноты', value: topNotes },
-            { name: 'Средние ноты', value: heartNotes },
-            { name: 'Базовые ноты', value: baseNotes },
-            { name: 'Акорды', value: (perfume.accords || []).join(', ') },
-            { name: 'Тип', value: perfume.type || 'Неизвестно' },
-          ],
-        },
       },
       twitter: {
         card: 'summary_large_image',
@@ -134,7 +118,7 @@ export async function generateMetadata({ params }) {
         title: 'Парфюм - ошибка загрузки',
         description: 'Не удалось загрузить данные о парфюме.',
         url: `https://parfumetrika.ru/perfumes/${perfume_id}`,
-        type: 'website',
+        type: 'website', // Тип для ошибки тоже должен быть 'website'
         images: [
           {
             url: 'https://parfumetrika.ru/default-image.jpg', // Путь к дефолтному изображению
