@@ -82,7 +82,7 @@ export function FooterLinks() {
         <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
           <ActionIcon
             component="a"
-            href="https://vk.com/parfummetrika"
+            href="https://vk.com/parfumetrika_ru"
             target="_blank"
             rel="noopener noreferrer"
             size="lg"

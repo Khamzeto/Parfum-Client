@@ -52,7 +52,7 @@ export default function Contacts() {
           <Group spacing="md" position="center">
             <Button
               component="a"
-              href="https://vk.com/parfummetrika"
+              href="https://vk.com/parfumetrika_ru"
               target="_blank"
               leftIcon={<IconBrandVk size={20} />}
               variant="light"
