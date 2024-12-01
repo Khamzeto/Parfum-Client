@@ -21,6 +21,7 @@ import {
   Divider,
   Rating,
   SimpleGrid,
+  Skeleton,
 } from '@mantine/core';
 import {
   IconAward,
@@ -418,65 +419,100 @@ export default function Main() {
             slidesToScroll={1}
             style={{ marginTop: '20px', marginBottom: '40px' }}
           >
-            {recentPerfumes.map((perfume) => (
-              <Carousel.Slide key={perfume._id}>
-                <Link href={`/perfumes/${perfume.perfume_id}`} style={{ textDecoration: 'none' }}>
-                  <div
-                    key={perfume._id}
-                    style={{
-                      width: '100%',
-                      display: 'flex',
-                      justifyContent: 'left',
-
-                      gap: '20px',
-                      minWidth: '20px',
-                      alignItems: 'center',
-
-                      cursor: 'pointer',
-                    }}
-                  >
+            {loading
+              ? Array.from({ length: 5 }).map((_, index) => (
+                  <Carousel.Slide key={index}>
                     <div
                       style={{
-                        height: 50,
-                        minWidth: '32%',
-                        backgroundColor: '#fff',
+                        width: '100%',
                         display: 'flex',
-                        justifyContent: 'center',
-                        borderRadius: '12px',
-                        maxWidth: '68px',
+                        justifyContent: 'left',
+                        gap: '20px',
+                        minWidth: '20px',
+                        alignItems: 'center',
+                        cursor: 'pointer',
                       }}
                     >
-                      <Image
-                        src={`https://parfumetrika.ru/${perfume.main_image}`}
-                        alt={perfume.name}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement; // Явно указываем, что target — это изображение
-                          target.src = '/roman.jpg'; // Подмена изображения при ошибке загрузки
-                        }}
-                        fit="contain"
-                        width="30px"
-                      />
-                    </div>
-                    <div style={{}}>
-                      <Text
-                        weight={500}
-                        w="2px"
-                        align="center"
-                        size="xs"
+                      <div
                         style={{
-                          color: theme.colors.gray[6],
+                          height: 50,
+                          minWidth: '32%',
+                          backgroundColor: '#fff',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          borderRadius: '12px',
+                          maxWidth: '68px',
                         }}
                       >
-                        {perfume.brand}
-                      </Text>
-                      <Text weight={500} w="200px" align="left" size="xs">
-                        {perfume.name}
-                      </Text>
+                        <Skeleton height={50} width={50} circle />
+                      </div>
+                      <div>
+                        <Skeleton height={10} width={80} radius="xs" />
+                        <Skeleton height={10} width={120} mt={5} radius="xs" />
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </Carousel.Slide>
-            ))}
+                  </Carousel.Slide>
+                ))
+              : recentPerfumes.map((perfume) => (
+                  <Carousel.Slide key={perfume._id}>
+                    <Link
+                      href={`/perfumes/${perfume.perfume_id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <div
+                        key={perfume._id}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'left',
+                          gap: '20px',
+                          minWidth: '20px',
+                          alignItems: 'center',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <div
+                          style={{
+                            height: 50,
+                            minWidth: '32%',
+                            backgroundColor: '#fff',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            borderRadius: '12px',
+                            maxWidth: '68px',
+                          }}
+                        >
+                          <Image
+                            src={`https://parfumetrika.ru/${perfume.main_image}`}
+                            alt={perfume.name}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/roman.jpg';
+                            }}
+                            fit="contain"
+                            width="30px"
+                          />
+                        </div>
+                        <div>
+                          <Text
+                            weight={500}
+                            w="2px"
+                            align="center"
+                            size="xs"
+                            style={{
+                              color: theme.colors.gray[6],
+                            }}
+                          >
+                            {perfume.brand}
+                          </Text>
+                          <Text weight={500} w="200px" align="left" size="xs">
+                            {perfume.name}
+                          </Text>
+                        </div>
+                      </div>
+                    </Link>
+                  </Carousel.Slide>
+                ))}
           </Carousel>
 
           {/* News Section */}
@@ -507,16 +543,38 @@ export default function Main() {
                 align="center"
                 slidesToScroll={1}
               >
-                {newsPerfumes.map((item) => (
-                  <Carousel.Slide className="carousel-container" key={item._id}>
-                    <CardCustom
-                      image={item.coverImage}
-                      title={item.title}
-                      category={item.description} // Можно использовать другое значение, если нужно
-                      id={item._id} // Передаем id для перехода
-                    />
-                  </Carousel.Slide>
-                ))}
+                {loading
+                  ? Array.from({ length: 5 }).map((_, index) => (
+                      <Carousel.Slide className="carousel-container" key={`skeleton-${index}`}>
+                        <div
+                          style={{
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '20px',
+                            background: '#fff',
+                            borderRadius: '8px',
+                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                          }}
+                        >
+                          <Skeleton height={300} width="100%" radius="md" />
+                          <Skeleton height={20} width="80%" mt="md" />
+                          <Skeleton height={15} width="60%" mt="sm" />
+                        </div>
+                      </Carousel.Slide>
+                    ))
+                  : newsPerfumes.map((item) => (
+                      <Carousel.Slide className="carousel-container" key={item._id}>
+                        <CardCustom
+                          image={item.coverImage}
+                          title={item.title}
+                          category={item.description} // Можно использовать другое значение, если нужно
+                          id={item._id} // Передаем id для перехода
+                        />
+                      </Carousel.Slide>
+                    ))}
               </Carousel>
               <Card
                 mt="14"
