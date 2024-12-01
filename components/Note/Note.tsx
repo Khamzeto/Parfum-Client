@@ -489,7 +489,7 @@ const PerfumesByNote = () => {
             style={{ flex: 1, maxWidth: '300px', textAlign: 'center', marginTop: '180px' }}
           >
             <Avatar
-              src={`https://parfumetrika.ru/note_images/${noteName}.jpg`} // Замените на нужный путь к изображению
+              src={`https://parfumetrika.ru/note_images/${encodeURIComponent(noteName.normalize('NFD'))}.jpg`} // Замените на нужный путь к изображению
               alt={noteName}
               style={{
                 marginBottom: '20px',

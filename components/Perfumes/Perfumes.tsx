@@ -556,7 +556,7 @@ const PerfumeDetailsPage = () => {
                 onClick={() => handleNoteClick(note)} // Передаем имя ноты
               >
                 <Avatar
-                  src={`https://parfumetrika.ru/note_images/${note}.jpg`}
+                  src={`https://parfumetrika.ru/note_images/${encodeURIComponent(note.normalize('NFD'))}.jpg`}
                   radius="xl"
                   size="24px"
                 />
