@@ -46,8 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* End of Yandex.Metrika */}
 
         <ColorSchemeScript />
-        <link type="image/x-icon" href="/favicon.ico" rel="shortcut icon" />
-        <link type="image/x-icon" href="/favicon.ico" rel="icon" />
+        <link type="image/x-icon" href="https://parfumetrika.ru/favicon.ico" rel="shortcut icon" />
+        <link type="image/x-icon" href="https://parfumetrika.ru/favicon.ico" rel="icon" />
         <link
           href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
           rel="stylesheet"
