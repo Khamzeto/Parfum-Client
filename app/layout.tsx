@@ -48,6 +48,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorSchemeScript />
         <link type="image/x-icon" href="https://parfumetrika.ru/favicon.ico" rel="shortcut icon" />
         <link type="image/x-icon" href="https://parfumetrika.ru/favicon.ico" rel="icon" />
+        <link rel="icon" href="https://parfumetrika.ru/favicon.svg" type="image/svg+xml" />
+
         <link
           href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap"
           rel="stylesheet"
