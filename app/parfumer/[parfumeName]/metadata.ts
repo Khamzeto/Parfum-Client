@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: { parfumeName: stri
     const parfumerRu = response.data.parfumer_ru || parfumerName;
 
     // Формируем метаданные
-    const title = `${parfumerRu} - Полный список созданных ароматов с функцией поиска - Parfumetrika`;
+    const title = `${parfumerRu} - 3Полный список созданных ароматов с функцией поиска - Parfumetrika`;
     const description = `Узнайте все о парфюмере ${parfumerName}: его биография, и ключевые достижения. Изучите характеристики каждого парфюма, отзывы пользователей и информацию о брендах, с которыми он сотрудничал. Получите практическое руководство по выбору его ароматов, чтобы найти идеальный вариант.`;
 
     return {
