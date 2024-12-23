@@ -341,7 +341,7 @@ export default function ArticlePage() {
 
           {article?.coverImage && !loading ? (
             <Image
-              src={article.coverImage}
+              src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
               alt={article.title}
               radius="md"
               fit="cover"
@@ -409,7 +409,7 @@ export default function ArticlePage() {
                       <Group align="flex-start">
                         <div style={{ width: '100%', height: '140px' }}>
                           <Image
-                            src={popArticle.coverImage || '/images/placeholder.jpg'}
+                            src={`https://hltback.parfumetrika.ru${popArticle.coverImage || '/images/placeholder.jpg'}`}
                             alt={popArticle.title}
                             height={140}
                             width={200}

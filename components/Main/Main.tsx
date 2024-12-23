@@ -661,7 +661,7 @@ export default function Main() {
 
                       <Image
                         radius="14"
-                        src={perfume.coverImage} // Используем поле coverImage из newsPerfumes
+                        src={`https://hltback.parfumetrika.ru${perfume.coverImage}`} // Используем поле coverImage из newsPerfumes
                         alt={perfume.title}
                         height={180}
                         fit="contain"
@@ -749,7 +749,7 @@ export default function Main() {
                           }}
                         >
                           <Image
-                            src={perfume.coverImage || '/images/placeholder.jpg'}
+                            src={`https://hltback.parfumetrika.ru${perfume.coverImage || '/images/placeholder.jpg'}`}
                             alt={perfume.title}
                             style={{
                               width: '100%',

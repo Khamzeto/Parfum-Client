@@ -135,7 +135,7 @@ export default function Home() {
                           <Group align="flex-start">
                             <div style={{ width: '100%', height: '140px' }}>
                               <Image
-                                src={article.coverImage || '/images/placeholder.jpg'}
+                                src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
                                 alt={article.title}
                                 height={140}
                                 width={200}
@@ -241,7 +241,7 @@ export default function Home() {
                           }}
                         >
                           <Image
-                            src={article.coverImage || '/images/placeholder.jpg'}
+                            src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
                             alt={article.title}
                             fit="cover"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}

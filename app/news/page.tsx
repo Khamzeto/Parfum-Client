@@ -193,7 +193,7 @@ export default function Home() {
                         }}
                       >
                         <Image
-                          src={popArticle.coverImage || '/images/placeholder.jpg'}
+                          src={`https://hltback.parfumetrika.ru${popArticle.coverImage || '/images/placeholder.jpg'}`}
                           alt={popArticle.title}
                           height={500}
                           style={{ position: 'absolute', top: '0px' }}
@@ -253,7 +253,7 @@ export default function Home() {
                   onClick={() => handleArticle(article._id)}
                 >
                   <Image
-                    src={article.coverImage || '/images/placeholder.jpg'}
+                    src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
                     alt={article.title}
                     height={140}
                     fit="cover"

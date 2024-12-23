@@ -23,7 +23,7 @@ export function CardCustom({ image, title, category, id }: CardProps) {
       shadow="md"
       p="xl"
       radius="15"
-      style={{ backgroundImage: `url(${image})` }}
+      style={{ backgroundImage: `url(https://hltback.parfumetrika.ru${image})` }}
       className={classes.card}
       onClick={handleNavigate}
     >

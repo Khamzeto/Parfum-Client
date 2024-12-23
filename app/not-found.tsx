@@ -129,7 +129,7 @@ export default function NotFound() {
                   onClick={() => handleArticle(article._id)}
                 >
                   <Image
-                    src={article.coverImage || '/images/placeholder.jpg'}
+                    src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
                     alt={article.title}
                     height={140}
                     fit="cover"

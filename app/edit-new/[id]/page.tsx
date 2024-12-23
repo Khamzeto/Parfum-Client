@@ -181,7 +181,7 @@ export default function EditArticle() {
             {coverImage && (
               <Group position="center">
                 <Image
-                  src={coverImage}
+                  src={`https://hltback.parfumetrika.ru${coverImage || '/images/placeholder.jpg'}`}
                   alt="Обложка статьи"
                   radius="md"
                   height={200}
