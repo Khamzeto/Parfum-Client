@@ -64,11 +64,13 @@ import ImageMainUploadModal from '@/components/ui/ImageMainUpload/ImageMainUploa
 dayjs.extend(relativeTime);
 dayjs.locale('ru');
 
-const PerfumeDetailsPage = () => {
+const PerfumeDetailsPage = ({ metadata }) => {
   const { perfume_id } = useParams();
+  console.log(metadata, 'metadata');
   const router = useRouter();
   const perfumeId = Array.isArray(perfume_id) ? perfume_id[0] : perfume_id;
   const [perfume, setPerfume] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [popularPerfumes, setPopularPerfumes] = useState([]);
@@ -105,7 +107,8 @@ const PerfumeDetailsPage = () => {
     if (typeof window !== 'undefined') {
       setCurrentUrl(window.location.href);
     }
-  }, []);
+    setPerfume(metadata);
+  }, [metadata]);
 
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -313,7 +316,6 @@ const PerfumeDetailsPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(`https://hltback.parfumetrika.ru/perfumes/${id}`);
-      setPerfume(response.data);
 
       const storedUser = localStorage.getItem('user');
       console.log(storedUser);

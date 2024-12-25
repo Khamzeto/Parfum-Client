@@ -57,7 +57,7 @@ import { LeftMain } from '../ui/LeftMain/LeftMain';
 import { useEffect, useState } from 'react';
 import $api from '../api/axiosInstance';
 import { useRouter } from 'next/navigation';
-
+import LazyLoad from 'react-lazyload';
 const stores = [
   {
     id: 1,
@@ -658,14 +658,19 @@ export default function Main() {
                   >
                     <Card padding="lg" radius="18">
                       {/* Image Section */}
-
-                      <Image
-                        radius="14"
-                        src={`https://hltback.parfumetrika.ru${perfume.coverImage}`} // Используем поле coverImage из newsPerfumes
-                        alt={perfume.title}
-                        height={180}
-                        fit="contain"
-                      />
+                      <LazyLoad
+                        height={180} // Высота контейнера для lazy loading
+                        offset={100} // Начинает загрузку за 100px до видимости
+                        placeholder={<Skeleton height={180} />} // Плейсхолдер
+                      >
+                        <Image
+                          radius="14"
+                          src={`https://hltback.parfumetrika.ru${perfume.coverImage}`} // Используем поле coverImage из newsPerfumes
+                          alt={perfume.title}
+                          height={180}
+                          fit="contain"
+                        />
+                      </LazyLoad>
 
                       {/* Perfume Info */}
                       <Group position="apart" mt="md" mb="xs">
@@ -740,24 +745,30 @@ export default function Main() {
                     >
                       <Card padding="lg" radius="18">
                         {/* Image Section */}
-                        <div
-                          style={{
-                            width: '100%',
-                            height: '100px',
-                            overflow: 'hidden',
-                            borderRadius: '14px',
-                          }}
+                        <LazyLoad
+                          height={100} // Высота контейнера для lazy loading
+                          offset={100} // Начинает загрузку за 100px до видимости
+                          placeholder={<Skeleton height={100} />} // Плейсхолдер для загрузки
                         >
-                          <Image
-                            src={`https://hltback.parfumetrika.ru${perfume.coverImage || '/images/placeholder.jpg'}`}
-                            alt={perfume.title}
+                          <div
                             style={{
                               width: '100%',
-                              height: '100%',
-                              objectFit: 'cover',
+                              height: '100px',
+                              overflow: 'hidden',
+                              borderRadius: '14px',
                             }}
-                          />
-                        </div>
+                          >
+                            <Image
+                              src={`https://hltback.parfumetrika.ru${perfume.coverImage || '/images/placeholder.jpg'}`}
+                              alt={perfume.title}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                              }}
+                            />
+                          </div>
+                        </LazyLoad>
 
                         {/* Perfume Info */}
                         <Group position="apart" mt="md" mb="xs">
