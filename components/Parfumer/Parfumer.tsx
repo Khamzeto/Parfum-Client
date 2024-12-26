@@ -197,7 +197,7 @@ const Parfumer = () => {
           <div style={{ flex: 1, maxWidth: '1000px' }}>
             <Title size="18px" align="left">
               {' '}
-              {parfumerName}
+              {parfumerName} ({parfumerRu})
             </Title>
 
             <Group mb="40" mt="30" position="center">

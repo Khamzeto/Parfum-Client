@@ -115,7 +115,14 @@ export function Parfumers() {
         <div className={styles.container}>
           <Breadcrumbs
             separator=">"
-            style={{ fontSize: '14px', color: '#555', marginTop: '0px', marginBottom: '10px' }}
+            style={{
+              fontSize: '14px',
+              color: '#555',
+              width: '90%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '6px',
+            }}
           >
             <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
               Главная

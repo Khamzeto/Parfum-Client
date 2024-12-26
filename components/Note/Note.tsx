@@ -167,7 +167,17 @@ const PerfumesByNote = () => {
           paddingRight: '20px',
         }}
       >
-        <Breadcrumbs separator=">" style={{ fontSize: '14px', color: '#555', marginTop: '20px' }}>
+        <Breadcrumbs
+          separator=">"
+          style={{
+            fontSize: '14px',
+            color: '#555',
+            width: '90%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '6px',
+          }}
+        >
           <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
             Главная
           </Anchor>

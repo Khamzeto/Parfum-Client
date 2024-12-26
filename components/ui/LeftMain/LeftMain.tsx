@@ -217,14 +217,15 @@ export function LeftMain({ stores, perfume }) {
                 gap: '0px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0px', margin: '0' }}>
+              <Text mb="6" size="xs" color="dimmed" style={{ margin: 0, padding: 0 }}>
+                {formatDate(post.createdAt)}
+              </Text>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0' }}>
                 <Text size="sm" style={{ margin: 0, padding: 0 }}>
-                  {post.author}
-                </Text>
-                <Text size="xs" color="dimmed" style={{ margin: 0, padding: 0 }}>
-                  {formatDate(post.createdAt)}
+                  {post.userId.username}
                 </Text>
               </div>
+
               <div style={{ marginTop: '2px' }}>
                 <Text size="sm" style={{ margin: 0, padding: 0, width: '160px' }}>
                   {post.title}

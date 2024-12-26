@@ -609,6 +609,10 @@ const PerfumeDetailsPage = ({ metadata }) => {
           style={{
             fontSize: '14px',
             color: '#555',
+            width: '90%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '6px',
           }}
         >
           <Anchor href="/" style={{ textDecoration: 'none', color: '#007bff' }}>
