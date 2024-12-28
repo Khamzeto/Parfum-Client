@@ -17,6 +17,7 @@ import {
   useMantineTheme,
   useMantineColorScheme,
   Image,
+  Tooltip,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import {
@@ -28,6 +29,7 @@ import {
   IconHeart,
   IconShoppingBag,
   IconMapPin,
+  IconCheck,
 } from '@tabler/icons-react';
 import $api from '@/components/api/axiosInstance';
 import { useRouter } from 'next/navigation';
@@ -220,10 +222,25 @@ export function LeftMain({ stores, perfume }) {
               <Text mb="6" size="xs" color="dimmed" style={{ margin: 0, padding: 0 }}>
                 {formatDate(post.createdAt)}
               </Text>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '0' }}>
                 <Text size="sm" style={{ margin: 0, padding: 0 }}>
                   {post.userId.username}
                 </Text>
+                <Tooltip label="Подтвержденная личность" withArrow>
+                  <div
+                    style={{
+                      backgroundColor: '#007bff', // Blue background
+                      borderRadius: '50%',
+                      width: '16px',
+                      height: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <IconCheck size="0.68rem" color="white" />
+                  </div>
+                </Tooltip>
               </div>
 
               <div style={{ marginTop: '2px' }}>

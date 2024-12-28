@@ -14,6 +14,7 @@ import {
   useMantineTheme,
   useMantineColorScheme,
   Image,
+  Tooltip,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import dayjs from 'dayjs';
@@ -25,6 +26,7 @@ import {
   IconChevronLeft,
   IconChevronRight,
   IconPlus,
+  IconCheck,
 } from '@tabler/icons-react';
 dayjs.locale('ru');
 dayjs.extend(relativeTime);
@@ -256,6 +258,22 @@ export function RightMain({ firstBrand, posts, perfumes }) {
                 <Text size="sm" style={{ margin: 0, padding: 0, fontWeight: 600 }}>
                   {review.user.username}
                 </Text>
+                <Tooltip label="Подтвержденная личность" withArrow>
+                  <div
+                    style={{
+                      backgroundColor: '#007bff', // Blue background
+                      borderRadius: '50%',
+                      width: '16px',
+                      height: '16px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginLeft: '2px',
+                    }}
+                  >
+                    <IconCheck size="0.68rem" color="white" />
+                  </div>
+                </Tooltip>
               </div>
               <div style={{ marginTop: '0px' }}>
                 <Text size="sm" style={{ margin: 0, padding: 0, width: '160px' }}>

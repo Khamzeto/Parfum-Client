@@ -378,16 +378,44 @@ export default function ArticlePage() {
             ) : (
               ReactHtmlParser(article.content, {
                 transform: (node) => {
+                  // Обработка изображений
                   if (node.type === 'tag' && node.name === 'img') {
                     return (
                       <img src={node.attribs.src} alt={node.attribs.alt} style={contentStyle.img} />
                     );
                   }
+                  // Обработка параграфов
                   if (node.type === 'tag' && node.name === 'p') {
                     return (
                       <p style={contentStyle.p}>
-                        {node.children.map((childNode) => childNode.data)}
+                        {node.children.map((childNode) =>
+                          childNode.type === 'tag' && childNode.name === 'a' ? (
+                            <a
+                              href={childNode.attribs.href}
+                              target={childNode.attribs.target}
+                              rel={childNode.attribs.rel}
+                              style={contentStyle.a}
+                            >
+                              {childNode.children[0]?.data}
+                            </a>
+                          ) : (
+                            childNode.data
+                          )
+                        )}
                       </p>
+                    );
+                  }
+                  // Обработка ссылок
+                  if (node.type === 'tag' && node.name === 'a') {
+                    return (
+                      <a
+                        href={node.attribs.href}
+                        target={node.attribs.target}
+                        rel={node.attribs.rel}
+                        style={contentStyle.a}
+                      >
+                        {node.children.map((childNode) => childNode.data)}
+                      </a>
                     );
                   }
                 },

@@ -434,7 +434,7 @@ const ProfileCard = () => {
                       {post.coverImage && (
                         <Link href={`/article/${post._id}`} passHref>
                           <Image
-                            src={post.coverImage}
+                            src={`https://hltback.parfumetrika.ru${post.coverImage || '/images/placeholder.jpg'}`}
                             alt={post.title}
                             height={180}
                             fit="cover"
