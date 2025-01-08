@@ -34,7 +34,7 @@ export default function Home() {
         if (storedUser) {
           const user = JSON.parse(storedUser);
 
-          const response = await $api.get(`/article/requests/user/${user._id}`);
+          const response = await $api.get(`/article/requests/user/${user._id}?limit=200`);
           setArticles(response.data.requests);
         }
       } catch (error) {
