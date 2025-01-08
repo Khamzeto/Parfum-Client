@@ -110,6 +110,38 @@ export default function ArticlePage() {
       fetchPopularArticles();
     }
   }, [id, reloadCommentsTrigger]);
+  const processChildNode = (childNode) => {
+    if (childNode.type === 'tag') {
+      switch (childNode.name) {
+        case 'a':
+          return (
+            <a
+              href={childNode.attribs.href}
+              target={childNode.attribs.target}
+              rel={childNode.attribs.rel}
+              style={contentStyle.a}
+            >
+              {childNode.children.map((nestedChild) => processChildNode(nestedChild))}
+            </a>
+          );
+        case 'em':
+          return (
+            <em style={contentStyle.em}>
+              {childNode.children.map((nestedChild) => processChildNode(nestedChild))}
+            </em>
+          );
+        case 'strong':
+          return (
+            <strong style={contentStyle.strong}>
+              {childNode.children.map((nestedChild) => processChildNode(nestedChild))}
+            </strong>
+          );
+        default:
+          return childNode.data;
+      }
+    }
+    return childNode.data; // Для текстовых узлов
+  };
 
   // Обработка отправки комментария
   const handleCommentSubmit = async () => {
@@ -376,7 +408,7 @@ export default function ArticlePage() {
             {loading ? (
               <Skeleton height={20} mt="lg" width="100%" />
             ) : (
-              ReactHtmlParser(article.content, {
+              ReactHtmlParser(article?.content, {
                 transform: (node) => {
                   // Обработка изображений
                   if (node.type === 'tag' && node.name === 'img') {
@@ -384,27 +416,16 @@ export default function ArticlePage() {
                       <img src={node.attribs.src} alt={node.attribs.alt} style={contentStyle.img} />
                     );
                   }
+
                   // Обработка параграфов
                   if (node.type === 'tag' && node.name === 'p') {
                     return (
                       <p style={contentStyle.p}>
-                        {node.children.map((childNode) =>
-                          childNode.type === 'tag' && childNode.name === 'a' ? (
-                            <a
-                              href={childNode.attribs.href}
-                              target={childNode.attribs.target}
-                              rel={childNode.attribs.rel}
-                              style={contentStyle.a}
-                            >
-                              {childNode.children[0]?.data}
-                            </a>
-                          ) : (
-                            childNode.data
-                          )
-                        )}
+                        {node.children.map((childNode) => processChildNode(childNode))}
                       </p>
                     );
                   }
+
                   // Обработка ссылок
                   if (node.type === 'tag' && node.name === 'a') {
                     return (
@@ -414,7 +435,7 @@ export default function ArticlePage() {
                         rel={node.attribs.rel}
                         style={contentStyle.a}
                       >
-                        {node.children.map((childNode) => childNode.data)}
+                        {node.children.map((childNode) => processChildNode(childNode))}
                       </a>
                     );
                   }

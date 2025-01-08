@@ -93,7 +93,7 @@ const ProfileCard = () => {
     if (!id) return;
     setLoadingPosts(true);
     try {
-      const response = await $api.get(`/article/requests/user/${id}`);
+      const response = await $api.get(`/article/requests/user/${id}?limit=200`);
       setPosts(response.data.requests || []);
     } catch (error) {
       console.error('Ошибка при получении постов:', error);
