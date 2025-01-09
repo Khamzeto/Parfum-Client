@@ -226,21 +226,23 @@ export function LeftMain({ stores, perfume }) {
                 <Text size="sm" style={{ margin: 0, padding: 0 }}>
                   {post.userId.username}
                 </Text>
-                <Tooltip label="Подтвержденная личность" withArrow>
-                  <div
-                    style={{
-                      backgroundColor: '#007bff', // Blue background
-                      borderRadius: '50%',
-                      width: '16px',
-                      height: '16px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <IconCheck size="0.68rem" color="white" />
-                  </div>
-                </Tooltip>
+                {post.userId.isVerified && (
+                  <Tooltip label="Подтвержденная личность" withArrow>
+                    <div
+                      style={{
+                        backgroundColor: '#007bff', // Blue background
+                        borderRadius: '50%',
+                        width: '16px',
+                        height: '16px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <IconCheck size="0.68rem" color="white" />
+                    </div>
+                  </Tooltip>
+                )}
               </div>
 
               <div style={{ marginTop: '2px' }}>

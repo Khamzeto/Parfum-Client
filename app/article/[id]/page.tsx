@@ -75,6 +75,14 @@ export default function ArticlePage() {
   const handleUserClick = (userId) => {
     router.push(`/user/${userId}`);
   };
+  const getImageSource = (coverImage) => {
+    // Проверяем, является ли coverImage данными в формате Base64
+    if (coverImage?.startsWith('data:image/')) {
+      return coverImage;
+    }
+    // Если это не Base64, добавляем базовый URL или плейсхолдер
+    return `https://hltback.parfumetrika.ru${coverImage || '/images/placeholder.jpg'}`;
+  };
 
   // Загрузка статьи, комментариев и популярных статей
   useEffect(() => {
@@ -387,7 +395,7 @@ export default function ArticlePage() {
 
           {article?.coverImage && !loading ? (
             <Image
-              src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
+              src={getImageSource(article.coverImage)}
               alt={article.title}
               radius="md"
               fit="cover"

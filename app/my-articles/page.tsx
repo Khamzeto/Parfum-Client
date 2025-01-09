@@ -25,6 +25,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
+  const getImageSource = (coverImage) => {
+    // Проверяем, является ли coverImage данными в формате Base64
+    if (coverImage?.startsWith('data:image/')) {
+      return coverImage;
+    }
+    // Если это не Base64, добавляем базовый URL или плейсхолдер
+    return `https://hltback.parfumetrika.ru${coverImage || '/images/placeholder.jpg'}`;
+  };
 
   useEffect(() => {
     const fetchUserArticles = async () => {
@@ -135,7 +143,7 @@ export default function Home() {
                           <Group align="flex-start">
                             <div style={{ width: '100%', height: '140px' }}>
                               <Image
-                                src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
+                                src={getImageSource(article.coverImage)}
                                 alt={article.title}
                                 height={140}
                                 width={200}

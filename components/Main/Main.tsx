@@ -344,6 +344,15 @@ export default function Main() {
   const [recentlyViewedPerfumes, setRecentlyViewedPerfumes] = useState([]);
   console.log(recentlyViewedPerfumes);
   console.log(recentlyViewedPerfumes);
+  const getImageSource = (coverImage) => {
+    // Проверяем, начинается ли строка с "data:image/" (признак Base64)
+    if (coverImage?.startsWith('data:image/')) {
+      return coverImage;
+    }
+    // Если это не Base64, предполагаем, что это путь
+    return `https://hltback.parfumetrika.ru${coverImage || '/images/placeholder.jpg'}`;
+  };
+
   // Функция для загрузки просмотренных духов из localStorage
   useEffect(() => {
     const storedPerfumes = JSON.parse(localStorage.getItem('viewedPerfumes') || '[]');
@@ -759,7 +768,7 @@ export default function Main() {
                             }}
                           >
                             <Image
-                              src={`https://hltback.parfumetrika.ru${perfume.coverImage || '/images/placeholder.jpg'}`}
+                              src={getImageSource(perfume.coverImage)}
                               alt={perfume.title}
                               style={{
                                 width: '100%',
