@@ -16,6 +16,7 @@ const data = [
     links: [
       { label: 'О проекте', link: '/about' },
       { label: 'Контакты', link: '/contacts' },
+      { label: 'Реклама', link: '/reklama' },
       { label: 'Политика конфиденциальности', link: '/privacy' },
       { label: 'Условия использования', link: '/terms' },
       { label: 'FAQ', link: '/faq' },
