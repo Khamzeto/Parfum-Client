@@ -12,6 +12,7 @@ import {
   Title,
   Skeleton,
   SimpleGrid,
+  Button,
 } from '@mantine/core';
 import '@mantine/carousel/styles.css';
 import { Carousel } from '@mantine/carousel';
@@ -35,19 +36,23 @@ export default function Home() {
 
   const isSmallScreen = useMediaQuery('(max-width: 768px)');
   const isMediumScreen = useMediaQuery('(max-width: 1200px)');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const fetchArticles = async (page = 1) => {
+    try {
+      setLoading(true);
+      const response = await $api.get(`/news/latest?skip=${(page - 1) * 9}`);
+      const newArticles = response.data;
 
+      setArticles((prevArticles) => [...prevArticles, ...newArticles]);
+      setHasMore(newArticles.length === 9);
+    } catch (error) {
+      console.error('Ошибка при получении новостей:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchUserArticles = async () => {
-      try {
-        const response = await $api.get(`/news/requests/`);
-        setArticles(response.data.requests);
-      } catch (error) {
-        console.error('Ошибка при получении статей пользователя:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const fetchPopularArticles = async () => {
       try {
         const response = await $api.get(`/news/popular`);
@@ -57,12 +62,19 @@ export default function Home() {
       }
     };
 
-    fetchUserArticles();
+    fetchArticles();
     fetchPopularArticles();
   }, []);
 
   const handleArticle = (articleId: string) => {
     window.location.href = `/new/${articleId}`;
+  };
+  const loadMoreArticles = () => {
+    setCurrentPage((prevPage) => {
+      const nextPage = prevPage + 1;
+      fetchArticles(nextPage);
+      return nextPage;
+    });
   };
 
   return (
@@ -209,80 +221,55 @@ export default function Home() {
           )
         )}
 
-        {/* Последние статьи */}
-        <Title size="24" mb="20" mt="60" style={{ fontWeight: '600' }}>
+        <Title size="24" mb="20" mt="60">
           Последние новости
         </Title>
-        <Carousel
-          height={340}
-          slideGap={{ base: 0, sm: 'md' }} // Адаптивный gap между слайдами
-          slideSize={{
-            base: '100%', // Для мобильных
-            sm: '50%', // Для планшетов
-            md: '33.333%', // Для больших экранов
-          }}
-          mb={30}
-          loop
-          align="start"
-        >
-          {loading ? (
-            Array.from({ length: 4 }).map((_, index) => (
-              <Carousel.Slide key={index}>
-                <Card radius="14" padding="lg">
-                  <Skeleton height={140} radius="md" />
-                  <Skeleton height={20} mt="md" radius="sm" />
-                  <Skeleton height={15} mt="sm" radius="sm" width="70%" />
-                  <Skeleton height={15} mt="sm" radius="sm" width="50%" />
-                </Card>
-              </Carousel.Slide>
-            ))
-          ) : articles.length === 0 ? (
-            <Card radius="14" padding="lg">
-              <Text>Сообщения не найдены!</Text>
+        <SimpleGrid cols={isSmallScreen ? 1 : 3} spacing="lg">
+          {articles.map((article) => (
+            <Card
+              key={article._id}
+              radius="16"
+              padding="md"
+              withBorder
+              style={{ cursor: 'pointer', height: '360px' }}
+              onClick={() => handleArticle(article._id)}
+            >
+              <Image
+                src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
+                alt={article.title}
+                height={140}
+                fit="cover"
+                radius="14"
+                style={{ marginBottom: '12px' }}
+              />
+              <Group style={{ marginBottom: '8px' }}>
+                <Text size="lg" weight={500}>
+                  {article.title}
+                </Text>
+              </Group>
+              <Text size="sm" color="dimmed">
+                {article.description}
+              </Text>
+              <Group mt="md">
+                <IconClock size={16} color="#757575" />
+                <Text size="xs" color="dimmed" style={{ color: '#757575' }}>
+                  {dayjs(article.createdAt).fromNow()}
+                </Text>
+              </Group>
             </Card>
-          ) : (
-            articles.map((article) => (
-              <Carousel.Slide key={article._id}>
-                <Card
-                  key={article._id}
-                  radius="16"
-                  padding="lg"
-                  withBorder
-                  h="340px"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleArticle(article._id)}
-                >
-                  <Image
-                    src={`https://hltback.parfumetrika.ru${article.coverImage || '/images/placeholder.jpg'}`}
-                    alt={article.title}
-                    height={140}
-                    fit="cover"
-                    radius="14"
-                    style={{ marginBottom: '12px' }}
-                  />
-                  <Group style={{ marginBottom: '8px' }}>
-                    <Text size="lg" weight={500}>
-                      {article.title}
-                    </Text>
-                  </Group>
-                  <Group mb="xs">
-                    <Text size="sm" color="dimmed">
-                      {article.description}
-                    </Text>
-                  </Group>
-                  <Group mt="md">
-                    <Group>
-                      <IconClock size={16} color="#757575" />
-                      <Text size="xs" color="dimmed" style={{ color: '#757575' }}>
-                        {dayjs(article.createdAt).fromNow()}
-                      </Text>
-                    </Group>
-                  </Group>
-                </Card>
-              </Carousel.Slide>
-            ))
-          )}
-        </Carousel>
+          ))}
+        </SimpleGrid>
+        {hasMore && (
+          <Button
+            mt="40px"
+            size="md"
+            style={{ margin: '0 auto', display: 'flex', justifyContent: 'center' }}
+            variant="light"
+            onClick={loadMoreArticles}
+          >
+            Показать ещё
+          </Button>
+        )}
       </Container>
       <FooterLinks />
     </>
