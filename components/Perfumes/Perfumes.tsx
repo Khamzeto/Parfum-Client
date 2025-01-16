@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Head from 'next/head';
 import { useParams, useRouter } from 'next/navigation';
 import {
@@ -558,7 +558,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
                 onClick={() => handleNoteClick(note)} // Передаем имя ноты
               >
                 <Avatar
-                  src={`https://parfumetrika.ru/note_images/${encodeURIComponent(note.normalize('NFD'))}.jpg`}
+                  src={`https://parfumetrika.ru/note_images/${encodeURIComponent(note.trimEnd().normalize('NFD'))}.jpg`}
                   radius="xl"
                   size="24px"
                 />
@@ -790,6 +790,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
                   fontSize: '14px',
                   lineHeight: '1.4',
                   fontWeight: 400,
+                  whiteSpace: 'pre-line', // добавляем для поддержки \n
                 }}
               >
                 {(() => {
@@ -797,33 +798,32 @@ const PerfumeDetailsPage = ({ metadata }) => {
                   const firstSentenceEnd = description.indexOf('.');
                   const secondSentenceStart = description.indexOf('.', firstSentenceEnd + 1);
 
-                  if (firstSentenceEnd !== -1) {
-                    const title =
-                      secondSentenceStart !== -1
-                        ? description.substring(0, secondSentenceStart + 1) // До второй точки
-                        : description.substring(0, firstSentenceEnd + 1); // Если второй точки нет, до первой точки
-                    const text =
-                      secondSentenceStart !== -1
-                        ? description.substring(secondSentenceStart + 1).trim() // После второй точки
-                        : description.substring(firstSentenceEnd + 1).trim(); // После первой точки
-
+                  if (description) {
                     return (
                       <>
-                        <Title
-                          className="description-title"
+                        <div
+                          className="description-desktop"
                           style={{
-                            fontWeight: 400,
                             fontSize: '14px',
-                            display: 'inline',
+                            lineHeight: '1.4',
+                            fontWeight: 400,
+                            whiteSpace: 'pre-line',
                           }}
                         >
-                          {title}
-                        </Title>
-                        {text}
+                          <Title
+                            className="description-title"
+                            style={{
+                              fontWeight: 400,
+                              fontSize: '14px',
+                            }}
+                          >
+                            {description}
+                          </Title>
+                        </div>
                       </>
                     );
                   }
-                  return description; // Если точек нет, возвращаем весь текст.
+                  return description;
                 })()}
               </Text>
             )}

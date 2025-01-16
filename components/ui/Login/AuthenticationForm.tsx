@@ -1,17 +1,7 @@
 'use client';
 
 import { useForm } from '@mantine/form';
-import {
-  TextInput,
-  PasswordInput,
-  Text,
-  Paper,
-  Group,
-  Button,
-  Stack,
-  Divider,
-  Anchor,
-} from '@mantine/core';
+import { TextInput, PasswordInput, Text, Paper, Group, Button, Stack, Anchor } from '@mantine/core';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import $api from '@/components/api/axiosInstance';
@@ -40,7 +30,6 @@ export function LoginForm() {
 
     try {
       const { email, password } = form.values;
-
       const response = await $api.post('/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -59,6 +48,7 @@ export function LoginForm() {
       </Text>
 
       {error && <Text color="red">{error}</Text>}
+
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
@@ -78,6 +68,15 @@ export function LoginForm() {
         </Stack>
 
         <Group justify="space-between" mt="xl">
+          <Anchor
+            component="button"
+            type="button"
+            color="dimmed"
+            onClick={() => router.push('/forgot-password')}
+            size="xs"
+          >
+            Забыли пароль?
+          </Anchor>
           <Anchor
             component="button"
             type="button"
