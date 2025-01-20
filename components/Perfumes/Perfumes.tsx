@@ -418,6 +418,35 @@ const PerfumeDetailsPage = ({ metadata }) => {
       setError('Пожалуйста, введите текст отзыва');
     }
   };
+  const [perfumerSearchValue, setPerfumerSearchValue] = useState('');
+  const [perfumerOptions, setPerfumerOptions] = useState([]);
+  const [selectedPerfumers, setSelectedPerfumers] = useState([]); // что выбрали
+
+  // Запрос на сервер
+  const fetchParfumers = async (query) => {
+    if (!query.trim()) {
+      setPerfumerOptions([]);
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `https://hltback.parfumetrika.ru/parfumers/search?query=${encodeURIComponent(query)}`
+      );
+      const { parfumers } = response.data; // [{_id, slug, original_ru, ...}, ...]
+
+      // Форматируем данные для Mantine TagsInput (value / label)
+      const mapped = parfumers.map((pf) => ({
+        value: pf.slug, // Используем `slug` как значение
+        label: pf.original_ru || pf.original, // Отображаем `original_ru` или `original`, если `original_ru` отсутствует
+      }));
+      setPerfumerOptions(mapped);
+    } catch (err) {
+      console.error('Ошибка при загрузке парфюмеров:', err);
+    }
+  };
+
+  // Дебаунс для уменьшения частоты запросов
+  const fetchParfumersDebounced = useMemo(() => debounce(fetchParfumers, 300), []);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -1173,10 +1202,14 @@ const PerfumeDetailsPage = ({ metadata }) => {
               </Group>
             ) : isEditing ? (
               <TagsInput
-                data={perfumersData}
+                data={perfumerOptions}
                 value={editPerfumers}
-                onChange={setEditPerfumers}
+                onChange={(value) => setEditPerfumers(value)}
                 placeholder="Введите парфюмеров"
+                onSearchChange={(value) => {
+                  setPerfumerSearchValue(value);
+                  fetchParfumersDebounced(value);
+                }}
                 acceptValueOnBlur
               />
             ) : (
