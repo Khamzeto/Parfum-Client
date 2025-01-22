@@ -185,6 +185,22 @@ const PerfumeDetailsPage = ({ metadata }) => {
       setAddNotesData(perfume.notes?.additional_notes || []);
     }
   }, [perfume, isEditing]);
+
+  const selectNotes = (notes) => {
+    if (!notes) return [];
+
+    // Объединяем все категории нот в один массив
+    const allNotes = [
+      ...(notes.top_notes || []),
+      ...(notes.heart_notes || []),
+      ...(notes.base_notes || []),
+      ...(notes.additional_notes || []),
+    ];
+
+    // Выбираем первые 6 нот (или меньше, если меньше доступно)
+    return allNotes;
+  };
+
   useEffect(() => {
     if (perfume) {
       const viewedPerfumesKey = 'viewedPerfumes'; // ключ для хранения в localStorage
@@ -608,7 +624,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
     </div>
   );
   const title = perfume
-    ? `${perfume.name} от ${perfume.brand} - отзывы, ноты и характеристики парфюма`
+    ? `${perfume.name} от ${perfume.brand} - отзывы, ноты и описание парфюма`
     : 'Perfume Details';
 
   const description = `${perfume?.name} - аромат для ${
@@ -854,6 +870,18 @@ const PerfumeDetailsPage = ({ metadata }) => {
                   }
                   return description;
                 })()}
+              </Text>
+            )}
+            {perfume?.notes && selectNotes(perfume?.notes).length > 0 && (
+              <Text
+                style={{
+                  fontWeight: 400,
+                  fontSize: '14px',
+                }}
+              >
+                Оценка аромата {perfume?.rating_value} из 10. Чем пахнет парфюм {perfume?.name} от{' '}
+                {perfume?.brand}? Пирамида аромата включает ноты:{' '}
+                {selectNotes(perfume?.notes).join(', ')}.
               </Text>
             )}
 
