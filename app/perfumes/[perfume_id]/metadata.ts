@@ -8,7 +8,7 @@ export async function generateMetadata({ params }) {
     const perfume = response.data;
 
     // Формируем основные метаданные с проверками
-    const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и характеристики парфюма`;
+    const title = `${perfume.name || 'Название парфюма'} от ${perfume.brand || 'Бренд'} - отзывы, ноты и описание парфюма`;
     const description = `${perfume.name || 'Название парфюма'} - аромат для ${
       perfume.gender === 'male'
         ? 'Мужчин'
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
           : 'Мужчин и Женщин'
     } от ${perfume.brand || 'Бренд'}, выпущенный в ${
       perfume.release_year || 'неизвестном году'
-    }. Оценка ${perfume.rating_value || '0'} из 10.`;
+    }, Оценка ${perfume.rating_value || '0'} из 10,`;
 
     // Формируем список всех нот (top, heart, base) для добавления в описание
     const topNotes = (perfume.notes?.top_notes || []).join(', ') || '';
