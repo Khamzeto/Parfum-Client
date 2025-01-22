@@ -828,7 +828,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
               />
             ) : (
               <Text
-                className="description-desktop"
+                className="description"
                 mt="8"
                 mb="6"
                 style={{
@@ -847,7 +847,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
                     return (
                       <>
                         <div
-                          className="description-desktop"
+                          className="description"
                           style={{
                             fontSize: '14px',
                             lineHeight: '1.4',
