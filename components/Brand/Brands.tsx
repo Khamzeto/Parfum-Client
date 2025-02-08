@@ -187,6 +187,9 @@ const Brand = () => {
             <Title order={2} style={{ textAlign: 'left' }}>
               {brandName}
             </Title>
+            <div style={{ marginTop: '4px' }}>
+              Самые популярные духи бренда {brandName} по отзывам пользователей
+            </div>
 
             <Group mb="40" mt="30" position="center">
               <Select
