@@ -197,8 +197,11 @@ const Parfumer = () => {
           <div style={{ flex: 1, maxWidth: '1000px' }}>
             <Title size="18px" align="left">
               {' '}
-              {parfumerName} ({parfumerRu})
+              {parfumerRu}
             </Title>
+            <div style={{ marginTop: '4px' }}>
+              Рейтинг популярных ароматов созданных {parfumerName} по отзывам пользователей:
+            </div>
 
             <Group mb="40" mt="30" position="center">
               <Select
