@@ -154,7 +154,7 @@ const PerfumesByNote = () => {
     setActivePage(1); // Reset to first page
   };
 
-  const title = `${noteName} – Все Ароматы с нотой ${noteName} в одном месте – Parfumetrika`;
+  const title = `${noteName} – Духи с нотой ${noteName} в одном месте – Parfumetrika`;
   return (
     <>
       <Header />
@@ -202,6 +202,9 @@ const PerfumesByNote = () => {
             <Title order={1} align="left">
               {noteName}
             </Title>
+            <div style={{ marginTop: '4px' }}>
+              Самые популярные духи с нотой {noteName} по отзывам пользователей:
+            </div>
 
             {/* Filter Section */}
             <Group mb="40" mt="30" position="center">
