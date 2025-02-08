@@ -11,8 +11,8 @@ export async function generateMetadata({ params }: { params: { brandName: string
     const brandName = response.data.brandName || 'Бренд';
 
     // Формируем заголовок и описание
-    const title = `${brandName} – Все Ароматы бренда с отзывами в одном месте – Parfumetrika`;
-    const description = `Узнайте больше о парфюмах ${brandName}: подробные обзоры, реальные отзывы и рекомендации по выбору ароматов. Следите за новинками и актуальными новостями бренда.`;
+    const title = `${brandName} – Рейтинг ароматов бренда с отзывами в одном месте – Parfumetrika`;
+    const description = `Духи от бренда ${brandName}: подробные обзоры, реальные отзывы и рекомендации по выбору ароматов. Следите за новинками и актуальными новостями бренда.`;
 
     return {
       title,
