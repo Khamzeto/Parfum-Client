@@ -8,8 +8,8 @@ export async function generateMetadata({ params }) {
     const response = await axios.get(`https://hltback.parfumetrika.ru/notes/${noteId}`);
     const noteData = response.data;
 
-    const title = `${noteData.name || 'Название ноты'} – Все Ароматы с нотой ${noteData.name || 'Название ноты'} в одном месте – Parfumetrika`;
-    const description = `«${noteData.name || 'Название ноты'}» - В этом разделе вы найдете популярные парфюмы, в которых присутствует эта нота, а также интересные факты о её использовании в парфюмерии.`;
+    const title = `${noteData.name || 'Название ноты'} – Духи с нотой ${noteData.name || 'Название ноты'} в одном месте – Parfumetrika`;
+    const description = `«${noteData.name || 'Название ноты'}» - Рейтинг популярных ароматов, в которых присутствует эта нота, а также интересные факты о её использовании в парфюмерии.`;
 
     return {
       title,
