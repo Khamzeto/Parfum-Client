@@ -879,7 +879,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
                   fontSize: '14px',
                 }}
               >
-                Оценка аромата {perfume?.rating_value} из 10. Чем пахнет парфюм {perfume?.name} от{' '}
+                Оценка аромата {perfume?.rating_value} из 10. Чем пахнут духи {perfume?.name} от{' '}
                 {perfume?.brand}? Пирамида аромата включает ноты:{' '}
                 {selectNotes(perfume?.notes).join(', ')}.
               </Text>
