@@ -1242,7 +1242,7 @@ const PerfumeDetailsPage = ({ metadata }) => {
               />
             ) : (
               <Group spacing="xs" mb="20" wrap="wrap">
-                {perfume?.perfumers?.length > 0 && perfume?.perfumers_en?.length > 0 ? (
+                {perfume?.perfumers?.length > 0 ? (
                   perfume?.perfumers.map((perfumer, index) => (
                     <Box
                       key={index}
