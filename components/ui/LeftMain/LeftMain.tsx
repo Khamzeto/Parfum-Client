@@ -98,80 +98,82 @@ export function LeftMain({ stores, perfume }) {
 
   return (
     <>
-      <Group align="center" style={{ marginBottom: '20px', gap: '10px' }}>
-        <ActionIcon color="yellow" radius="xl" size="lg">
-          <IconCrown size={18} color="white" />
-        </ActionIcon>
-        <Title order={2} style={{ fontSize: '20px', margin: 0 }}>
-          Парфюм дня
-        </Title>
-      </Group>
-
-      <Card
-        key={selectedPerfume?._id}
-        className="card-perfume"
-        shadow="2"
-        h="280px"
-        padding="15.8px"
-        radius="18"
-        bg={theme.colors.gray[0]}
-        style={{ marginBottom: '20px', cursor: 'pointer' }}
-        onClick={() => router.push(`/perfumes/${selectedPerfume.perfume_id}`)}
-      >
-        <Group
-          style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
-        >
-          <div
-            style={{
-              height: 80,
-              width: 80,
-              borderRadius: '22px',
-              backgroundColor: theme.colors.gray[0],
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Image
-              src={selectedPerfume?.image}
-              alt={selectedPerfume?.name}
-              fit="contain"
-              width="100%"
-              radius="12"
-              height="100%"
-            />
-          </div>
-
-          <div style={{ flex: 1, textAlign: 'center' }}>
-            <Text size="lg" style={{ color: theme.colors.default, fontSize: '14px' }}>
-              {selectedPerfume?.name}
-            </Text>
-            <Text size="sm" style={{ color: theme.colors.gray[6] }}>
-              {selectedPerfume?.brand}
-            </Text>
-
-            <Group
-              spacing="sm"
-              justify="center"
-              style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}
-            >
-              <IconCalendar size={16} color={theme.colors.blue[6]} />
-              <Text size="xs" style={{ color: theme.colors.gray[6], textAlign: 'center' }}>
-                Год выпуска: {selectedPerfume?.release_year}
-              </Text>
-            </Group>
-          </div>
-          <Button
-            onClick={() => router.push(`/perfumes/${selectedPerfume?.perfume_id}`)}
-            variant="outline"
-            radius="12"
-            mb="14"
-            style={{ borderColor: theme.colors.gray[4] }}
-          >
-            Читать полностью
-          </Button>
+      <div className="mob-hidden">
+        <Group align="center" style={{ marginBottom: '20px', gap: '10px' }}>
+          <ActionIcon color="yellow" radius="xl" size="lg">
+            <IconCrown size={18} color="white" />
+          </ActionIcon>
+          <Title order={2} style={{ fontSize: '20px', margin: 0 }}>
+            Парфюм дня
+          </Title>
         </Group>
-      </Card>
+
+        <Card
+          key={selectedPerfume?._id}
+          className="card-perfume"
+          shadow="2"
+          h="280px"
+          padding="15.8px"
+          radius="18"
+          bg={theme.colors.gray[0]}
+          style={{ marginBottom: '20px', cursor: 'pointer' }}
+          onClick={() => router.push(`/perfumes/${selectedPerfume.perfume_id}`)}
+        >
+          <Group
+            style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
+          >
+            <div
+              style={{
+                height: 80,
+                width: 80,
+                borderRadius: '22px',
+                backgroundColor: theme.colors.gray[0],
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Image
+                src={selectedPerfume?.image}
+                alt={selectedPerfume?.name}
+                fit="contain"
+                width="100%"
+                radius="12"
+                height="100%"
+              />
+            </div>
+
+            <div style={{ flex: 1, textAlign: 'center' }}>
+              <Text size="lg" style={{ color: theme.colors.default, fontSize: '14px' }}>
+                {selectedPerfume?.name}
+              </Text>
+              <Text size="sm" style={{ color: theme.colors.gray[6] }}>
+                {selectedPerfume?.brand}
+              </Text>
+
+              <Group
+                spacing="sm"
+                justify="center"
+                style={{ marginTop: '10px', alignItems: 'center', gap: '4px' }}
+              >
+                <IconCalendar size={16} color={theme.colors.blue[6]} />
+                <Text size="xs" style={{ color: theme.colors.gray[6], textAlign: 'center' }}>
+                  Год выпуска: {selectedPerfume?.release_year}
+                </Text>
+              </Group>
+            </div>
+            <Button
+              onClick={() => router.push(`/perfumes/${selectedPerfume?.perfume_id}`)}
+              variant="outline"
+              radius="12"
+              mb="14"
+              style={{ borderColor: theme.colors.gray[4] }}
+            >
+              Читать полностью
+            </Button>
+          </Group>
+        </Card>
+      </div>
 
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
         <ActionIcon color="yellow" radius="xl" size="lg">
