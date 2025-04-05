@@ -122,82 +122,88 @@ export function RightMain({ firstBrand, posts, perfumes }) {
 
   return (
     <>
-      {/* Нота дня */}
-      <Group align="center" style={{ marginBottom: '20px', gap: '10px' }}>
-        <ActionIcon radius="xl" size="lg">
-          <IconLeaf size={18} color={theme.colors.white} />
-        </ActionIcon>
-        <Title order={2} style={{ fontSize: '20px', margin: 0 }}>
-          Нота дня
-        </Title>
-      </Group>
+      <div className="mob-hidden">
+        <Group align="center" style={{ marginBottom: '20px', gap: '10px' }}>
+          <ActionIcon radius="xl" size="lg">
+            <IconLeaf size={18} color={theme.colors.white} />
+          </ActionIcon>
+          <Title order={2} style={{ fontSize: '20px', margin: 0 }}>
+            Нота дня
+          </Title>
+        </Group>
 
-      {/* Отображение ноты дня */}
-      {noteOfTheDay ? (
-        <Card
-          key={noteOfTheDay.id}
-          bg={isDark ? theme.colors.dark[6] : theme.colors.gray[0]}
-          shadow="2"
-          h="280px"
-          padding="lg"
-          radius="18"
-          style={{ marginBottom: '20px', cursor: 'pointer' }}
-          onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
-        >
-          <Group
-            style={{ display: 'flex', alignItems: 'center', gap: '20px', flexDirection: 'column' }}
+        {/* Отображение ноты дня */}
+        {noteOfTheDay ? (
+          <Card
+            key={noteOfTheDay.id}
+            bg={isDark ? theme.colors.dark[6] : theme.colors.gray[0]}
+            shadow="2"
+            h="280px"
+            padding="lg"
+            radius="18"
+            style={{ marginBottom: '20px', cursor: 'pointer' }}
+            onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
           >
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <Text size="lg" style={{ color: theme.colors.default }}>
-                {noteOfTheDay.title}
-              </Text>
-            </div>
-            <div
+            <Group
               style={{
-                height: 80,
-                width: 80,
-                borderRadius: '360px',
-                backgroundColor: theme.colors.gray[0],
                 display: 'flex',
-                justifyContent: 'center',
                 alignItems: 'center',
+                gap: '20px',
+                flexDirection: 'column',
               }}
             >
-              <Image
-                src={noteOfTheDay.imageUrl}
-                alt={noteOfTheDay.title}
-                fit="contain"
-                width="100%"
-                radius="360"
-                height="100%"
-                onError={(e) => {
-                  e.target.src = '/fallback-note.jpg'; // Путь к изображению-заглушке для нот
+              <div style={{ flex: 1, textAlign: 'center' }}>
+                <Text size="lg" style={{ color: theme.colors.default }}>
+                  {noteOfTheDay.title}
+                </Text>
+              </div>
+              <div
+                style={{
+                  height: 80,
+                  width: 80,
+                  borderRadius: '360px',
+                  backgroundColor: theme.colors.gray[0],
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
-              />
-            </div>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: '14px',
-                width: '98%',
-                color: theme.colors.gray[6],
-              }}
-            >
-              {noteOfTheDay.description}
-            </Text>
-            <Button
-              variant="outline"
-              radius="12"
-              onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
-              style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
-            >
-              Читать полностью
-            </Button>
-          </Group>
-        </Card>
-      ) : (
-        <Text>Загрузка ноты дня...</Text>
-      )}
+              >
+                <Image
+                  src={noteOfTheDay.imageUrl}
+                  alt={noteOfTheDay.title}
+                  fit="contain"
+                  width="100%"
+                  radius="360"
+                  height="100%"
+                  onError={(e) => {
+                    e.target.src = '/fallback-note.jpg'; // Путь к изображению-заглушке для нот
+                  }}
+                />
+              </div>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: '14px',
+                  width: '98%',
+                  color: theme.colors.gray[6],
+                }}
+              >
+                {noteOfTheDay.description}
+              </Text>
+              <Button
+                variant="outline"
+                radius="12"
+                onClick={() => router.push(`/note/${noteOfTheDay.id}`)}
+                style={{ borderColor: theme.colors.gray[4], color: isDark ? 'white' : 'black' }}
+              >
+                Читать полностью
+              </Button>
+            </Group>
+          </Card>
+        ) : (
+          <Text>Загрузка ноты дня...</Text>
+        )}
+      </div>
 
       {/* Лучшие отзывы из блогов */}
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '20px' }}>
@@ -294,6 +300,7 @@ export function RightMain({ firstBrand, posts, perfumes }) {
         bg={isDark ? theme.colors.dark[6] : theme.colors.gray[0]}
         padding="xl"
         radius="18"
+        className="mob-hidden"
         style={{ textAlign: 'center', maxWidth: '300px', width: '100%', margin: '0 auto' }}
       >
         <Text size="xl" style={{ marginBottom: '10px' }} size="xs">
