@@ -720,7 +720,7 @@ export default function Main() {
                 ))}
               </div>
 
-              <div style={{ width: '100%', marginTop: '50px' }}>
+              <div style={{ width: '100%', marginTop: '50px' }} className="mob-hidden">
                 <div
                   style={{
                     display: 'flex',
